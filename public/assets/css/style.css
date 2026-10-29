@@ -1,0 +1,610 @@
+:root {
+    --tile-gap: 8px;
+    --tile: 60px;
+    --blue: #0078d7;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    min-height: 100%;
+    font-family: "Segoe UI", "Segoe UI Web (West European)", -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", sans-serif;
+    color: #fff;
+}
+
+body {
+    min-height: 100vh;
+    overflow-x: hidden;
+    background-color: #123b64;
+    background-image:
+        url("../img/8.jpg"),
+        linear-gradient(120deg,
+            rgba(0, 30, 65, 0.72),
+            rgba(0, 30, 65, 0.24));
+    background-position: center;
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+@keyframes slideUpIn {
+    0% {
+        transform: translate3d(0, 100%, 0);
+        opacity: 0;
+    }
+
+    60% {
+        opacity: 1;
+    }
+
+    100% {
+        transform: translate3d(0, 0, 0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideUpOut {
+    0% {
+        transform: translate3d(0, 0, 0);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translate3d(0, -35%, 0);
+        opacity: 0;
+    }
+}
+
+.tile-animate-in {
+    animation: slideUpIn 700ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    will-change: transform, opacity;
+}
+
+.tile-animate-out {
+    animation: slideUpOut 500ms cubic-bezier(0.4, 0, 1, 1) both;
+    will-change: transform, opacity;
+}
+
+button {
+    font: inherit;
+}
+
+.scrim {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background: rgba(0, 20, 42, 0.25);
+    backdrop-filter: blur(1px);
+}
+
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 24px;
+    padding: 40px clamp(20px, 5vw, 72px) 20px;
+}
+
+.start-title {
+    margin: 0;
+    font-size: clamp(2.3rem, 4vw, 3.5rem);
+    font-weight: 300;
+    letter-spacing: -1.5px;
+    line-height: 1;
+}
+
+.title-dot {
+    color: rgba(255, 255, 255, 0.54);
+}
+
+.top-right {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.clock {
+    text-align: right;
+    font-size: 14px;
+    line-height: 1.4;
+    text-shadow: 0 1px 5px #0007;
+}
+
+.clock strong {
+    display: block;
+    font-size: 23px;
+    font-weight: 500;
+}
+
+.avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid rgba(255, 255, 255, 0.7);
+    box-shadow: 0 2px 12px #0004;
+}
+
+.workspace {
+    display: flex;
+    flex-direction: row;
+    gap: 48px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 12px clamp(20px, 5vw, 72px) 32px;
+    align-items: flex-start;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.4) transparent;
+}
+
+.workspace::-webkit-scrollbar {
+    height: 8px;
+}
+
+.workspace::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 4px;
+}
+
+.section-group {
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+}
+
+.section-label,
+.group-title {
+    margin: 0 0 8px 2px;
+    font-size: 18px;
+    text-transform: normal;
+    letter-spacing: -1px;
+    color: rgba(255, 255, 255, 0.75);
+    font-weight: 200;
+}
+
+.tools-section {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.tools-row {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: var(--tile-gap);
+    margin-bottom: 16px;
+}
+
+.tools-row .tile-grid {
+    display: grid;
+    grid-auto-rows: var(--tile);
+    gap: var(--tile-gap);
+    align-content: start;
+    flex-shrink: 0;
+}
+
+.tile-grid {
+    display: grid;
+    grid-auto-rows: var(--tile);
+    gap: var(--tile-gap);
+    grid-auto-flow: dense;
+    align-content: start;
+}
+
+.tile {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    padding: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    color: #fff;
+    cursor: default;
+    text-align: left;
+    isolation: isolate;
+    box-shadow: 0 3px 8px #0001;
+    transition: filter 0.16s ease, box-shadow 0.16s ease;
+}
+
+.tile:hover {
+    filter: brightness(1.12);
+    box-shadow: 0 8px 22px #0003;
+    z-index: 2;
+}
+
+.tile:active {
+    transform: none;
+}
+
+a,
+a .tile {
+    cursor: pointer;
+}
+
+button,
+button.tile {
+    cursor: default;
+}
+
+.tile:focus-visible {
+    outline: 3px solid #fff;
+    outline-offset: 2px;
+}
+
+.tile-icon {
+    font-size: 24px;
+    line-height: 1;
+    text-shadow: 0 2px 8px #0002;
+}
+
+.tile-icon-two {
+    font-size: 40px;
+    line-height: 1;
+    text-shadow: 0 2px 8px #0002;
+}
+
+.tile-image-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 24px;
+    object-fit: contain;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    pointer-events: none;
+}
+
+.tile-caption {
+    position: absolute;
+    left: 7px;
+    bottom: 2px;
+    z-index: 10;
+    display: block;
+    visibility: visible;
+    opacity: 1;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.4;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.65);
+    pointer-events: none;
+}
+
+.dynamic-tile {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    border: none;
+    cursor: pointer;
+}
+
+.dt-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.dt-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    background: transparent;
+}
+
+.dynamic-tile .dt-copy {
+    position: relative;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 100%;
+    height: 100%;
+    padding: 10px;
+    text-align: left;
+    color: #fff;
+    overflow: hidden;
+}
+
+.dynamic-tile[data-slide-align="center"] .dt-copy,
+.dynamic-tile[data-slide-mode="icon"] .dt-copy {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.dt-icon-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-shrink: 0;
+    width: 100%;
+    margin: 0 0 6px;
+    line-height: 1;
+}
+
+.dynamic-tile[data-slide-mode="icon"] .dt-icon-wrap {
+    justify-content: center;
+    margin: 0;
+}
+
+.dt-tag {
+    font-size: 11px;
+    opacity: 0.8;
+}
+
+.dt-text {
+    margin-top: 4px;
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 1.2;
+    overflow-wrap: anywhere;
+}
+
+.dynamic-tile>.tile-caption {
+    position: absolute;
+    left: 7px;
+    bottom: 2px;
+    display: block;
+    visibility: visible;
+    opacity: 1;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.4;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.65);
+    pointer-events: none;
+}
+
+.one {
+    grid-column: span 1;
+    grid-row: span 1;
+}
+
+.two {
+    grid-column: span 2;
+    grid-row: span 2;
+}
+
+.wide {
+    grid-column: span 4;
+    grid-row: span 2;
+}
+
+.big {
+    grid-column: span 4;
+    grid-row: span 4;
+}
+
+.blue {
+    background: linear-gradient(135deg, #0078d7 0%, #0084e6 100%);
+}
+
+.blue-indigo {
+    background: #2356F6;
+}
+
+.cyan {
+    background: #008ed0;
+}
+
+.dark-red {
+    background: #ad2f4b;
+}
+
+.white {
+    background: linear-gradient(135deg, #ffffff 0%, #c6c6c6 100%);
+}
+
+.purple {
+    background: linear-gradient(135deg, #7e3878 0%, #8f4088 100%);
+}
+
+.slate-blue {
+    background: #535C94;
+}
+
+.magenta {
+    background: linear-gradient(135deg, #c239b3 0%, #d045c1 100%);
+}
+
+.green {
+    background: linear-gradient(135deg, #107c10 0%, #128b12 100%);
+}
+
+.lime {
+    background: linear-gradient(135deg, #8cbe29 0%, #9bc93b 100%);
+}
+
+.orange {
+    background: linear-gradient(135deg, #b82900 0%, #da4800 100%);
+}
+
+.orange-half {
+    background: linear-gradient(135deg, #ff843c 0%, #ff5100 100%);
+}
+
+.red {
+    background: linear-gradient(135deg, #ca0011 0%, #ff0015 100%);
+}
+
+.teal {
+    background: linear-gradient(135deg, #008272 0%, #009482 100%);
+}
+
+.slate {
+    background: linear-gradient(135deg, #1d2124 0%, #363636 100%);
+}
+
+.pink {
+    background: linear-gradient(135deg, #e3008c 0%, #f70a9d 100%);
+}
+
+.indigo {
+    background: linear-gradient(135deg, #4f46e5 0%, #5b53f5 100%);
+}
+
+.live-copy {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 100%;
+    height: 100%;
+    text-align: left;
+    box-sizing: border-box;
+    gap: 5px;
+}
+
+.live-tag {
+    font-size: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    opacity: 0.8;
+    margin: 0;
+}
+
+.live-main {
+    font-size: 24px;
+    font-weight: 300;
+    line-height: 1.2;
+    overflow-wrap: anywhere;
+}
+
+.music-button .tile-icon {
+    font-size: 28px;
+    line-height: 1;
+}
+
+.music-status {
+    position: absolute;
+    top: 8px;
+    right: 10px;
+    font-size: 10px;
+    opacity: 0.8;
+}
+
+.weather-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+    height: 100%;
+    padding: 10px 0;
+    box-sizing: border-box;
+}
+
+.weather-tag {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    opacity: 0.8;
+}
+
+.weather-icon-lg {
+    visibility: hidden;
+}
+
+.weather-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.weather-temp-large {
+    font-size: 110px;
+    font-weight: 200;
+    line-height: 1;
+    letter-spacing: -1px;
+}
+
+.weather-city {
+    font-size: 24px;
+    font-weight: 200;
+    margin-top: 25px;
+}
+
+.weather-desc {
+    font-size: 14px;
+    opacity: 0.8;
+}
+
+.calendar-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: stretch;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+}
+
+.calendar-top {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    width: 100%;
+    text-align: right;
+}
+
+.calendar-date {
+    font-size: 110px;
+    line-height: 1;
+    font-weight: 200 !important;
+    text-align: right;
+}
+
+.calendar-day {
+    font-size: 24px;
+    font-weight: 100 !important;
+    letter-spacing: 0.5px;
+    margin-top: 2px;
+    margin-right: 5px;
+    text-align: right;
+}
+
+.tile-bottom-icon {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 5px;
+    width: 100%;
+    text-align: left;
+}
+
+.tile-icon-small {
+    font-size: 16px;
+}
+
+.tile-caption-icon {
+    font-size: 14px;
+    font-weight: 300 !important;
+    opacity: 0.9;
+}
+
+@media (max-width: 480px) {
+    :root {
+        --tile: 54px;
+    }
+}
+
+button,
+button.tile,
+button.dynamic-tile {
+    cursor: default;
+}
+
+a,
+a .tile {
+    cursor: pointer;
+}

@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Showcase</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        /* 1. KUNCI UTAMA FIT HORIZONTAL & SCROLL VERTIKAL */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+        }
+
+        html, body {
+            width: 100%;
+            max-width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            background-color: #1d1d1d; /* Metro dark theme */
+            color: #ffffff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* 2. TOP BLACK BAR (APP BAR) - STICKY */
+        .app-bar {
+            background-color: #00bcf2; 
+            height: 55px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
+            flex-shrink: 0;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.05);
+            z-index: 100;
+        }
+
+        .app-bar-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .app-icon {
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+            color: #fff;
+        }
+
+        .app-title {
+            font-size: 18px;
+            font-weight: 300;
+            letter-spacing: 0.5px;
+        }
+
+        .app-bar-right .close-btn {
+            background: none;
+            border: none;
+            color: #ffffff;
+            font-size: 20px;
+            cursor: pointer;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+
+        .app-bar-right .close-btn:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        /* 3. SUB-HEADERS (2 TAB: CREATIONS & COMMUNITY) - STICKY */
+        .app-headers {
+            width: 100%;
+            padding: 20px 40px 0 40px;
+            display: flex;
+            gap: 40px;
+            flex-shrink: 0;
+            background-color: #1d1d1d;
+            z-index: 99;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .header-item {
+            font-size: 28px;
+            font-weight: 300;
+            color: #7a7a7a;
+            cursor: pointer;
+            padding-bottom: 10px;
+            border-bottom: 4px solid transparent;
+            transition: color 0.2s, border-color 0.2s;
+        }
+
+        .header-item.active {
+            color: #ffffff;
+            font-weight: 400;
+            border-bottom: 4px solid #00bcf2;
+        }
+
+        .header-item:hover {
+            color: #cccccc;
+        }
+
+        .app-content {
+            width: 100%;
+            flex-grow: 1;
+            padding: 20px 40px 60px 40px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .content-section {
+            display: none;
+            flex-direction: column;
+            gap: 25px;
+            width: 100%;
+        }
+
+        .content-section.active {
+            display: flex;
+        }
+
+        /* --- SHOWCASE MEGA CARD (UKURAN BESAR FULL-WIDTH) --- */
+        .showcase-container {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .showcase-card {
+            width: 100%;
+            background-color: #262626;
+            border: 2px solid transparent;
+            display: flex;
+            gap: 40px;
+            padding: 35px;
+            align-items: center;
+            cursor: pointer;
+            transition: background 0.2s, border-color 0.2s, transform 0.1s;
+            position: relative;
+        }
+
+        .showcase-card:hover {
+            background-color: #313131;
+            border-color: #00bcf2;
+        }
+
+        /* Kotak Gambar Besar di Kiri */
+        .showcase-tile-img {
+            width: 200px;
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            overflow: hidden;
+        }
+
+        .showcase-tile-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        /* Keterangan Teks di Kanan */
+        .showcase-info {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            flex-grow: 1;
+            min-width: 0;
+        }
+
+        .showcase-name {
+            font-size: 32px;
+            font-weight: 300;
+            color: #ffffff;
+            line-height: 1.2;
+            word-break: break-word;
+        }
+
+        .showcase-category {
+            font-size: 16px;
+            color: #00bcf2;
+            font-weight: 400;
+        }
+
+        .showcase-desc {
+            font-size: 15px;
+            color: #dddddd;
+            font-weight: 300;
+            line-height: 1.6;
+            opacity: 0.85;
+            word-break: break-word;
+        }
+
+        .showcase-badge {
+            position: absolute;
+            top: 20px;
+            right: 25px;
+            background-color: rgba(0, 188, 242, 0.15);
+            color: #00bcf2;
+            font-size: 12px;
+            font-weight: 600;
+            padding: 4px 12px;
+            letter-spacing: 0.5px;
+        }
+    </style>
+</head>
+<body>
+    <header class="app-bar">
+        <div class="app-bar-left">
+            <div class="app-icon"><i class="fa-solid fa-store"></i></div>
+            <span class="app-title">Project Showcase</span>
+        </div>
+        <div class="app-bar-right">
+            <button class="close-btn" onclick="backToStartMenu()" title="Back to Start Menu">✕</button>
+        </div>
+    </header>
+    <nav class="app-headers">
+        <div class="header-item active" onclick="switchTab(0)">Self Learning</div>
+        <div class="header-item" onclick="switchTab(1)">For Community</div>
+    </nav>
+    <main class="app-content">
+        <section class="content-section active" id="section-0">
+            <div class="showcase-container">
+                <div class="showcase-card" onclick="openHappay()">
+                    <div class="showcase-badge">Happay</div>
+                    <div class="showcase-tile-img">
+                        <img src="assets/img/tile/hap1.png" alt="POS Suite">
+                    </div>
+                    <div class="showcase-info">
+                        <div class="showcase-name">Point of Sales (POS) Systems</div>
+                        <div class="showcase-category">Website • Sales Tracker</div>
+                        <div class="showcase-desc">
+                            Complete inventory, warehouse, stock transfer, and sales management system built for high-performance enterprise tracking. Fully integrated with robust database management, automated stock-out triggers, and real-time operational reporting.
+                        </div>
+                    </div>
+                </div>
+                <div class="showcase-card" onclick="openEveryday()">
+                    <div class="showcase-badge">Everyday</div>
+                    <div class="showcase-tile-img">
+                        <img src="assets/img/tile/evr1.png" alt="Portfolio">
+                    </div>
+                    <div class="showcase-info" onclick="openTicketing()">
+                        <div class="showcase-name">Productivity Tools</div>
+                        <div class="showcase-category">Website • Productivity</div>
+                        <div class="showcase-desc">
+                            Project Productivity Tools is a web application designed to help users manage their daily tasks, notes, and goals. It provides a simple and intuitive interface for organizing your life and achieving your goals.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="content-section" id="section-1">
+            <div class="showcase-container">
+                <div class="showcase-card">
+                    <div class="showcase-badge">Church Event</div>
+                    <div class="showcase-tile-img">
+                        <img src="assets/img/tile/bnsp.jpg" alt="Comm 1">
+                    </div>
+                    <div class="showcase-info">
+                        <div class="showcase-name">Ticketing Systems</div>
+                        <div class="showcase-category">Website • Cinema Concept</div>
+                        <div class="showcase-desc">
+                            Ticketing System is a web application designed to help users manage their daily tasks, notes, and goals. It provides a simple and intuitive interface for organizing your life and achieving your goals.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        // Fungsi untuk mengganti tab aktif
+        function switchTab(index) {
+            const headers = document.querySelectorAll('.header-item');
+            const sections = document.querySelectorAll('.content-section');
+
+            headers.forEach((h, i) => {
+                if (i === index) {
+                    h.classList.add('active');
+                } else {
+                    h.classList.remove('active');
+                }
+            });
+
+            sections.forEach((s, i) => {
+                if (i === index) {
+                    s.classList.add('active');
+                } else {
+                    s.classList.remove('active');
+                }
+            });
+        }
+        function backToStartMenu() {
+            window.location.href = "index.php";
+        }
+        function openHappay() {
+            window.location.href = "app-happay.php";
+        }
+        function openEveryday() {
+            window.location.href = "app-everyday.php";
+        }
+        function openTicketing() {
+            window.location.href = "app-ticketing.php";
+        }
+    </script>
+</body>
+</html>
