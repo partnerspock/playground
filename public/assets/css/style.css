@@ -12,22 +12,43 @@ html,
 body {
     margin: 0;
     min-height: 100%;
-    font-family: "Segoe UI", "Segoe UI Web (West European)", -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", sans-serif;
-    color: #fff;
+}
+
+html {
+    background-color: #123b64;
 }
 
 body {
     min-height: 100vh;
     overflow-x: hidden;
+    position: relative;
+    isolation: isolate;
     background-color: #123b64;
-    background-image:
-        url("../img/8.jpg"),
-        linear-gradient(120deg,
-            rgba(0, 30, 65, 0.72),
-            rgba(0, 30, 65, 0.24));
-    background-position: center;
-    background-size: cover;
-    background-attachment: fixed;
+    color: #fff;
+    font-family: "Segoe UI", "Segoe UI Web (West European)", -apple-system,
+        BlinkMacSystemFont, Roboto, "Helvetica Neue", sans-serif;
+}
+
+.bg-img {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
+    z-index: -2;
+    pointer-events: none;
+    user-select: none;
+}
+
+.scrim {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background-image: linear-gradient(120deg,
+            rgba(0, 30, 65, 0.2),
+            rgba(0, 30, 65, 0.1));
 }
 
 @keyframes slideUpIn {
@@ -72,12 +93,15 @@ button {
     font: inherit;
 }
 
-.scrim {
-    position: fixed;
-    inset: 0;
-    z-index: -1;
-    background: rgba(0, 20, 42, 0.25);
-    backdrop-filter: blur(1px);
+button,
+button.tile,
+button.dynamic-tile {
+    cursor: default;
+}
+
+a,
+a .tile {
+    cursor: pointer;
 }
 
 .topbar {
@@ -136,17 +160,11 @@ button {
     overflow-y: hidden;
     padding: 12px clamp(20px, 5vw, 72px) 32px;
     align-items: flex-start;
-    scrollbar-width: thin;
-    scrollbar-color: rgba(255, 255, 255, 0.4) transparent;
+    scrollbar-width: none;
 }
 
 .workspace::-webkit-scrollbar {
-    height: 8px;
-}
-
-.workspace::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.3);
-    border-radius: 4px;
+    display: none;
 }
 
 .section-group {
@@ -219,16 +237,6 @@ button {
 
 .tile:active {
     transform: none;
-}
-
-a,
-a .tile {
-    cursor: pointer;
-}
-
-button,
-button.tile {
-    cursor: default;
 }
 
 .tile:focus-visible {
@@ -390,7 +398,7 @@ button.tile {
 }
 
 .blue-indigo {
-    background: #2356F6;
+    background: #2356f6;
 }
 
 .cyan {
@@ -410,7 +418,7 @@ button.tile {
 }
 
 .slate-blue {
-    background: #535C94;
+    background: #535c94;
 }
 
 .magenta {
@@ -592,19 +600,312 @@ button.tile {
     opacity: 0.9;
 }
 
-@media (max-width: 480px) {
+@media (max-width: 768px) {
     :root {
-        --tile: 54px;
+        --tile-gap: 6px;
+    }
+
+    body {
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
+    }
+
+    .topbar {
+        padding: max(16px, env(safe-area-inset-top)) 16px 8px 16px !important;
+        gap: 12px !important;
+    }
+
+    .start-title {
+        font-size: clamp(2rem, 8vw, 2.6rem) !important;
+    }
+
+    .clock strong {
+        font-size: 17px !important;
+    }
+
+    .clock span {
+        font-size: 12px !important;
+    }
+
+    .avatar {
+        width: 38px !important;
+        height: 38px !important;
+    }
+
+    .workspace {
+        flex-direction: column !important;
+        overflow-y: visible !important;
+        overflow-x: hidden !important;
+        width: 100% !important;
+        max-width: 100vw !important;
+        padding: 6px 16px max(50px, env(safe-area-inset-bottom)) 16px !important;
+        gap: 22px !important;
+        box-sizing: border-box !important;
+    }
+
+    .section-group {
+        width: 100% !important;
+        max-width: 100% !important;
+        flex-shrink: 0 !important;
+    }
+
+    .group-title {
+        font-size: 15px !important;
+        margin: 0 0 6px 2px !important;
+    }
+
+    .tools-row {
+        width: 100% !important;
+        flex-direction: column !important;
+        gap: var(--tile-gap) !important;
+        margin-bottom: 0 !important;
+    }
+
+    .tile-grid {
+        display: grid !important;
+        grid-template-columns: repeat(6, 1fr) !important;
+        grid-auto-rows: calc((100vw - 32px - (5 * var(--tile-gap))) / 6) !important;
+        gap: var(--tile-gap) !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        grid-auto-flow: dense !important;
+    }
+
+    .weather-temp-large {
+        font-size: clamp(38px, 12vw, 64px) !important;
+    }
+
+    .weather-city {
+        font-size: clamp(12px, 3.4vw, 16px) !important;
+        margin-top: 6px !important;
+    }
+
+    .calendar-date {
+        font-size: clamp(38px, 12vw, 64px) !important;
+    }
+
+    .calendar-day {
+        font-size: clamp(12px, 3.2vw, 15px) !important;
+    }
+
+    .tile-caption {
+        font-size: 10.5px !important;
+        left: 5px !important;
+        bottom: 2px !important;
+    }
+
+    .tile-icon-two {
+        font-size: 28px !important;
+    }
+
+    .tile-icon {
+        font-size: 18px !important;
+    }
+
+    .dt-text {
+        font-size: clamp(10.5px, 2.8vw, 12.5px) !important;
+        margin-top: 2px !important;
+    }
+
+    .dt-tag {
+        font-size: 9.5px !important;
+    }
+
+    .live-main {
+        font-size: clamp(14px, 4vw, 18px) !important;
+    }
+
+    #lockscreen-panel .ls-datetime {
+        bottom: max(45px, calc(env(safe-area-inset-bottom) + 25px)) !important;
+        left: 20px !important;
+    }
+
+    #lockscreen-panel .ls-time {
+        font-size: clamp(3.8rem, 15vw, 6rem) !important;
+    }
+
+    #lockscreen-panel .ls-date {
+        font-size: clamp(0.95rem, 3.4vw, 1.3rem) !important;
+    }
+
+    #lockscreen-panel .ls-hint {
+        bottom: max(12px, env(safe-area-inset-bottom)) !important;
     }
 }
 
-button,
-button.tile,
-button.dynamic-tile {
-    cursor: default;
+#lockscreen-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    overflow: hidden;
+    cursor: grab;
+    touch-action: pan-y;
+    user-select: none;
 }
 
-a,
-a .tile {
-    cursor: pointer;
+#lockscreen-overlay.ls-hidden {
+    display: none !important;
+}
+
+#lockscreen-overlay.ls-dragging {
+    cursor: grabbing;
+}
+
+#lockscreen-overlay.ls-dragging .ls-wallpaper {
+    animation-play-state: paused;
+}
+
+#lockscreen-panel {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    will-change: transform;
+    overflow: hidden;
+}
+
+.ls-wallpaper {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    z-index: 0;
+    pointer-events: none;
+    user-select: none;
+    animation: lsImgBounce 14s cubic-bezier(0.36, 0.07, 0.19, 0.97) infinite;
+    will-change: transform;
+}
+
+#lockscreen-panel .ls-scrim {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg,
+            rgba(0, 0, 0, 0) 45%,
+            rgba(0, 0, 0, 0.62) 100%);
+    z-index: 1;
+    pointer-events: none;
+}
+
+#lockscreen-panel .ls-datetime {
+    position: absolute;
+    bottom: 56px;
+    left: clamp(32px, 5vw, 72px);
+    z-index: 2;
+    pointer-events: none;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+#lockscreen-panel .ls-time {
+    font-size: 150px;
+    font-weight: 100;
+    letter-spacing: -9px;
+    line-height: 1;
+    color: #fff;
+    text-shadow: 0 2px 28px rgba(0, 0, 0, 0.55);
+}
+
+#lockscreen-panel .ls-date {
+    font-size: 50px;
+    letter-spacing: -1px;
+    font-weight: 100;
+    color: rgba(255, 255, 255, 0.9);
+    margin-top: 8px;
+    text-shadow: 0 1px 10px rgba(0, 0, 0, 0.5);
+}
+
+#lockscreen-panel .ls-hint {
+    position: absolute;
+    bottom: 1px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    color: rgba(255, 255, 255, 0.8);
+    pointer-events: none;
+    white-space: nowrap;
+}
+
+.ls-hint-chevron {
+    font-size: 30px;
+    opacity: 0.55;
+}
+
+@keyframes lsImgBounce {
+    0% {
+        transform: translateY(0);
+    }
+
+    2% {
+        transform: translateY(-80px);
+    }
+
+    3% {
+        transform: translateY(0);
+    }
+
+    4% {
+        transform: translateY(-30px);
+    }
+
+    5% {
+        transform: translateY(0);
+    }
+
+    6% {
+        transform: translateY(-10px);
+    }
+
+    7% {
+        transform: translateY(0);
+    }
+
+    7.1%,
+    100% {
+        transform: translateY(0);
+    }
+}
+
+@keyframes lsBounce {
+    0% {
+        transform: translateY(0);
+    }
+
+    15% {
+        transform: translateY(-20px);
+    }
+
+    32% {
+        transform: translateY(0);
+    }
+
+    48% {
+        transform: translateY(-11px);
+    }
+
+    64% {
+        transform: translateY(0);
+    }
+
+    80% {
+        transform: translateY(-5px);
+    }
+
+    100% {
+        transform: translateY(0);
+    }
+}
+
+.ls-bounce {
+    animation: lsBounce 0.65s cubic-bezier(0.36, 0.07, 0.19, 0.97) both !important;
 }

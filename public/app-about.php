@@ -2,9 +2,51 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Windows 8.1 Multi-Layout App</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>PC Settings - Windows 8.1</title>
+    <script src="https://cdn.tailwindcss.com">
+        function setupInfiniteAppHeaders() {
+            const nav = document.querySelector('.app-headers');
+            if (!nav) return;
+            const originalItems = Array.from(nav.querySelectorAll('.header-item'));
+            if (originalItems.length === 0) return;
+
+            originalItems.forEach((item, idx) => {
+                item.setAttribute('data-tab-index', idx);
+                item.addEventListener('click', () => switchTab(idx));
+            });
+
+            const cloneCycles = 4;
+            for (let c = 0; c < cloneCycles; c++) {
+                originalItems.forEach((item, idx) => {
+                    const clone = item.cloneNode(true);
+                    clone.setAttribute('data-tab-index', idx);
+                    clone.addEventListener('click', () => switchTab(idx));
+                    nav.appendChild(clone);
+                });
+            }
+
+            nav.addEventListener('scroll', () => {
+                const singleSetWidth = originalItems.reduce((acc, el) => {
+                    const gap = parseFloat(window.getComputedStyle(nav).gap) || 24;
+                    return acc + el.offsetWidth + gap;
+                }, 0);
+
+                if (singleSetWidth > 0) {
+                    if (nav.scrollLeft >= singleSetWidth * 2.5) {
+                        nav.scrollLeft -= singleSetWidth;
+                    } else if (nav.scrollLeft <= 5) {
+                        nav.scrollLeft += singleSetWidth;
+                    }
+                }
+            }, { passive: true });
+        }
+        setupInfiniteAppHeaders();
+
+    </script>
+    <script src="https://kit.fontawesome.com/c66aa74d08.js" crossorigin="anonymous"></script>
     <style>
+        /* 1. KUNCI UTAMA AGAR FIT HORIZONTAL & LAYAR TERKUNCI */
         * {
             box-sizing: border-box;
             margin: 0;
@@ -12,11 +54,11 @@
             user-select: none;
         }
 
-        /* Kunci HTML & Body agar full screen tanpa scroll */
         html, body {
-            width: 100vw;
+            width: 100%;
+            max-width: 100vw;
             height: 100vh;
-            overflow: hidden;
+            overflow: hidden; /* Mencegah body scroll penuh, scroll dipindah ke .app-content */
             background-color: #1d1d1d; /* Metro dark theme */
             color: #ffffff;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -24,28 +66,29 @@
             flex-direction: column;
         }
 
-        /* 1. TOP BLACK BAR (APP BAR) */
+        /* 2. TOP BLACK BAR (APP BAR) - Warna khas Settings (Purple/Plum) */
         .app-bar {
-            background-color: #000000; 
+            background-color: #643264; 
             height: 55px;
+            width: 100%;
             display: flex;
             align-items: center;
             justify-content: space-between;
             padding: 0 40px;
             flex-shrink: 0;
             border-bottom: 2px solid rgba(255, 255, 255, 0.05);
+            z-index: 100;
         }
 
         .app-bar-left {
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 10px;
         }
 
         .app-icon {
             width: 28px;
             height: 28px;
-            background-color: #00bcf2; /* Win 8 Accent Color */
             display: flex;
             align-items: center;
             justify-content: center;
@@ -78,197 +121,255 @@
             background-color: rgba(255, 255, 255, 0.2);
         }
 
-        /* 2. SUB-HEADERS (PANORAMIC STYLE) */
+        /* 3. SUB-HEADERS (PANORAMIC STYLE) - DENGAN UNDERLINE JELAS */
         .app-headers {
-            padding: 20px 50px 10px 50px;
+            width: 100%;
+            padding: 20px 40px 0 40px;
             display: flex;
             gap: 40px;
             flex-shrink: 0;
+            background-color: #1d1d1d;
+            z-index: 99;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        
+            overflow-x: auto;
+            overflow-y: hidden;
+            white-space: nowrap;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .app-headers::-webkit-scrollbar {
+            display: none;
         }
 
         .header-item {
-            font-size: 26px;
+            font-size: 28px;
             font-weight: 300;
             color: #7a7a7a;
             cursor: pointer;
-            transition: color 0.2s;
+            padding-bottom: 10px;
+            border-bottom: 4px solid transparent;
+            transition: color 0.2s, border-color 0.2s;
+        
+            flex-shrink: 0;
+            white-space: nowrap;
         }
 
         .header-item.active {
             color: #ffffff;
             font-weight: 400;
+            border-bottom: 4px solid #643264; /* Underline tebal sesuai warna aksen Settings */
         }
 
         .header-item:hover {
             color: #cccccc;
+            border-bottom: 4px solid rgba(100, 50, 100, 0.4);
         }
 
-        /* 3. CONTENT AREA (FULLSCREEN NO SCROLL) */
+        /* 4. CONTENT AREA - AREA INI SAJA YANG BISA SCROLL VERTIKAL */
         .app-content {
+            width: 100%;
             flex-grow: 1;
-            padding: 10px 50px 30px 50px;
+            padding: 25px 40px 50px 40px;
+            overflow-y: auto;   
+            overflow-x: hidden; 
             display: flex;
             flex-direction: column;
-            overflow: hidden;
         }
 
+        /* Kontrol Seksion Tab */
         .content-section {
             display: none;
             flex-direction: column;
-            flex-grow: 1;
+            gap: 30px;
             width: 100%;
-            height: 100%;
         }
 
         .content-section.active {
             display: flex;
         }
 
-        /* --- LAYOUT 1: FEATURED (Grid Standard) --- */
-        .card-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-            gap: 20px;
-            margin-top: 10px;
-        }
-
-        .content-card {
-            background-color: #2d2d2d;
-            height: 150px;
-            padding: 20px;
+        /* --- STYLING PC INFO LAYOUT WIN 8.1 --- */
+        .pcinfo-container {
             display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            cursor: pointer;
-            transition: transform 0.1s, background-color 0.2s;
-            border: 2px solid transparent;
-        }
-
-        .content-card:hover {
-            background-color: #3d3d3d;
-            border-color: rgba(255, 255, 255, 0.4);
-        }
-
-        .content-card h4 {
-            font-size: 16px;
-            font-weight: 500;
-            margin-bottom: 5px;
-        }
-
-        .content-card p {
-            font-size: 12px;
-            color: #aaaaaa;
-        }
-
-        /* --- LAYOUT 2: APP DETAIL / TEXT & SIDE IMAGE --- */
-        .detail-container {
-            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
             gap: 50px;
             width: 100%;
-            flex-grow: 1;
-            align-items: center;
         }
 
-        .detail-text-side {
-            flex: 1.5;
+        .pcinfo-left {
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 30px;
+            flex-grow: 1;
+            max-width: 750px;
         }
 
-        .detail-text-side h2 {
-            font-size: 28px;
+        .pcinfo-block {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .pcinfo-heading {
+            font-size: 16px;
+            font-weight: 600;
+            color: #00bcf2;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .pcinfo-row {
+            display: flex;
+            font-size: 15px;
+            line-height: 1.8;
+            color: #dddddd;
             font-weight: 300;
         }
 
-        .detail-text-side p {
-            font-size: 14px;
-            line-height: 1.6;
-            color: #cccccc;
-        }
-
-        .detail-image-side {
-            flex: 1;
-            background-color: #333333;
-            height: 100%;
-            max-height: 380px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #777;
-            font-size: 14px;
-            border: 2px solid rgba(255, 255, 255, 0.1);
-        }
-
-        /* --- LAYOUT 3: CATEGORIES THUMBNAIL GRID --- */
-        .thumb-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-            gap: 20px;
-            margin-top: 10px;
-        }
-
-        .thumb-item {
-            background-color: #262626;
-            padding: 15px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            cursor: pointer;
-            transition: background 0.2s, border-color 0.2s;
-            border: 2px solid transparent;
-        }
-
-        .thumb-item:hover {
-            background-color: #333;
-            border-color: #00bcf2;
-        }
-
-        .thumb-box {
-            width: 56px;
-            height: 56px;
-            background-color: #00bcf2;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 22px;
-        }
-
-        .thumb-title {
-            font-size: 13px;
-            font-weight: 400;
-        }
-
-        /* --- LAYOUT 4: READER / ARTICLE APP STYLE --- */
-        .reader-container {
-            width: 100%;
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .reader-hero-img {
-            width: 100%;
-            height: 200px;
-            background-color: #3a3a3a;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #888;
-            font-size: 14px;
-            border: 2px solid rgba(255, 255, 255, 0.05);
+        .pcinfo-label {
+            width: 220px;
+            color: #999999;
             flex-shrink: 0;
         }
 
-        .reader-content p {
+        .pcinfo-value {
+            color: #ffffff;
+            font-weight: 400;
+        }
+
+        /* Windows Activation Box */
+        .activation-box {
+            background-color: #262626;
+            border-left: 4px solid #643264;
+            padding: 18px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .activation-title {
             font-size: 15px;
-            line-height: 1.7;
-            color: #dddddd;
-            margin-bottom: 12px;
+            font-weight: 500;
+            color: #ffffff;
+        }
+
+        .activation-desc {
+            font-size: 13px;
+            color: #aaaaaa;
             font-weight: 300;
+        }
+
+        /* Sisi Kanan: Logo / Banner Windows 8.1 */
+        .pcinfo-right {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-color: #262626;
+            border: 2px solid rgba(255, 255, 255, 0.05);
+            padding: 40px;
+            width: 320px;
+            flex-shrink: 0;
+            text-align: center;
+            gap: 15px;
+        }
+
+        .win-logo-box {
+            font-size: 64px;
+            color: #00bcf2;
+        }
+
+        .win-edition-title {
+            font-size: 20px;
+            font-weight: 300;
+            color: #ffffff;
+        }
+
+        .win-edition-sub {
+            font-size: 13px;
+            color: #888888;
+            font-weight: 300;
+            line-height: 1.4;
+        }
+
+        /* --- STYLING PERSONALIZATION GRID --- */
+        .settings-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            width: 100%;
+        }
+
+        .settings-card {
+            background-color: #262626;
+            border: 2px solid transparent;
+            padding: 20px;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            cursor: pointer;
+            transition: background 0.2s, border-color 0.2s;
+        }
+
+        .settings-card:hover {
+            background-color: #313131;
+            border-color: #643264;
+        }
+
+        .settings-card-icon {
+            font-size: 28px;
+            color: #643264;
+            width: 50px;
+            height: 50px;
+            background-color: rgba(100, 50, 100, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .settings-card-info {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .settings-card-title {
+            font-size: 16px;
+            font-weight: 500;
+            color: #ffffff;
+        }
+
+        .settings-card-desc {
+            font-size: 13px;
+            color: #aaaaaa;
+            font-weight: 300;
+            opacity: 0.85;
+        }
+    
+        @media (max-width: 768px) {
+            .app-bar {
+                padding: max(10px, env(safe-area-inset-top)) 16px !important;
+                height: auto !important;
+                min-height: 50px !important;
+            }
+            .app-headers {
+                padding: 12px 16px 0 16px !important;
+                gap: 24px !important;
+            }
+            .header-item {
+                font-size: clamp(18px, 5.5vw, 24px) !important;
+                padding-bottom: 8px !important;
+            }
+            .app-content {
+                padding: 16px 16px max(40px, env(safe-area-inset-bottom)) 16px !important;
+            }
         }
     </style>
 </head>
@@ -277,112 +378,122 @@
     <!-- 1. TOP BLACK BAR -->
     <header class="app-bar">
         <div class="app-bar-left">
-            <div class="app-icon">W</div>
-            <span class="app-title">Windows Store & Reader</span>
+            <div class="app-icon"><i class="fa-solid fa-gear"></i></div>
+            <span class="app-title">PC Settings</span>
         </div>
         <div class="app-bar-right">
             <button class="close-btn" onclick="backToStartMenu()" title="Back to Start Menu">✕</button>
         </div>
     </header>
 
-    <!-- 2. SUB-HEADERS (4 VARIASI HEADER) -->
+    <!-- 2. SUB-HEADERS (DENGAN UNDERLINE AKTIF) -->
     <nav class="app-headers">
-        <div class="header-item active" onclick="switchTab(0)">Featured</div>
-        <div class="header-item" onclick="switchTab(1)">App Detail</div>
-        <div class="header-item" onclick="switchTab(2)">Categories</div>
-        <div class="header-item" onclick="switchTab(3)">Reader</div>
+        <div class="header-item active" onclick="switchTab(0)">PC Info</div>
+        <div class="header-item" onclick="switchTab(1)">Personalization</div>
     </nav>
 
-    <!-- 3. CONTENT AREA DENGAN 4 VARIASI LAYOUT -->
+    <!-- 3. CONTENT AREA -->
     <main class="app-content">
         
-        <!-- Tab 0: Featured (Grid Standart) -->
+        <!-- ================= TAB 0: PC INFO ================= -->
         <section class="content-section active" id="section-0">
-            <h3 style="font-weight: 300; font-size: 18px; color: #00bcf2; margin-bottom: 10px;">Recommended Highlights</h3>
-            <div class="card-grid">
-                <div class="content-card">
-                    <h4>Metro Music</h4>
-                    <p>Audio • Free</p>
+            <div class="pcinfo-container">
+                
+                <!-- Sisi Kiri: Spesifikasi -->
+                <div class="pcinfo-left">
+                    <div class="pcinfo-block">
+                        <div class="pcinfo-heading">View basic information about your computer</div>
+                        
+                        <div class="pcinfo-row">
+                            <div class="pcinfo-label">Manufacturer</div>
+                            <div class="pcinfo-value">Custom Built Machine</div>
+                        </div>
+                        <div class="pcinfo-row">
+                            <div class="pcinfo-label">Model</div>
+                            <div class="pcinfo-value">MacBook Air / Web Workstation</div>
+                        </div>
+                        <div class="pcinfo-row">
+                            <div class="pcinfo-label">Processor</div>
+                            <div class="pcinfo-value">Apple Silicon M-Series / Multi-Core Architecture</div>
+                        </div>
+                        <div class="pcinfo-row">
+                            <div class="pcinfo-label">Installed memory (RAM):</div>
+                            <div class="pcinfo-value">Unified Memory Architecture</div>
+                        </div>
+                        <div class="pcinfo-row">
+                            <div class="pcinfo-label">System type:</div>
+                            <div class="pcinfo-value">64-bit Operating System, x64-based processor</div>
+                        </div>
+                        <div class="pcinfo-row">
+                            <div class="pcinfo-label">Pen and Touch:</div>
+                            <div class="pcinfo-value">No Pen or Touch Input is Available for this Display</div>
+                        </div>
+                    </div>
+
+                    <!-- Windows Activation -->
+                    <div class="pcinfo-block">
+                        <div class="pcinfo-heading">Windows activation</div>
+                        <div class="activation-box">
+                            <div class="activation-title"><i class="fa-solid fa-circle-check" style="color: #43b929;"></i> Windows is activated</div>
+                            <div class="activation-desc">Product ID: 00330-80000-00000-AA582</div>
+                        </div>
+                    </div>
                 </div>
-                <div class="content-card">
-                    <h4>Smart Reader</h4>
-                    <p>Books • $2.99</p>
+
+                <!-- Sisi Kanan: Logo Windows -->
+                <div class="pcinfo-right">
+                    <div class="win-logo-box">
+                        <i class="fa-brands fa-windows"></i>
+                    </div>
+                    <div class="win-edition-title">Windows 8.1 Pro</div>
+                    <div class="win-edition-sub">
+                        © 2026 Microsoft Corporation. All rights reserved.<br>
+                        Metro UI Web Workspace Edition.
+                    </div>
                 </div>
-                <div class="content-card">
-                    <h4>Cloud Studio</h4>
-                    <p>Developer • Free</p>
-                </div>
-                <div class="content-card">
-                    <h4>Neon Weather</h4>
-                    <p>Utilities • Free</p>
-                </div>
+
             </div>
         </section>
 
-        <!-- Tab 1: App Detail (Gambar di Kanan, Teks Panjang di Kiri) -->
+        <!-- ================= TAB 1: PERSONALIZATION ================= -->
         <section class="content-section" id="section-1">
-            <div class="detail-container">
-                <div class="detail-text-side">
-                    <h2>Experience Next-Gen App Architecture</h2>
-                    <p>Windows 8.1 introduced an immersive, edge-to-edge layout paradigm that eliminates clunky chrome borders and focuses purely on fluid typographic hierarchy and high-impact visual presentation.</p>
-                    <p>This layout is engineered specifically for content-heavy applications where users expect seamless horizontal/vertical scrolling panels. Every detail is meticulously aligned to maintain pristine whitespace and modern readability standards.</p>
-                    <p>Designed with speed, responsiveness, and aesthetic minimalism in mind, empowering developers to deliver native desktop software performance wrapped in fluid Metro-style interfaces.</p>
+            <div class="pcinfo-heading" style="margin-bottom: 5px;">Personalize your Start menu & workspace</div>
+            
+            <div class="settings-grid">
+                <!-- Setting Card 1 -->
+                <div class="settings-card" onclick="alert('Accent & Tile Color settings opened!')">
+                    <div class="settings-card-icon"><i class="fa-solid fa-palette"></i></div>
+                    <div class="settings-card-info">
+                        <div class="settings-card-title">Accent & Tile Color</div>
+                        <div class="settings-card-desc">Customize Metro theme colors, dark background, and accent tones.</div>
+                    </div>
                 </div>
-                <div class="detail-image-side">
-                    [Preview Image / Illustration Box]
-                </div>
-            </div>
-        </section>
 
-        <!-- Tab 2: Categories (Thumbnail Kotak Banyak + Icon & Title di Bawahnya) -->
-        <section class="content-section" id="section-2">
-            <h3 style="font-weight: 300; font-size: 18px; color: #00bcf2; margin-bottom: 10px;">Explore All Categories</h3>
-            <div class="thumb-grid">
-                <div class="thumb-item">
-                    <div class="thumb-box">🎮</div>
-                    <span class="thumb-title">Games</span>
+                <!-- Setting Card 2 -->
+                <div class="settings-card" onclick="alert('Lock screen settings opened!')">
+                    <div class="settings-card-icon"><i class="fa-solid fa-image"></i></div>
+                    <div class="settings-card-info">
+                        <div class="settings-card-title">Lock Screen & Wallpaper</div>
+                        <div class="settings-card-desc">Manage background images, screensaver, and high-definition views.</div>
+                    </div>
                 </div>
-                <div class="thumb-item">
-                    <div class="thumb-box">🎵</div>
-                    <span class="thumb-title">Music</span>
-                </div>
-                <div class="thumb-item">
-                    <div class="thumb-box">📰</div>
-                    <span class="thumb-title">News</span>
-                </div>
-                <div class="thumb-item">
-                    <div class="thumb-box">📊</div>
-                    <span class="thumb-title">Finance</span>
-                </div>
-                <div class="thumb-item">
-                    <div class="thumb-box">📚</div>
-                    <span class="thumb-title">Books</span>
-                </div>
-                <div class="thumb-item">
-                    <div class="thumb-box">🛠️</div>
-                    <span class="thumb-title">Utilities</span>
-                </div>
-                <div class="thumb-item">
-                    <div class="thumb-box">🎬</div>
-                    <span class="thumb-title">Video</span>
-                </div>
-                <div class="thumb-item">
-                    <div class="thumb-box">⚙️</div>
-                    <span class="thumb-title">Settings</span>
-                </div>
-            </div>
-        </section>
 
-        <!-- Tab 3: Reader / Kindle Apps Style (Gambar Besar di Atas, Teks Banyak di Bawah) -->
-        <section class="content-section" id="section-3">
-            <div class="reader-container">
-                <h2 style="font-weight: 300; font-size: 24px;">Chapter 1: The Philosophy of Modern Immersive Design</h2>
-                <div class="reader-hero-img">
-                    [Large Hero Picture / Reader Illustration]
+                <!-- Setting Card 3 -->
+                <div class="settings-card" onclick="alert('Notifications settings opened!')">
+                    <div class="settings-card-icon"><i class="fa-solid fa-bell"></i></div>
+                    <div class="settings-card-info">
+                        <div class="settings-card-title">Notifications & Sound</div>
+                        <div class="settings-card-desc">Configure live tile alerts, sound FX, and background updates.</div>
+                    </div>
                 </div>
-                <div class="reader-content">
-                    <p>The transition from traditional desktop windowing environments to panoramic Metro interfaces revolutionized how users consume long-form articles, documentation, and digital publications.</p>
-                    <p>By stripping away unnecessary chrome elements, sidebars, and nested borders, reading applications create a distraction-free digital paper experience. The typography leverages clean font weights, optimized line spacing, and wide margins to emulate high-end editorial layouts.</p>
+
+                <!-- Setting Card 4 -->
+                <div class="settings-card" onclick="alert('Display settings opened!')">
+                    <div class="settings-card-icon"><i class="fa-solid fa-desktop"></i></div>
+                    <div class="settings-card-info">
+                        <div class="settings-card-title">Display & Resolution</div>
+                        <div class="settings-card-desc">Adjust screen scaling, full-screen mode, and viewport layouts.</div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -390,13 +501,15 @@
     </main>
 
     <script>
-        // Fungsi ganti tab header & konten aktif
+        // Fungsi untuk mengganti tab aktif & underline
         function switchTab(index) {
             const headers = document.querySelectorAll('.header-item');
             const sections = document.querySelectorAll('.content-section');
 
-            headers.forEach((h, i) => {
-                if (i === index) {
+            headers.forEach((h) => {
+                const tabIdx = h.getAttribute('data-tab-index');
+                const oc = h.getAttribute('onclick') || '';
+                if (tabIdx === String(index) || oc.includes('switchTab(' + index + ')')) {
                     h.classList.add('active');
                 } else {
                     h.classList.remove('active');
@@ -410,9 +523,19 @@
                     s.classList.remove('active');
                 }
             });
+
+            const activeHeaders = Array.from(document.querySelectorAll('.app-headers .header-item.active'));
+            const inViewHeader = activeHeaders.find(h => {
+                const r = h.getBoundingClientRect();
+                return r.left >= -50 && r.left <= window.innerWidth;
+            }) || activeHeaders[0];
+
+            if (inViewHeader) {
+                inViewHeader.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+            }
         }
 
-        // Fungsi tombol close / back ke start menu
+        // Tombol kembali ke start menu
         function backToStartMenu() {
             window.location.href = "index.php";
         }

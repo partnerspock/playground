@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Maps</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://kit.fontawesome.com/c66aa74d08.js" crossorigin="anonymous"></script>
@@ -271,17 +271,48 @@
             transform: scale(0.95);
         }
 
-        @media (max-width: 600px) {
+        .sheet-handle-bar {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
             .map-sidebar {
-                width: 100%;
-                padding: 20px;
+                right: 0 !important;
+                left: 0 !important;
+                top: auto !important;
+                bottom: 0 !important;
+                width: 100% !important;
+                height: auto !important;
+                max-height: 70vh !important;
+                border-radius: 18px 18px 0 0 !important;
+                border-left: none !important;
+                border-top: 1px solid rgba(255, 255, 255, 0.15) !important;
+                box-shadow: 0 -10px 35px rgba(0, 0, 0, 0.6) !important;
+                transform: translateY(105%) !important;
+                transition: transform 0.38s cubic-bezier(0.1, 0.9, 0.2, 1) !important;
+                padding: 12px 18px max(24px, env(safe-area-inset-bottom)) 18px !important;
+            }
+            .map-sidebar.active {
+                transform: translateY(0) !important;
+            }
+            .sheet-handle-bar {
+                display: block;
+                width: 44px;
+                height: 5px;
+                background: rgba(255, 255, 255, 0.4);
+                border-radius: 3px;
+                margin: 0 auto 10px auto;
+                cursor: pointer;
+            }
+            .back-circle-btn i {
+                transform: rotate(90deg);
             }
             .app-bar {
-                padding-left: 20px;
-                padding-right: 20px;
+                padding-left: 16px;
+                padding-right: 16px;
             }
             .custom-zoom-control {
-                left: 20px;
+                left: 16px;
             }
         }
     </style>
@@ -309,6 +340,7 @@
         </div>
 
         <div class="map-sidebar active" id="mapSidebar">
+            <div class="sheet-handle-bar" onclick="toggleSidebar()"></div>
             <div class="sidebar-content-wrapper">
                 <div class="sidebar-header-row">
                     <button class="back-circle-btn" onclick="toggleSidebar()" title="Back"><i class="fa-solid fa-arrow-right"></i></button>
@@ -409,6 +441,22 @@
         function backToStartMenu() {
             window.location.href = "index.php";
         }
+
+        const sidebar = document.getElementById('mapSidebar');
+        let touchStartY = 0;
+        let touchCurrentY = 0;
+        sidebar.addEventListener('touchstart', (e) => {
+            touchStartY = e.touches[0].clientY;
+            touchCurrentY = touchStartY;
+        }, { passive: true });
+        sidebar.addEventListener('touchmove', (e) => {
+            touchCurrentY = e.touches[0].clientY;
+        }, { passive: true });
+        sidebar.addEventListener('touchend', () => {
+            if (window.innerWidth <= 768 && touchCurrentY - touchStartY > 60) {
+                sidebar.classList.remove('active');
+            }
+        });
 
         map.on('click', function(e) {
             document.getElementById('mapSidebar').classList.remove('active');

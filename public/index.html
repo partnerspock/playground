@@ -2,17 +2,20 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#0078d7">
 <title>Playground</title>
+<link rel="preload" as="image" href="assets/img/8.jpg">
 <link rel="stylesheet" href="assets/css/style.css">
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://kit.fontawesome.com/c66aa74d08.js" crossorigin="anonymous"></script>
 </head>
 
 <body>
-
+<img class="bg-img" src="assets/img/8.jpg" alt="" aria-hidden="true"
+     decoding="async" fetchpriority="high">
 <div class="scrim"></div>
+
 <header class="topbar">
     <div>
         <h1 class="start-title">Start<span class="title-dot"></span></h1>
@@ -125,7 +128,6 @@
     <div class="section-group">
         <h2 class="group-title">Project Showcases</h2>
         <section class="tile-grid" style="grid-template-columns:repeat(6,var(--tile));" aria-label="Section 3 tiles">
-            
             <button target="_blank" rel="noopener" class="tile two dynamic-tile" id="tile-hptb" data-app="hptb" style="cursor:pointer;" onclick="openHappay()">
                 <div class="dt-bg" id="tile-hptb-bg"></div>
                 <div class="dt-overlay" id="tile-hptb-overlay"></div>
@@ -135,13 +137,13 @@
                     <div class="dt-text" id="tile-hptb-text">Loading...</div>
                 </div>
             </button>
-            <button onclick="openShowcase()" class="tile big dynamic-tile" id="tile-creation" data-app="creation" style="cursor:pointer;">
-                <div class="dt-bg" id="tile-creation-bg"></div>
-                <div class="dt-overlay" id="tile-creation-overlay"></div>
-                <div class="live-copy dt-copy" id="tile-creation-copy">
-                    <div class="dt-icon-wrap" id="tile-creation-icon-wrap"></div>
-                    <div class="dt-tag" id="tile-creation-tag"></div>
-                    <div class="dt-text" id="tile-creation-text">Loading...</div>
+            <button onclick="openShowcase()" class="tile big dynamic-tile" id="tile-showcase" data-app="showcase" style="cursor:pointer;">
+                <div class="dt-bg" id="tile-showcase-bg"></div>
+                <div class="dt-overlay" id="tile-showcase-overlay"></div>
+                <div class="live-copy dt-copy" id="tile-showcase-copy">
+                    <div class="dt-icon-wrap" id="tile-showcase-icon-wrap"></div>
+                    <div class="dt-tag" id="tile-showcase-tag"></div>
+                    <div class="dt-text" id="tile-showcase-text">Loading...</div>
                 </div>
             </button>
             <button class="tile two dynamic-tile" id="tile-evtb" data-app="evtb" style="cursor:pointer;" onclick="openEveryday()">
@@ -153,23 +155,41 @@
                     <div class="dt-text" id="tile-evtb-text">Loading...</div>
                 </div>
             </button>
-            <button class="tile two dynamic-tile" id="tile-xxi" data-app="xxi">
-                <div class="dt-bg" id="tile-xxi-bg"></div>
-                <div class="dt-overlay" id="tile-xxi-overlay"></div>
-                <div class="live-copy dt-copy" id="tile-xxi-copy">
-                    <div class="dt-icon-wrap" id="tile-xxi-icon-wrap"></div>
-                    <div class="dt-tag" id="tile-xxi-tag"></div>
-                    <div class="dt-text" id="tile-xxi-text">Loading...</div>
+            <button class="tile two dynamic-tile" id="tile-ticketing25" data-app="ticketing25" onclick="openTicketing25()" style="cursor:pointer;">
+                <div class="dt-bg" id="tile-ticketing25-bg"></div>
+                <div class="dt-overlay" id="tile-ticketing25-overlay"></div>
+                <div class="live-copy dt-copy" id="tile-ticketing25-copy">
+                    <div class="dt-icon-wrap" id="tile-ticketing25-icon-wrap"></div>
+                    <div class="dt-tag" id="tile-ticketing25-tag"></div>
+                    <div class="dt-text" id="tile-ticketing25-text">Loading...</div>
                 </div>
             </button>
-            <a href="https://www.instagram.com/reel/DSM6cjHEnCy/?utm_source=ig_web_copy_link&igsi=MzRlODBiNWFlZA%3D%3D" target="_blank" rel="noopener" class="tile two cyan"
-                style="text-decoration:none; cursor:pointer;" title="Instagram">
-                <span class="tile-icon-two"><i class="fa-brands fa-instagram"></i></span>
-                <span class="tile-caption">Instagram</span>
-            </a>
+            <button class="tile wide cyan" id="tile-music-main" aria-label="Putar musik">
+                <span class="music-status" id="tile-music-main-status" style="position:absolute;top:8px;right:10px;font-size:10px;opacity:.8;">OFF</span>
+                <div style="display:flex;gap:14px;align-items:center;width:100%;justify-content:center;margin-top:auto;margin-bottom:auto;">
+                    <span id="tile-music-main-prev" role="button" aria-label="Lagu sebelumnya"
+                        title="Previous Song"
+                        style="width:32px;height:32px;display:flex;align-items:center;justify-content:center;border:1.5px solid rgba(255,255,255,.3);border-radius:50%;font-size:13px;opacity:.85;cursor:pointer;">
+                        <i class="fa-solid fa-step-backward"></i>
+                    </span>
+                    <span class="tile-icon" id="tile-music-main-icon" title="Play / Pause"
+                        style="width:48px;height:48px;display:flex;align-items:center;justify-content:center;border:2px solid rgba(255,255,255,.4);border-radius:50%;font-size:20px;line-height:1;cursor:pointer;">
+                        <i class="fa-solid fa-play"></i>
+                    </span>
+                    <span id="tile-music-main-next" role="button" aria-label="Lagu berikutnya"
+                        title="Next Song"
+                        style="width:32px;height:32px;display:flex;align-items:center;justify-content:center;border:1.5px solid rgba(255,255,255,.3);border-radius:50%;font-size:13px;opacity:.85;cursor:pointer;">
+                        <i class="fa-solid fa-forward-step"></i>
+                    </span>
+                    <span class="tile-caption" style="position:absolute;left:12px;bottom:2px;font-size:12px;">Music Player</span>
+                </div>
+            </button>
+            <a href="https://archristmast26.vercel.app" class="tile two green" data-app="playground" target="_blank" rel="noopener" style="cursor:pointer;">
+                    <span class="tile-icon">◈</span>
+                    <span class="tile-caption">Upcoming...</span>
+                </a>
         </section>
     </div>
-
     <div class="section-group tools-section">
         <h2 class="group-title">Tools</h2>
         <div class="tools-row">
@@ -228,71 +248,52 @@
                 </button>
             </section>
         </div>
-        
         <h2 class="group-title">Utilities</h2>
         <div class="tools-row">
             <section class="tile-grid"
-                style="grid-template-columns:repeat(4,var(--tile));"
-                aria-label="Other tools">
-                <button class="tile wide cyan" id="tile-music-main" aria-label="Putar musik">
-                <span class="music-status" id="tile-music-main-status" style="position:absolute;top:8px;right:10px;font-size:10px;opacity:.8;">OFF</span>
-                <div style="display:flex;gap:14px;align-items:center;width:100%;justify-content:center;margin-top:auto;margin-bottom:auto;">
-                    <span id="tile-music-main-prev" role="button" aria-label="Lagu sebelumnya"
-                        title="Previous Song"
-                        style="width:32px;height:32px;display:flex;align-items:center;justify-content:center;border:1.5px solid rgba(255,255,255,.3);border-radius:50%;font-size:13px;opacity:.85;cursor:pointer;">
-                        <i class="fa-solid fa-step-backward"></i>
-                    </span>
-                    <span class="tile-icon" id="tile-music-main-icon" title="Play / Pause"
-                        style="width:48px;height:48px;display:flex;align-items:center;justify-content:center;border:2px solid rgba(255,255,255,.4);border-radius:50%;font-size:20px;line-height:1;cursor:pointer;">
-                        <i class="fa-solid fa-play"></i>
-                    </span>
-                    <span id="tile-music-main-next" role="button" aria-label="Lagu berikutnya"
-                        title="Next Song"
-                        style="width:32px;height:32px;display:flex;align-items:center;justify-content:center;border:1.5px solid rgba(255,255,255,.3);border-radius:50%;font-size:13px;opacity:.85;cursor:pointer;">
-                        <i class="fa-solid fa-forward-step"></i>
-                    </span>
-                </div>
-                <span class="tile-caption"
-                    style="position:absolute;left:12px;bottom:2px;font-size:12px;">Music Player</span>
-            </button>
+                style="grid-template-columns:repeat(4,var(--tile));" aria-label="Other tools">
                 <button class="tile two cyan" style="cursor:pointer;" onclick="openAbout()">
                     <span class="tile-icon-two">
                         <i class="fa-solid fa-info"></i>
                     </span>
                     <span class="tile-caption">About</span>
                 </button>
-                <a href="https://archristmast26.vercel.app" class="tile one green" data-app="playground" target="_blank" rel="noopener" style="cursor:pointer;">
-                    <span class="tile-icon">◈</span>
-                </a>
+                <button class="tile two cyan" id="tile-lockscreen" onclick="showLockscreen()" title="Lock Screen" style="cursor:pointer;">
+                    <span class="tile-icon-two"><i class="fa-solid fa-lock"></i></span>
+                    <span class="tile-caption">Lock Screen</span>
+                </button>
             </section>
         </div>
     </div>
 </main>
-
 <audio id="background-music" preload="auto">
     <source src="assets/audio/above.mp3" type="audio/mp3">
 </audio>
-
+<div id="lockscreen-overlay" role="dialog" aria-modal="true" aria-label="Lock Screen">
+    <div id="lockscreen-panel">
+        <img class="ls-wallpaper" src="assets/img/7.jpg" alt="" aria-hidden="true" draggable="false">
+        <div class="ls-scrim"></div>
+        <div class="ls-datetime">
+            <div class="ls-time" id="ls-time-display">00:00</div>
+            <div class="ls-date" id="ls-date-display">Kamis, 29 Oktober 2026</div>
+        </div>
+        <div class="ls-hint" id="ls-hint">
+            <i class="fa-solid fa-chevron-up ls-hint-chevron"></i>
+        </div>
+    </div>
+</div>
 
 <script>
 "use strict";
-
 const byId = (id) => document.getElementById(id);
-
-// ==========================================
-// 2. GREETING TILE
-// ==========================================
 const greetingText = byId("tile-greeting-text");
-
 const greetingMessages = [
     ["Welcome", "everyone"],
     ["On my", "playground"],
     ["Just", "started"],
     ["Matthew", "6:13"]
 ];
-
 let greetingIndex = 0;
-
 if (greetingText) {
     setInterval(() => {
         greetingIndex = (greetingIndex + 1) % greetingMessages.length;
@@ -315,10 +316,6 @@ if (greetingText) {
     }, 4500);
 }
 
-
-// ==========================================
-// 3. WEATHER
-// ==========================================
 async function fetchWeather() {
     const tempElement = byId("tile-weather-temp");
     const conditionElement = byId("tile-weather-condition");
@@ -386,10 +383,6 @@ async function fetchWeather() {
 fetchWeather();
 setInterval(fetchWeather, 15 * 60 * 1000);
 
-
-// ==========================================
-// 4. CALENDAR TILES
-// ==========================================
 function updateCalendar(tileId) {
     const dayElement = byId(`${tileId}-day`);
     const dateElement = byId(`${tileId}-date`);
@@ -411,9 +404,6 @@ function updateCalendar(tileId) {
     "tile-calendar-tools"
 ].forEach(updateCalendar);
 
-// ==========================================
-// 5. MUSIC PLAYER
-// ==========================================
 const backgroundMusic = byId("background-music");
 
 const playlist = [
@@ -555,16 +545,6 @@ if (backgroundMusic) {
     });
 }
 
-
-// ==========================================
-// 6. DYNAMIC TILE - REUSABLE
-// Caption diatur per slide lewat properti slide.caption.
-//
-// mode:
-// image   = gambar saja
-// icon    = icon tepat di tengah tile
-// content = tag dan teks, dengan gambar atau warna
-// ==========================================
 const DT_DEFAULT_COLOR = "#008ed0";
 const DT_DEFAULT_ICON_SIZE = "32px";
 const DT_TRANSITION_MS = 300;
@@ -620,7 +600,6 @@ class DynamicTile {
             return;
         }
 
-        // Caption dibuat satu kali dan berada di luar elemen konten slide.
         this.caption = this.tile.querySelector(".tile-caption");
 
         if (!this.caption) {
@@ -657,12 +636,9 @@ class DynamicTile {
         const mode = slide.mode || "content";
         const align = slide.align || "left";
 
-        // MODE DAN ALIGNMENT
         this.tile.dataset.slideMode = mode;
         this.tile.dataset.slideAlign = mode === "icon" ? "center" : align;
 
-        // CAPTION PER SLIDE
-        // Caption kosong atau tidak diisi berarti disembunyikan.
         if (this.caption) {
             const captionText =
                 typeof slide.caption === "string" ? slide.caption.trim() : "";
@@ -673,7 +649,6 @@ class DynamicTile {
             this.caption.style.opacity = "1";
         }
 
-        // BACKGROUND
         if (slide.image) {
             this.bg.style.backgroundImage = `url("${slide.image}")`;
             this.bg.style.backgroundColor = slide.color || "transparent";
@@ -685,7 +660,6 @@ class DynamicTile {
             this.bg.style.backgroundColor = slide.color || DT_DEFAULT_COLOR;
         }
 
-        // OVERLAY
         const overlayOpacity = Math.min(
             1,
             Math.max(0, Number(slide.overlay) || 0)
@@ -695,7 +669,6 @@ class DynamicTile {
             ? `rgba(0, 0, 0, ${overlayOpacity})`
             : "transparent";
 
-        // RESET STYLE COPY DARI SLIDE SEBELUMNYA
         this.copy.style.display = "";
         this.copy.style.flexDirection = "";
         this.copy.style.alignItems = "";
@@ -712,7 +685,6 @@ class DynamicTile {
 
         this.tile.style.backgroundColor = "";
 
-        // ICON
         const showIcon =
             mode !== "image" &&
             typeof slide.icon === "string" &&
@@ -752,7 +724,6 @@ class DynamicTile {
             this.iconWrap.style.justifyContent = "";
         }
 
-        // MODE IMAGE
         if (mode === "image") {
             this.tag.textContent = "";
             this.tag.style.display = "none";
@@ -763,7 +734,6 @@ class DynamicTile {
             return;
         }
 
-        // MODE ICON
         if (mode === "icon") {
             this.copy.style.display = "flex";
             this.copy.style.flexDirection = "column";
@@ -790,7 +760,6 @@ class DynamicTile {
             return;
         }
 
-        // MODE CONTENT
         const showTag = mode === "content" && Boolean(slide.tag);
         const showText = mode === "content" && Boolean(slide.text);
 
@@ -838,7 +807,6 @@ class DynamicTile {
     }
 }
 
-// PROFILE
 const dataProfile = [
     {
         mode: "image",
@@ -847,13 +815,11 @@ const dataProfile = [
     {
         mode: "content",
         color: "#00a4ef",
-        tag: "Hello",
-        text: "My name is Naufal Fahmi",
-        caption: "Profile"
+        tag: "Profile",
+        text: "Hello, My name is Naufal Fahmi",
     }
 ];
 
-// MAPS
 const dataMaps = [
     {
         mode: "icon",
@@ -875,8 +841,7 @@ const dataMaps = [
     }
 ];
 
-// CREATION
-const dataCreation = [
+const dataShowcase = [
     {
         mode: "icon",
         icon: "fa-solid fa-shop",
@@ -890,28 +855,30 @@ const dataCreation = [
     {
         mode: "content",
         image: "assets/img/tile/evr1.png"
+    },
+    {
+        mode: "content",
+        image: "assets/img/tile/tkt1.png"
     }
 ];
 
-// HAPPAY THUMBNAIL
 const dataHptb = [
     {
         mode: "icon",
-        color: "#d045c1",
+        color: "#443bc7",
         icon: "fa-solid fa-bars-staggered",
         iconSize: "38px",
         caption: "Happay"
     },
     {
         mode: "content",
-        color: "#d045c1",
+        color: "#443bc7",
         icon: "fa-solid fa-bars-staggered",
         iconSize: "38px",
         tag: "POS Systems"
     }
 ];
 
-// EVERYDAY THUMBNAIL
 const dataEvtb = [
     {
         mode: "icon",
@@ -929,20 +896,19 @@ const dataEvtb = [
     }
 ];
 
-// XXI
-const dataXxi = [
+const dataTicketing25 = [
     {
         mode: "icon",
-        color: "#008ed0",
-        icon: "fa-brands fa-accusoft",
+        color: "#5ec26a",
+        icon: "fa-solid fa-ticket",
         iconSize: "42px",
         iconColor: "#ffffff",
         caption: "Ticketing"
     },
     {
         mode: "content",
-        color: "#008ed0",
-        icon: "fa-brands fa-accusoft",
+        color: "#5ec26a",
+        icon: "fa-solid fa-ticket",
         iconSize: "42px",
         iconColor: "#ffffff",
         tag: "Booking Your Seats Easily",
@@ -950,7 +916,6 @@ const dataXxi = [
     }
 ];
 
-// SQLTB
 const dataSqltb = [
     {
         mode: "image",
@@ -962,7 +927,6 @@ const dataSqltb = [
     }
 ];
 
-// SERVERTB
 const dataServertb = [
     {
         mode: "image",
@@ -974,7 +938,6 @@ const dataServertb = [
     }
 ];
 
-// PRODUCTDB
 const dataProdtb = [
     {
         mode: "image",
@@ -986,7 +949,6 @@ const dataProdtb = [
     }
 ];
 
-// OFFICE TOOLS
 const dataOfficetools = [
     {
         mode: "image",
@@ -1000,7 +962,6 @@ const dataOfficetools = [
     }
 ];
 
-// EXPERIENCE
 const dataExperience = [
     {
         mode: "content",
@@ -1040,16 +1001,15 @@ new DynamicTile("tile-profile", dataProfile, 10500);
 new DynamicTile("tile-maps", dataMaps, 15000);
 new DynamicTile("tile-experience", dataExperience, 9500);
 
-new DynamicTile("tile-creation", dataCreation, 10500);
+new DynamicTile("tile-showcase", dataShowcase, 10500);
 new DynamicTile("tile-hptb", dataHptb, 15000);
 new DynamicTile("tile-evtb", dataEvtb, 11000);
-new DynamicTile("tile-xxi", dataXxi, 16000);
+new DynamicTile("tile-ticketing25", dataTicketing25, 16000);
 
 new DynamicTile("tile-sqltb", dataSqltb, 1850);
 new DynamicTile("tile-servertb", dataServertb, 2050);
 new DynamicTile("tile-prodtb", dataProdtb, 2250);
 new DynamicTile("tile-officetools", dataOfficetools, 2450);
-
 
 function openCalendar() {
     window.location.href = "app-calendar.php";
@@ -1075,6 +1035,10 @@ function openProfile() {
     window.location.href = "app-profile.php";
 }
 
+function openMap() {
+    window.location.href = "app-map.php";
+}
+
 function openHappay() {
     window.location.href = "app-happay.php";
 }
@@ -1083,13 +1047,240 @@ function openEveryday() {
     window.location.href = "app-everyday.php";
 }
 
+function openTicketing25() {
+    window.location.href = "app-ticketing.php";
+}
+
 function openShowcase() {
     window.location.href = "app-showcase.php";
 }
 
-function openMap() {
-    window.location.href = "app-map.php";
-}
+(function () {
+    const SESSION_KEY = "ls_unlocked";
+
+    const overlay  = document.getElementById("lockscreen-overlay");
+    const panel    = document.getElementById("lockscreen-panel");
+    const lsTime   = document.getElementById("ls-time-display");
+    const lsDate   = document.getElementById("ls-date-display");
+
+    if (!overlay || !panel) return;
+
+    const DAYS   = ["Minggu","Senin","Selasa","Rabu","Kamis","Jumat","Sabtu"];
+    const MONTHS = ["Januari","Februari","Maret","April","Mei","Juni",
+                    "Juli","Agustus","September","Oktober","November","Desember"];
+
+    function updateLsClock() {
+        const now = new Date();
+        const hh  = String(now.getHours()).padStart(2, "0");
+        const mm  = String(now.getMinutes()).padStart(2, "0");
+        if (lsTime) lsTime.textContent = `${hh}:${mm}`;
+        if (lsDate) lsDate.textContent =
+            `${DAYS[now.getDay()]}, ${now.getDate()} ${MONTHS[now.getMonth()]} ${now.getFullYear()}`;
+    }
+
+    let lsClockTimer = null;
+
+    
+    let dragStartY   = 0;
+    let currentY     = 0;
+    let isDragging   = false;
+    let hasMoved     = false;
+    let lastY        = 0;
+    let lastTime     = 0;
+    let velocityY    = 0;
+    let rafId        = null;
+
+    function dismissLockscreen(markSession, direction = null) {
+        if (overlay.classList.contains("ls-hidden")) return;
+        panel.classList.remove("ls-bounce");
+
+        const h = window.innerHeight || 800;
+        const remaining = Math.max(40, h - Math.abs(currentY));
+        const ratio = remaining / h;
+        const duration = Math.max(0.18, Math.min(0.42, ratio * 0.9)).toFixed(2);
+
+        const dir = direction !== null ? direction : (currentY >= 0 ? 1 : -1);
+        panel.style.transition = `transform ${duration}s cubic-bezier(0.16, 1, 0.3, 1)`;
+        panel.style.transform = `translateY(${dir * (h + 50)}px)`;
+
+        setTimeout(() => {
+            overlay.classList.add("ls-hidden");
+            panel.style.transition = "";
+            panel.style.transform = "";
+            currentY = 0;
+            isDragging = false;
+            hasMoved = false;
+            overlay.classList.remove("ls-dragging");
+            clearInterval(lsClockTimer);
+            lsClockTimer = null;
+            if (markSession !== false) {
+                sessionStorage.setItem(SESSION_KEY, "1");
+            }
+        }, parseFloat(duration) * 1000 + 30);
+    }
+
+    function bounceLockscreen() {
+        panel.classList.remove("ls-bounce");
+        if (currentY !== 0) {
+            panel.style.transition = "transform 0.28s cubic-bezier(0.2, 0.9, 0.3, 1)";
+            panel.style.transform = "translateY(0)";
+            setTimeout(() => {
+                panel.style.transition = "";
+                currentY = 0;
+                void panel.offsetWidth;
+                panel.classList.add("ls-bounce");
+                panel.addEventListener("animationend", () => {
+                    panel.classList.remove("ls-bounce");
+                }, { once: true });
+            }, 290);
+        } else {
+            void panel.offsetWidth;
+            panel.classList.add("ls-bounce");
+            panel.addEventListener("animationend", () => {
+                panel.classList.remove("ls-bounce");
+            }, { once: true });
+        }
+    }
+
+    function onDown(e) {
+        if (e.button && e.button !== 0) return;
+        dragStartY = e.clientY ?? e.touches?.[0]?.clientY ?? 0;
+        lastY      = dragStartY;
+        lastTime   = performance.now();
+        velocityY  = 0;
+        currentY   = 0;
+        isDragging = true;
+        hasMoved   = false;
+        panel.style.transition = "none";
+        overlay.classList.add("ls-dragging");
+        if (e.pointerId && overlay.setPointerCapture) {
+            try { overlay.setPointerCapture(e.pointerId); } catch (_) {}
+        }
+    }
+
+    function onMove(e) {
+        if (!isDragging) return;
+        const clientY = e.clientY ?? e.touches?.[0]?.clientY ?? 0;
+        const now = performance.now();
+        const dt = now - lastTime;
+        if (dt > 10) {
+            velocityY = (clientY - lastY) / dt;
+            lastY = clientY;
+            lastTime = now;
+        }
+
+        currentY = clientY - dragStartY;
+        if (Math.abs(currentY) > 5) hasMoved = true;
+
+        if (!rafId) {
+            rafId = requestAnimationFrame(() => {
+                panel.style.transform = `translateY(${currentY}px)`;
+                rafId = null;
+            });
+        }
+    }
+
+    function onUp(e) {
+        if (!isDragging) return;
+        isDragging = false;
+        overlay.classList.remove("ls-dragging");
+        if (e && e.pointerId && overlay.releasePointerCapture) {
+            try { overlay.releasePointerCapture(e.pointerId); } catch (_) {}
+        }
+        if (rafId) {
+            cancelAnimationFrame(rafId);
+            rafId = null;
+        }
+
+        const h = window.innerHeight || 800;
+        const threshold = h * 0.2;
+
+        if (currentY < -threshold || (currentY < -40 && velocityY < -0.35)) {
+            dismissLockscreen(true, -1);
+        } else if (currentY > threshold || (currentY > 40 && velocityY > 0.35)) {
+            dismissLockscreen(true, 1);
+        } else {
+            bounceLockscreen();
+        }
+    }
+
+    overlay.addEventListener("click", () => {
+        if (!hasMoved) bounceLockscreen();
+        hasMoved = false;
+    });
+
+    if (window.PointerEvent) {
+        overlay.addEventListener("pointerdown", onDown);
+        overlay.addEventListener("pointermove", onMove);
+        overlay.addEventListener("pointerup", onUp);
+        overlay.addEventListener("pointercancel", onUp);
+    } else {
+        overlay.addEventListener("mousedown", onDown);
+        window.addEventListener("mousemove", onMove);
+        window.addEventListener("mouseup", onUp);
+
+        overlay.addEventListener("touchstart", onDown, { passive: true });
+        window.addEventListener("touchmove", onMove, { passive: true });
+        window.addEventListener("touchend", onUp);
+    }
+
+    let wheelTimer = null;
+    overlay.addEventListener("wheel", (e) => {
+        if (overlay.classList.contains("ls-hidden") || isDragging) return;
+        e.preventDefault();
+        hasMoved = true;
+        panel.style.transition = "none";
+
+        currentY -= e.deltaY;
+        const h = window.innerHeight || 800;
+        if (currentY < -h) currentY = -h;
+        if (currentY > h) currentY = h;
+
+        panel.style.transform = `translateY(${currentY}px)`;
+
+        clearTimeout(wheelTimer);
+        wheelTimer = setTimeout(() => {
+            const threshold = (window.innerHeight || 800) * 0.2;
+            if (currentY < -threshold) {
+                dismissLockscreen(true, -1);
+            } else if (currentY > threshold) {
+                dismissLockscreen(true, 1);
+            } else {
+                bounceLockscreen();
+            }
+        }, 100);
+    }, { passive: false });
+
+    document.addEventListener("keydown", (e) => {
+        if (overlay.classList.contains("ls-hidden")) return;
+        if (e.key === "Escape" || e.key === "ArrowUp" || e.key === "Enter" || e.key === " ") {
+            dismissLockscreen(true, -1);
+        } else if (e.key === "ArrowDown") {
+            dismissLockscreen(true, 1);
+        }
+    });
+
+    window.showLockscreen = function () {
+        updateLsClock();
+        currentY = 0;
+        isDragging = false;
+        hasMoved = false;
+        panel.style.transition = "";
+        panel.style.transform = "translateY(0)";
+        panel.classList.remove("ls-bounce");
+        overlay.classList.remove("ls-hidden", "ls-dragging");
+        clearInterval(lsClockTimer);
+        lsClockTimer = setInterval(updateLsClock, 15000);
+        sessionStorage.removeItem(SESSION_KEY);
+    };
+
+    if (!sessionStorage.getItem(SESSION_KEY)) {
+        updateLsClock();
+        lsClockTimer = setInterval(updateLsClock, 15000);
+    } else {
+        overlay.classList.add("ls-hidden");
+    }
+}());
 
 </script>
 

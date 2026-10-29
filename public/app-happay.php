@@ -2,9 +2,48 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Creations - Happay</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Showcase | Happay</title>
+    <script src="https://cdn.tailwindcss.com">
+        function setupInfiniteAppHeaders() {
+            const nav = document.querySelector('.app-headers');
+            if (!nav) return;
+            const originalItems = Array.from(nav.querySelectorAll('.header-item'));
+            if (originalItems.length === 0) return;
+
+            originalItems.forEach((item, idx) => {
+                item.setAttribute('data-tab-index', idx);
+                item.addEventListener('click', () => switchTab(idx));
+            });
+
+            const cloneCycles = 4;
+            for (let c = 0; c < cloneCycles; c++) {
+                originalItems.forEach((item, idx) => {
+                    const clone = item.cloneNode(true);
+                    clone.setAttribute('data-tab-index', idx);
+                    clone.addEventListener('click', () => switchTab(idx));
+                    nav.appendChild(clone);
+                });
+            }
+
+            nav.addEventListener('scroll', () => {
+                const singleSetWidth = originalItems.reduce((acc, el) => {
+                    const gap = parseFloat(window.getComputedStyle(nav).gap) || 24;
+                    return acc + el.offsetWidth + gap;
+                }, 0);
+
+                if (singleSetWidth > 0) {
+                    if (nav.scrollLeft >= singleSetWidth * 2.5) {
+                        nav.scrollLeft -= singleSetWidth;
+                    } else if (nav.scrollLeft <= 5) {
+                        nav.scrollLeft += singleSetWidth;
+                    }
+                }
+            }, { passive: true });
+        }
+        setupInfiniteAppHeaders();
+
+    </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://kit.fontawesome.com/c66aa74d08.js" crossorigin="anonymous"></script>
@@ -31,7 +70,7 @@
 
         /* 2. TOP BLACK BAR (APP BAR) - STICKY / TETAP DI ATAS */
         .app-bar {
-            background-color: #d045c1; 
+            background-color: #443bc7; 
             height: 55px;
             width: 100%;
             display: flex;
@@ -93,6 +132,18 @@
             background-color: #1d1d1d;
             z-index: 99;
             border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        
+            overflow-x: auto;
+            overflow-y: hidden;
+            white-space: nowrap;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .app-headers::-webkit-scrollbar {
+            display: none;
         }
 
         .header-item {
@@ -103,12 +154,15 @@
             padding-bottom: 10px;
             border-bottom: 4px solid transparent;
             transition: color 0.2s, border-color 0.2s;
+        
+            flex-shrink: 0;
+            white-space: nowrap;
         }
 
         .header-item.active {
             color: #ffffff;
             font-weight: 400;
-            border-bottom: 4px solid #d045c1;
+            border-bottom: 4px solid #443bc7;
         }
 
         .header-item:hover {
@@ -181,7 +235,7 @@
 
         .overview-subtitle {
             font-size: 16px;
-            color: #d045c1;
+            color: #443bc7;
             font-weight: 400;
         }
 
@@ -197,7 +251,7 @@
             align-items: center;
             justify-content: center;
             gap: 10px;
-            background-color: #d045c1;
+            background-color: #443bc7;
             color: #ffffff;
             border: none;
             padding: 10px 30px;
@@ -210,7 +264,7 @@
         }
 
         .install-btn:hover {
-            background-color: #d045c1;
+            background-color: #443bc7;
         }
 
         .install-btn:active {
@@ -253,7 +307,7 @@
             cursor: pointer;
             overflow: hidden;
             width: 100%;
-            height: 230px;
+            height: auto;
             transition: border-color 0.2s;
         }
 
@@ -269,7 +323,7 @@
         }
 
         .gallery-box:hover {
-            border-color: #d045c1;
+            border-color: #443bc7;
         }
 
         .gallery-overlay {
@@ -290,7 +344,7 @@
 
         .gallery-tag {
             align-self: flex-start;
-            background-color: #d045c1;
+            background-color: #443bc7;
             color: #ffffff;
             font-size: 10px;
             font-weight: 600;
@@ -327,7 +381,7 @@
 
         .tool-card:hover {
             background-color: #303030;
-            border-color: #d045c1;
+            border-color: #443bc7;
         }
 
         .tool-tile {
@@ -367,6 +421,25 @@
             line-height: 1.4;
             opacity: 0.85; /* Transparansi teks sesuai request */
             word-break: break-word;
+        }
+    
+        @media (max-width: 768px) {
+            .app-bar {
+                padding: max(10px, env(safe-area-inset-top)) 16px !important;
+                height: auto !important;
+                min-height: 50px !important;
+            }
+            .app-headers {
+                padding: 12px 16px 0 16px !important;
+                gap: 24px !important;
+            }
+            .header-item {
+                font-size: clamp(18px, 5.5vw, 24px) !important;
+                padding-bottom: 8px !important;
+            }
+            .app-content {
+                padding: 16px 16px max(40px, env(safe-area-inset-bottom)) 16px !important;
+            }
         }
     </style>
 </head>
@@ -545,8 +618,10 @@
             const headers = document.querySelectorAll('.header-item');
             const sections = document.querySelectorAll('.content-section');
 
-            headers.forEach((h, i) => {
-                if (i === index) {
+            headers.forEach((h) => {
+                const tabIdx = h.getAttribute('data-tab-index');
+                const oc = h.getAttribute('onclick') || '';
+                if (tabIdx === String(index) || oc.includes('switchTab(' + index + ')')) {
                     h.classList.add('active');
                 } else {
                     h.classList.remove('active');
@@ -560,6 +635,16 @@
                     s.classList.remove('active');
                 }
             });
+
+            const activeHeaders = Array.from(document.querySelectorAll('.app-headers .header-item.active'));
+            const inViewHeader = activeHeaders.find(h => {
+                const r = h.getBoundingClientRect();
+                return r.left >= -50 && r.left <= window.innerWidth;
+            }) || activeHeaders[0];
+
+            if (inViewHeader) {
+                inViewHeader.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+            }
         }
 
         // Fungsi tombol close / back ke start menu
