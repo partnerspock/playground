@@ -1203,7 +1203,7 @@
                 if (viewerOpen) { closeViewer(); return; }
                 if (leaving) return;
                 leaving = true;
-                var go = function () { window.location.href = 'index.php'; };
+                var go = function () { window.location.href = 'index.html'; };
                 if (mq.matches && !reduce.matches) {
                     document.body.classList.add('leaving');
                     setTimeout(go, 210);

@@ -1,72 +1,51 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="color-scheme" content="dark">
+    <meta name="theme-color" content="#000000" media="(max-width: 640px)">
+    <meta name="theme-color" content="#1d1d1d">
     <title>Profile</title>
-    <script src="https://cdn.tailwindcss.com">
-        function setupInfiniteAppHeaders() {
-            const nav = document.querySelector('.app-headers');
-            if (!nav) return;
-            const originalItems = Array.from(nav.querySelectorAll('.header-item'));
-            if (originalItems.length === 0) return;
-
-            originalItems.forEach((item, idx) => {
-                item.setAttribute('data-tab-index', idx);
-                item.addEventListener('click', () => switchTab(idx));
-            });
-
-            const cloneCycles = 4;
-            for (let c = 0; c < cloneCycles; c++) {
-                originalItems.forEach((item, idx) => {
-                    const clone = item.cloneNode(true);
-                    clone.setAttribute('data-tab-index', idx);
-                    clone.addEventListener('click', () => switchTab(idx));
-                    nav.appendChild(clone);
-                });
-            }
-
-            nav.addEventListener('scroll', () => {
-                const singleSetWidth = originalItems.reduce((acc, el) => {
-                    const gap = parseFloat(window.getComputedStyle(nav).gap) || 24;
-                    return acc + el.offsetWidth + gap;
-                }, 0);
-
-                if (singleSetWidth > 0) {
-                    if (nav.scrollLeft >= singleSetWidth * 2.5) {
-                        nav.scrollLeft -= singleSetWidth;
-                    } else if (nav.scrollLeft <= 5) {
-                        nav.scrollLeft += singleSetWidth;
-                    }
-                }
-            }, { passive: true });
-        }
-        setupInfiniteAppHeaders();
-
-    </script>
     <script src="https://kit.fontawesome.com/c66aa74d08.js" crossorigin="anonymous"></script>
     <style>
+        :root {
+            /* ===== WARNA PER APP ===== */
+            --accent: #008ed0;
+            --accent-2: #00bcf2;
+            --accent-hover: rgba(40, 182, 243, 0.49);
+
+            --pad-l: 40px;
+            --pad-r: 40px;
+        }
+
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
             user-select: none;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        html, body {
+        html,
+        body {
             width: 100%;
             max-width: 100vw;
             height: 100vh;
+            height: 100dvh;
             overflow: hidden;
             background-color: #1d1d1d;
             color: #ffffff;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', 'Segoe WP', 'Selawik', 'Open Sans', system-ui, Roboto, 'Helvetica Neue', Arial, sans-serif;
             display: flex;
             flex-direction: column;
+            touch-action: manipulation;
         }
 
+        /* ===== APP BAR ATAS ===== */
         .app-bar {
-            background-color: #008ed0; 
+            background-color: var(--accent);
             height: 55px;
             width: 100%;
             display: flex;
@@ -115,67 +94,54 @@
             transition: background 0.2s;
         }
 
-        .app-bar-right .close-btn:hover {
-            background-color: rgba(255, 255, 255, 0.2);
-        }
-
+        /* ===== HEADER (satu tab, tanpa pivot loop) ===== */
         .app-headers {
             width: 100%;
             padding: 20px 40px 0 40px;
-            display: flex;
-            gap: 40px;
             flex-shrink: 0;
             background-color: #1d1d1d;
             z-index: 99;
             border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-        
-            overflow-x: auto;
-            overflow-y: hidden;
+            overflow: hidden;
             white-space: nowrap;
-            scroll-behavior: smooth;
-            -webkit-overflow-scrolling: touch;
-            scrollbar-width: none;
-            -ms-overflow-style: none;
         }
 
-        .app-headers::-webkit-scrollbar {
-            display: none;
+        .pivot-track {
+            display: flex;
+            gap: 40px;
         }
 
         .header-item {
             font-size: 28px;
             font-weight: 300;
             color: #7a7a7a;
-            cursor: pointer;
             padding-bottom: 10px;
             border-bottom: 4px solid transparent;
-            transition: color 0.2s, border-color 0.2s;
-        
             flex-shrink: 0;
             white-space: nowrap;
+            max-width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .header-item.active {
             color: #ffffff;
             font-weight: 400;
-            border-bottom: 4px solid #008ed0;
+            border-bottom: 4px solid var(--accent);
         }
 
-        .header-item:hover {
-            color: #cccccc;
-        }
-
+        /* ===== KONTEN ===== */
         .app-content {
             width: 100%;
             flex-grow: 1;
+            min-height: 0;
             padding: 20px 40px 50px 40px;
-            overflow-y: auto;   /* Scroll vertikal aktif di sini */
-            overflow-x: hidden; /* Mencegah scroll samping */
+            overflow-y: auto;
+            overflow-x: hidden;
             display: flex;
             flex-direction: column;
         }
 
-        /* Kontrol Seksion Tab */
         .content-section {
             display: none;
             flex-direction: column;
@@ -187,7 +153,6 @@
             display: flex;
         }
 
-        /* --- BAGIAN ATAS --- */
         .reader-top-section {
             width: 100%;
             display: flex;
@@ -213,7 +178,7 @@
         .reader-year {
             font-size: 16px;
             font-weight: 400;
-            color: #00bcf2;
+            color: var(--accent-2);
         }
 
         .reader-short-desc {
@@ -242,7 +207,6 @@
             object-position: center;
         }
 
-        /* --- BAGIAN TENGAH: Teks Bacaan --- */
         .reader-middle-content {
             width: 100%;
             display: flex;
@@ -258,12 +222,30 @@
             word-break: break-word;
         }
 
-        /* --- BAGIAN BAWAH: 3 Kotak Gambar Vertikal / Berjajar dengan Hover Effect --- */
+        .reader-subtitle {
+            font-size: 24px;
+            font-weight: 400;
+            margin-top: 8px;
+        }
+
+        /* ===== TOMBOL KONTAK ===== */
         .reader-bottom-gallery {
             width: 40%;
             height: 120px;
             display: grid;
             grid-template-columns: repeat(4, 1fr);
+        }
+
+        .contact-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            min-width: 0;
+        }
+
+        .contact-label {
+            display: none;
         }
 
         .gallery-box {
@@ -277,44 +259,26 @@
             overflow: hidden;
             width: 80px;
             height: 80px;
-            transition: border-color 0.2s;
+            transition: border-color 0.2s, background-color 0.2s;
             border-radius: 50%;
+            color: #ffffff;
+            text-decoration: none;
         }
 
-        .gallery-box img {
-            width: 100%;
-            object-fit: cover;
-            transition: opacity 0.3s ease;
-        }
-
-        /* Efek Redup (Opacity) pada Gambar saat Hover */
-        .gallery-box:hover img {
-            opacity: 0.3;
-        }
-
-        .gallery-box:hover {
-            border-color: #00bcf2;
-        }
-
-        /* Konten Text & Tag yang Muncul saat Hover */
         .gallery-overlay {
             position: absolute;
             inset: 0;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            background: rgba(0, 0, 0, 0.4); /* Efek gelap tipis di balik text */
+            background: rgba(0, 0, 0, 0.4);
             opacity: 0;
             transition: opacity 0.3s ease;
         }
 
-        .gallery-box:hover .gallery-overlay {
-            opacity: 1;
-        }
-
         .gallery-tag {
-            align-self:center;
-            background-color: #00bcf2;
+            align-self: center;
+            background-color: var(--accent-2);
             color: #ffffff;
             font-size: 8px;
             font-weight: 600;
@@ -323,35 +287,285 @@
             letter-spacing: 0.5px;
         }
 
-        .gallery-text {
-            font-size: 13px;
-            font-weight: 400;
-            color: #ffffff;
-            line-height: 1.3;
+        .gallery-box:active {
+            border-color: var(--accent-2);
+            background-color: #333333;
         }
-    
-        @media (max-width: 768px) {
+
+        /* Hover hanya untuk perangkat yang punya mouse */
+        @media (hover: hover) {
+            .app-bar-right .close-btn:hover {
+                background-color: rgba(255, 255, 255, 0.2);
+            }
+
+            .gallery-box:hover {
+                border-color: var(--accent-2);
+            }
+
+            .gallery-box:hover .gallery-overlay {
+                opacity: 1;
+            }
+        }
+
+        /* Layar sentuh / sempit: label selalu terlihat di bawah lingkaran */
+        @media (hover: none),
+        (max-width: 640px) {
+            .gallery-overlay {
+                display: none;
+            }
+
+            .contact-label {
+                display: block;
+                font-size: 12px;
+                font-weight: 300;
+                color: #aaaaaa;
+                text-align: center;
+                max-width: 100%;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+        }
+
+        /* ===== ELEMEN KHUSUS MOBILE (disembunyikan di desktop) ===== */
+        .app-appbar {
+            display: none;
+        }
+
+        /* ===================================================
+           MOBILE (<= 640px)  gaya Windows Phone 8.1 Pivot
+           =================================================== */
+        @media (max-width: 640px) {
+            :root {
+                --pad-l: calc(19px + env(safe-area-inset-left, 0px));
+                --pad-r: calc(19px + env(safe-area-inset-right, 0px));
+            }
+
+            html,
+            body {
+                background-color: #000;
+            }
+
             .app-bar {
-                padding: max(10px, env(safe-area-inset-top)) 16px !important;
-                height: auto !important;
-                min-height: 50px !important;
+                height: auto;
+                min-height: 0;
+                background: #000;
+                border-bottom: 0;
+                justify-content: flex-start;
+                padding: calc(env(safe-area-inset-top, 0px) + 14px) var(--pad-r) 0 var(--pad-l);
             }
+
+            .app-icon,
+            .app-bar-right {
+                display: none;
+            }
+
+            .app-title {
+                font-size: 18px;
+                font-weight: 600;
+                letter-spacing: 0.3px;
+            }
+
             .app-headers {
-                padding: 12px 16px 0 16px !important;
-                gap: 24px !important;
+                background: #000;
+                border-bottom: 0;
+                padding: 4px var(--pad-r) 0 var(--pad-l);
             }
+
             .header-item {
-                font-size: clamp(18px, 5.5vw, 24px) !important;
-                padding-bottom: 8px !important;
+                font-size: clamp(30px, 9.5vw, 42px);
+                font-weight: 300;
+                line-height: 1.15;
+                padding-bottom: 6px;
+                border-bottom: 0;
+                color: #fff;
+                max-width: calc(100vw - var(--pad-l) - var(--pad-r));
             }
+
+            .header-item.active {
+                font-weight: 300;
+                border-bottom: 0;
+            }
+
             .app-content {
-                padding: 16px 16px max(40px, env(safe-area-inset-bottom)) 16px !important;
+                padding: 14px var(--pad-r) 28px var(--pad-l);
+                overscroll-behavior: contain;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none;
+            }
+
+            .app-content::-webkit-scrollbar {
+                display: none;
+            }
+
+            .content-section {
+                gap: 22px;
+            }
+
+            .reader-top-section {
+                gap: 16px;
+                align-items: flex-start;
+            }
+
+            .reader-top-section .reader-headers-left:last-child {
+                flex: 1;
+                min-width: 0;
+                gap: 6px;
+            }
+
+            .reader-top-image {
+                width: 84px;
+                height: 84px;
+            }
+
+            .reader-main-title {
+                font-size: clamp(20px, 6.2vw, 26px);
+                line-height: 1.2;
+            }
+
+            .reader-year {
+                font-size: 15px;
+            }
+
+            .reader-short-desc {
+                font-size: 13px;
+            }
+
+            .reader-middle-content {
+                gap: 14px;
+            }
+
+            .reader-middle-content p {
+                font-size: 15px;
+                line-height: 1.6;
+                color: rgba(255, 255, 255, 0.85);
+            }
+
+            .reader-subtitle {
+                font-size: 20px;
+                margin-top: 4px;
+            }
+
+            .reader-bottom-gallery {
+                width: 100%;
+                height: auto;
+                gap: 8px;
+            }
+
+            .gallery-box {
+                width: 100%;
+                max-width: 76px;
+                height: auto;
+                aspect-ratio: 1 / 1;
+            }
+
+            /* App bar bawah ala WP */
+            .app-appbar {
+                display: flex;
+                flex-shrink: 0;
+                align-items: center;
+                justify-content: center;
+                background: #1f1f1f;
+                height: calc(62px + env(safe-area-inset-bottom, 0px));
+                padding: 0 var(--pad-r) env(safe-area-inset-bottom, 0px) var(--pad-l);
+                z-index: 100;
+            }
+
+            .appbar-btn {
+                background: none;
+                border: 0;
+                color: #fff;
+                font-family: inherit;
+                height: 100%;
+                padding: 0 24px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 3px;
+                cursor: pointer;
+            }
+
+            .appbar-btn .circle {
+                width: 36px;
+                height: 36px;
+                border: 2px solid #fff;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 15px;
+                transition: background 0.1s, color 0.1s;
+            }
+
+            .appbar-btn .lbl {
+                font-size: 11px;
+                line-height: 1;
+                text-transform: lowercase;
+            }
+
+            .appbar-btn:active .circle {
+                background: #fff;
+                color: #1f1f1f;
+            }
+
+            /* Animasi masuk */
+            .content-section.active>* {
+                animation: wpIn 0.4s cubic-bezier(0.1, 0.9, 0.2, 1) both;
+            }
+
+            .content-section.active>*:nth-child(2) {
+                animation-delay: 50ms;
+            }
+
+            .content-section.active>*:nth-child(3) {
+                animation-delay: 100ms;
+            }
+
+            .app-headers {
+                animation: wpIn 0.4s cubic-bezier(0.1, 0.9, 0.2, 1) both;
+            }
+
+            /* Animasi keluar saat kembali ke Start */
+            body.leaving .app-content,
+            body.leaving .app-headers {
+                animation: wpOut 0.2s cubic-bezier(0.5, 0, 1, 0.5) forwards;
+            }
+        }
+
+        @keyframes wpIn {
+            from {
+                opacity: 0;
+                transform: translateX(48px);
+            }
+
+            to {
+                opacity: 1;
+                transform: none;
+            }
+        }
+
+        @keyframes wpOut {
+            to {
+                opacity: 0;
+                transform: translateX(48px);
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+
+            *,
+            *::before,
+            *::after {
+                animation: none !important;
+                transition: none !important;
+                scroll-behavior: auto !important;
             }
         }
     </style>
 </head>
-<body>
 
+<body>
     <header class="app-bar">
         <div class="app-bar-left">
             <div class="app-icon"><i class="fa-solid fa-circle-user"></i></div>
@@ -362,8 +576,11 @@
         </div>
     </header>
 
+    <!-- Satu tab saja, jadi tidak ada pivot loop / swipe -->
     <nav class="app-headers">
-        <div class="header-item active" onclick="switchTab(0)">Professional Summary</div>
+        <div class="pivot-track">
+            <div class="header-item active">Professional Summary</div>
+        </div>
     </nav>
 
     <main class="app-content">
@@ -377,83 +594,100 @@
                 <div class="reader-headers-left">
                     <h2 class="reader-main-title">Abraham Tirta Garnadi</h2>
                     <div class="reader-year">System Analyst</div>
-                    <div class="reader-short-desc"><i class="fa-solid fa-location-dot"></i> Jakarta Pusat, Indonesia</div>
+                    <div class="reader-short-desc"><i class="fa-solid fa-location-dot"></i> Jakarta Pusat, Indonesia
+                    </div>
                 </div>
             </div>
             <div class="reader-middle-content">
-                <p>ERP and System Analyst with experience in ERP implementation, business process analysis, functional testing, UAT, data migration, and master data management. Experienced in analyzing end-to-end workflows, identifying system and process gaps, and coordinating practical solutions across business users, developers, and stakeholders. Hands-on across Finance, Accounting, Sales, Purchasing, Supply Chain, Warehouse, E-commerce, POS, and PIM.</p>
-                <br>
-                <h1 style="font-size: 24px;">Core Capabilities</h1>
-                <p>ERP & Business Systems • Business Process Analysis • Functional Requirements • Process Mapping & Improvement • System Implementation & UAT • Functional Testing • Data Migration & Master Data Management • Business Problem Solving • Stakeholder Coordination</p>
+                <p>ERP and System Analyst with experience in ERP implementation, business process analysis, functional
+                    testing, UAT, data migration, and master data management. Experienced in analyzing end-to-end
+                    workflows, identifying system and process gaps, and coordinating practical solutions across business
+                    users, developers, and stakeholders. Hands-on across Finance, Accounting, Sales, Purchasing, Supply
+                    Chain, Warehouse, E-commerce, POS, and PIM.</p>
+                <h1 class="reader-subtitle">Core Capabilities</h1>
+                <p>ERP &amp; Business Systems • Business Process Analysis • Functional Requirements • Process Mapping
+                    &amp; Improvement • System Implementation &amp; UAT • Functional Testing • Data Migration &amp;
+                    Master Data Management • Business Problem Solving • Stakeholder Coordination</p>
             </div>
             <div class="reader-bottom-gallery">
-                <a href="tel:+6281383038443" target="_blank" rel="noopener" class="gallery-box">
-                    <i class="fa-solid fa-phone" style="font-size: 24px;"></i>
-                    <div class="gallery-overlay">
-                        <span class="gallery-tag">Phone</span>
-                    </div>
-                </a>
-                <a href="mailto:abraham.tirta.99@gmail.com" target="_blank" rel="noopener" class="gallery-box">
-                    <i class="fa-solid fa-envelope" style="font-size: 24px;"></i>
-                    <div class="gallery-overlay">
-                        <span class="gallery-tag">Mail</span>
-                    </div>
-                </a>
-                <a href="https://wa.me/6281383038443" target="_blank" rel="noopener" class="gallery-box">
-                    <i class="fa-brands fa-whatsapp" style="font-size: 24px;"></i>
-                    <div class="gallery-overlay">
-                        <span class="gallery-tag">Whatsapp</span>
-                    </div>
-                </a>
-                <a href="https://linkedin.com/in/abrahamtirta" target="_blank" rel="noopener" class="gallery-box">
-                    <i class="fa-brands fa-linkedin" style="font-size: 24px;"></i>
-                    <div class="gallery-overlay">
-                        <span class="gallery-tag">Linked In</span>
-                    </div>
-                </a>
+                <div class="contact-item">
+                    <a href="tel:+6281383038443" class="gallery-box" aria-label="Phone">
+                        <i class="fa-solid fa-phone" style="font-size: 24px;"></i>
+                        <div class="gallery-overlay">
+                            <span class="gallery-tag">Phone</span>
+                        </div>
+                    </a>
+                    <span class="contact-label">Phone</span>
+                </div>
+                <div class="contact-item">
+                    <a href="mailto:abraham.tirta.99@gmail.com" class="gallery-box" aria-label="Mail">
+                        <i class="fa-solid fa-envelope" style="font-size: 24px;"></i>
+                        <div class="gallery-overlay">
+                            <span class="gallery-tag">Mail</span>
+                        </div>
+                    </a>
+                    <span class="contact-label">Mail</span>
+                </div>
+                <div class="contact-item">
+                    <a href="https://wa.me/6281383038443" target="_blank" rel="noopener" class="gallery-box"
+                        aria-label="Whatsapp">
+                        <i class="fa-brands fa-whatsapp" style="font-size: 24px;"></i>
+                        <div class="gallery-overlay">
+                            <span class="gallery-tag">Whatsapp</span>
+                        </div>
+                    </a>
+                    <span class="contact-label">Whatsapp</span>
+                </div>
+                <div class="contact-item">
+                    <a href="https://linkedin.com/in/abrahamtirta" target="_blank" rel="noopener" class="gallery-box"
+                        aria-label="Linked In">
+                        <i class="fa-brands fa-linkedin" style="font-size: 24px;"></i>
+                        <div class="gallery-overlay">
+                            <span class="gallery-tag">Linked In</span>
+                        </div>
+                    </a>
+                    <span class="contact-label">Linked In</span>
+                </div>
             </div>
         </section>
     </main>
 
+    <!-- App bar bawah (hanya tampil di mobile) -->
+    <footer class="app-appbar">
+        <button class="appbar-btn" type="button" onclick="backToStartMenu()" aria-label="Back to Start Menu">
+            <span class="circle"><i class="fa-solid fa-arrow-left"></i></span>
+            <span class="lbl">back</span>
+        </button>
+    </footer>
+
     <script>
-        // Fungsi untuk mengganti tab aktif
-        function switchTab(index) {
-            const headers = document.querySelectorAll('.header-item');
-            const sections = document.querySelectorAll('.content-section');
+        (function () {
+            var mq = window.matchMedia('(max-width: 640px)');
+            var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+            var leaving = false;
 
-            headers.forEach((h) => {
-                const tabIdx = h.getAttribute('data-tab-index');
-                const oc = h.getAttribute('onclick') || '';
-                if (tabIdx === String(index) || oc.includes('switchTab(' + index + ')')) {
-                    h.classList.add('active');
+            // Kembali ke Start (animasi keluar di mobile)
+            window.backToStartMenu = function () {
+                if (leaving) return;
+                leaving = true;
+                var go = function () { window.location.href = 'index.html'; };
+                if (mq.matches && !reduce.matches) {
+                    document.body.classList.add('leaving');
+                    setTimeout(go, 210);
                 } else {
-                    h.classList.remove('active');
+                    go();
+                }
+            };
+
+            // Kembali dari bfcache: reset animasi keluar
+            window.addEventListener('pageshow', function (e) {
+                if (e.persisted) {
+                    leaving = false;
+                    document.body.classList.remove('leaving');
                 }
             });
-
-            sections.forEach((s, i) => {
-                if (i === index) {
-                    s.classList.add('active');
-                } else {
-                    s.classList.remove('active');
-                }
-            });
-
-            const activeHeaders = Array.from(document.querySelectorAll('.app-headers .header-item.active'));
-            const inViewHeader = activeHeaders.find(h => {
-                const r = h.getBoundingClientRect();
-                return r.left >= -50 && r.left <= window.innerWidth;
-            }) || activeHeaders[0];
-
-            if (inViewHeader) {
-                inViewHeader.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
-            }
-        }
-
-        // Fungsi tombol close / back ke start menu
-        function backToStartMenu() {
-            window.location.href = "index.php";
-        }
+        })();
     </script>
 </body>
+
 </html>

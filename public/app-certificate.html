@@ -1,74 +1,51 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="color-scheme" content="dark">
+    <meta name="theme-color" content="#000000" media="(max-width: 640px)">
+    <meta name="theme-color" content="#1d1d1d">
     <title>Certification</title>
-    <script src="https://cdn.tailwindcss.com">
-        function setupInfiniteAppHeaders() {
-            const nav = document.querySelector('.app-headers');
-            if (!nav) return;
-            const originalItems = Array.from(nav.querySelectorAll('.header-item'));
-            if (originalItems.length === 0) return;
-
-            originalItems.forEach((item, idx) => {
-                item.setAttribute('data-tab-index', idx);
-                item.addEventListener('click', () => switchTab(idx));
-            });
-
-            const cloneCycles = 4;
-            for (let c = 0; c < cloneCycles; c++) {
-                originalItems.forEach((item, idx) => {
-                    const clone = item.cloneNode(true);
-                    clone.setAttribute('data-tab-index', idx);
-                    clone.addEventListener('click', () => switchTab(idx));
-                    nav.appendChild(clone);
-                });
-            }
-
-            nav.addEventListener('scroll', () => {
-                const singleSetWidth = originalItems.reduce((acc, el) => {
-                    const gap = parseFloat(window.getComputedStyle(nav).gap) || 24;
-                    return acc + el.offsetWidth + gap;
-                }, 0);
-
-                if (singleSetWidth > 0) {
-                    if (nav.scrollLeft >= singleSetWidth * 2.5) {
-                        nav.scrollLeft -= singleSetWidth;
-                    } else if (nav.scrollLeft <= 5) {
-                        nav.scrollLeft += singleSetWidth;
-                    }
-                }
-            }, { passive: true });
-        }
-        setupInfiniteAppHeaders();
-
-    </script>
     <script src="https://kit.fontawesome.com/c66aa74d08.js" crossorigin="anonymous"></script>
     <style>
-        /* 1. KUNCI UTAMA AGAR FIT HORIZONTAL & LAYAR TERKUNCI */
+        :root {
+            /* ===== WARNA PER APP ===== */
+            --accent: #7e3878;
+            --accent-2: #7e3878;
+            --accent-hover: rgba(126, 56, 120, 0.4);
+
+            --pad-l: 40px;
+            --pad-r: 40px;
+        }
+
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
             user-select: none;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        html, body {
+        html,
+        body {
             width: 100%;
             max-width: 100vw;
             height: 100vh;
-            overflow: hidden; /* Mencegah body scroll penuh, scroll dipindah ke .app-content */
-            background-color: #1d1d1d; /* Metro dark theme */
+            height: 100dvh;
+            overflow: hidden;
+            background-color: #1d1d1d;
             color: #ffffff;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', 'Segoe WP', 'Selawik', 'Open Sans', system-ui, Roboto, 'Helvetica Neue', Arial, sans-serif;
             display: flex;
             flex-direction: column;
+            touch-action: manipulation;
         }
 
-        /* 2. TOP BLACK BAR (APP BAR) - STICKY / TETAP DI ATAS */
+        /* ===== APP BAR ATAS ===== */
         .app-bar {
-            background-color: #7e3878; 
+            background-color: var(--accent);
             height: 55px;
             width: 100%;
             display: flex;
@@ -117,25 +94,17 @@
             transition: background 0.2s;
         }
 
-        .app-bar-right .close-btn:hover {
-            background-color: rgba(255, 255, 255, 0.2);
-        }
-
-        /* 3. SUB-HEADERS (PANORAMIC STYLE) - DENGAN UNDERLINE JELAS */
+        /* ===== PIVOT HEADER ===== */
         .app-headers {
             width: 100%;
-            padding: 20px 40px 0 40px; /* Padding bawah disesuaikan untuk garis bawah */
-            display: flex;
-            gap: 40px;
+            padding: 20px 40px 0 40px;
             flex-shrink: 0;
             background-color: #1d1d1d;
             z-index: 99;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08); /* Garis tipis dasar */
-        
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
             overflow-x: auto;
             overflow-y: hidden;
             white-space: nowrap;
-            scroll-behavior: smooth;
             -webkit-overflow-scrolling: touch;
             scrollbar-width: none;
             -ms-overflow-style: none;
@@ -145,15 +114,21 @@
             display: none;
         }
 
+        .pivot-track {
+            position: relative;
+            display: flex;
+            gap: 40px;
+            min-width: max-content;
+        }
+
         .header-item {
             font-size: 28px;
             font-weight: 300;
             color: #7a7a7a;
             cursor: pointer;
-            padding-bottom: 10px; /* Ruang untuk underline */
-            border-bottom: 4px solid transparent; /* Default transparan */
+            padding-bottom: 10px;
+            border-bottom: 4px solid transparent;
             transition: color 0.2s, border-color 0.2s;
-        
             flex-shrink: 0;
             white-space: nowrap;
         }
@@ -161,26 +136,21 @@
         .header-item.active {
             color: #ffffff;
             font-weight: 400;
-            border-bottom: 4px solid #7e3878; /* Underline tebal sesuai warna aksen saat aktif */
+            border-bottom: 4px solid var(--accent);
         }
 
-        .header-item:hover {
-            color: #cccccc;
-            border-bottom: 4px solid rgba(126, 56, 120, 0.4); /* Efek hover agar user tahu ini interaktif */
-        }
-
-        /* 4. CONTENT AREA - AREA INI SAJA YANG BISA SCROLL VERTIKAL */
+        /* ===== KONTEN ===== */
         .app-content {
             width: 100%;
             flex-grow: 1;
+            min-height: 0;
             padding: 25px 40px 50px 40px;
-            overflow-y: auto;   /* Scroll vertikal aktif di sini */
-            overflow-x: hidden; /* Mencegah scroll samping */
+            overflow-y: auto;
+            overflow-x: hidden;
             display: flex;
             flex-direction: column;
         }
 
-        /* Kontrol Seksion Tab */
         .content-section {
             display: none;
             flex-direction: column;
@@ -192,7 +162,6 @@
             display: flex;
         }
 
-        /* --- BAGIAN ATAS --- */
         .reader-top-section {
             width: 100%;
             display: flex;
@@ -218,7 +187,7 @@
         .reader-year {
             font-size: 16px;
             font-weight: 400;
-            color: #7e3878;
+            color: var(--accent-2);
         }
 
         .reader-short-desc {
@@ -245,7 +214,6 @@
             object-fit: cover;
         }
 
-        /* --- BAGIAN TENGAH: Teks Bacaan --- */
         .reader-middle-content {
             width: 100%;
             display: flex;
@@ -261,7 +229,6 @@
             word-break: break-word;
         }
 
-        /* --- BAGIAN BAWAH: 3 Kotak Gambar Vertikal / Berjajar dengan Hover Effect --- */
         .reader-bottom-gallery {
             width: 100%;
             display: grid;
@@ -292,16 +259,6 @@
             transition: opacity 0.3s ease;
         }
 
-        /* Efek Redup (Opacity) pada Gambar saat Hover */
-        .gallery-box:hover img {
-            opacity: 0.3;
-        }
-
-        .gallery-box:hover {
-            border-color: #7e3878;
-        }
-
-        /* Konten Text & Tag yang Muncul saat Hover */
         .gallery-overlay {
             position: absolute;
             inset: 0;
@@ -309,18 +266,14 @@
             flex-direction: column;
             justify-content: flex-end;
             padding: 15px;
-            background: rgba(0, 0, 0, 0.4); /* Efek gelap tipis di balik text */
+            background: rgba(0, 0, 0, 0.4);
             opacity: 0;
             transition: opacity 0.3s ease;
         }
 
-        .gallery-box:hover .gallery-overlay {
-            opacity: 1;
-        }
-
         .gallery-tag {
             align-self: flex-start;
-            background-color: #7e3878;
+            background-color: var(--accent-2);
             color: #ffffff;
             font-size: 10px;
             font-weight: 600;
@@ -336,30 +289,404 @@
             color: #ffffff;
             line-height: 1.3;
         }
-    
-        @media (max-width: 768px) {
+
+        /* Hover hanya untuk perangkat yang punya mouse */
+        @media (hover: hover) {
+            .app-bar-right .close-btn:hover {
+                background-color: rgba(255, 255, 255, 0.2);
+            }
+
+            .header-item:hover {
+                color: #cccccc;
+                border-bottom-color: var(--accent-hover);
+            }
+
+            .header-item.active:hover {
+                color: #ffffff;
+                border-bottom-color: var(--accent);
+            }
+
+            .gallery-box:hover img {
+                opacity: 0.3;
+            }
+
+            .gallery-box:hover {
+                border-color: var(--accent-2);
+            }
+
+            .gallery-box:hover .gallery-overlay {
+                opacity: 1;
+            }
+        }
+
+        /* Layar sentuh: keterangan foto selalu terlihat */
+        @media (hover: none) {
+            .gallery-overlay {
+                opacity: 1;
+            }
+        }
+
+        /* ===== ELEMEN KHUSUS MOBILE (disembunyikan di desktop) ===== */
+        .app-appbar {
+            display: none;
+        }
+
+        .photo-viewer {
+            display: none;
+        }
+
+        /* ===================================================
+           MOBILE (<= 640px)  gaya Windows Phone 8.1 Pivot
+           =================================================== */
+        @media (max-width: 640px) {
+            :root {
+                --pad-l: calc(19px + env(safe-area-inset-left, 0px));
+                --pad-r: calc(19px + env(safe-area-inset-right, 0px));
+            }
+
+            html,
+            body {
+                background-color: #000;
+            }
+
             .app-bar {
-                padding: max(10px, env(safe-area-inset-top)) 16px !important;
-                height: auto !important;
-                min-height: 50px !important;
+                height: auto;
+                min-height: 0;
+                background: #000;
+                border-bottom: 0;
+                justify-content: flex-start;
+                padding: calc(env(safe-area-inset-top, 0px) + 14px) var(--pad-r) 0 var(--pad-l);
             }
+
+            .app-icon,
+            .app-bar-right {
+                display: none;
+            }
+
+            .app-title {
+                font-size: 18px;
+                font-weight: 600;
+                letter-spacing: 0.3px;
+            }
+
             .app-headers {
-                padding: 12px 16px 0 16px !important;
-                gap: 24px !important;
+                background: #000;
+                border-bottom: 0;
+                padding: 4px 0 0 var(--pad-l);
+                overflow: hidden;
+                touch-action: pan-y;
             }
+
+            .pivot-track {
+                gap: 24px;
+                transition: transform 0.35s cubic-bezier(0.1, 0.9, 0.2, 1);
+                will-change: transform;
+            }
+
             .header-item {
-                font-size: clamp(18px, 5.5vw, 24px) !important;
-                padding-bottom: 8px !important;
+                font-size: clamp(30px, 9.5vw, 42px);
+                font-weight: 300;
+                line-height: 1.15;
+                padding-bottom: 6px;
+                border-bottom: 0;
+                color: rgba(255, 255, 255, 0.4);
+                transition: color 0.25s;
+                /* Judul terlalu panjang dipotong "..." di dalam layar */
+                max-width: calc(100vw - var(--pad-l) - var(--pad-r));
+                overflow: hidden;
+                text-overflow: ellipsis;
             }
+
+            .header-item.active {
+                font-weight: 300;
+                color: #fff;
+                border-bottom: 0;
+            }
+
             .app-content {
-                padding: 16px 16px max(40px, env(safe-area-inset-bottom)) 16px !important;
+                padding: 14px var(--pad-r) 28px var(--pad-l);
+                overscroll-behavior: contain;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none;
+                touch-action: pan-y;
+            }
+
+            .app-content::-webkit-scrollbar {
+                display: none;
+            }
+
+            .content-section {
+                gap: 22px;
+            }
+
+            .reader-top-section {
+                gap: 16px;
+                align-items: flex-start;
+            }
+
+            .reader-top-section .reader-headers-left:last-child {
+                flex: 1;
+                min-width: 0;
+                gap: 6px;
+            }
+
+            .reader-top-image {
+                width: 84px;
+            }
+
+            .reader-main-title {
+                font-size: clamp(20px, 6.2vw, 26px);
+                line-height: 1.2;
+            }
+
+            .reader-year {
+                font-size: 15px;
+            }
+
+            .reader-short-desc {
+                font-size: 13px;
+            }
+
+            .reader-middle-content {
+                gap: 14px;
+            }
+
+            .reader-middle-content p {
+                font-size: 15px;
+                line-height: 1.6;
+                color: rgba(255, 255, 255, 0.85);
+            }
+
+            /* Galeri: geser horizontal sampai tepi layar */
+            .reader-bottom-gallery {
+                display: flex;
+                gap: 8px;
+                margin: 0 calc(-1 * var(--pad-r)) 8px calc(-1 * var(--pad-l));
+                padding: 0 var(--pad-r) 0 var(--pad-l);
+                width: auto;
+                overflow-x: auto;
+                overflow-y: hidden;
+                scroll-snap-type: x mandatory;
+                scroll-padding-left: var(--pad-l);
+                overscroll-behavior-x: contain;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none;
+            }
+
+            .reader-bottom-gallery::-webkit-scrollbar {
+                display: none;
+            }
+
+            .gallery-box {
+                flex: 0 0 78%;
+                width: auto;
+                height: auto;
+                aspect-ratio: 4 / 3;
+                border: 0;
+                scroll-snap-align: start;
+                transition: transform 0.12s ease-out;
+            }
+
+            .gallery-box:active {
+                transform: scale(0.97);
+            }
+
+            .gallery-box img,
+            .gallery-box:hover img {
+                opacity: 1;
+            }
+
+            .gallery-box:hover {
+                border-color: transparent;
+            }
+
+            .gallery-overlay,
+            .gallery-box:hover .gallery-overlay {
+                opacity: 1;
+                padding: 10px 12px;
+                background: linear-gradient(to top, rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0) 70%);
+            }
+
+            .gallery-text {
+                font-size: 14px;
+            }
+
+            /* App bar bawah ala WP */
+            .app-appbar {
+                display: flex;
+                flex-shrink: 0;
+                align-items: center;
+                justify-content: center;
+                background: #1f1f1f;
+                height: calc(62px + env(safe-area-inset-bottom, 0px));
+                padding: 0 var(--pad-r) env(safe-area-inset-bottom, 0px) var(--pad-l);
+                z-index: 100;
+            }
+
+            .appbar-btn {
+                background: none;
+                border: 0;
+                color: #fff;
+                font-family: inherit;
+                height: 100%;
+                padding: 0 24px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 3px;
+                cursor: pointer;
+            }
+
+            .appbar-btn .circle {
+                width: 36px;
+                height: 36px;
+                border: 2px solid #fff;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 15px;
+                transition: background 0.1s, color 0.1s;
+            }
+
+            .appbar-btn .lbl {
+                font-size: 11px;
+                line-height: 1;
+                text-transform: lowercase;
+            }
+
+            .appbar-btn:active .circle {
+                background: #fff;
+                color: #1f1f1f;
+            }
+
+            /* Animasi masuk */
+            .content-section.active>* {
+                animation: wpIn 0.4s cubic-bezier(0.1, 0.9, 0.2, 1) both;
+            }
+
+            .content-section.active>*:nth-child(2) {
+                animation-delay: 50ms;
+            }
+
+            .content-section.active>*:nth-child(3) {
+                animation-delay: 100ms;
+            }
+
+            .app-headers {
+                animation: wpIn 0.4s cubic-bezier(0.1, 0.9, 0.2, 1) both;
+            }
+
+            /* Animasi keluar saat kembali ke Start */
+            body.leaving .app-content,
+            body.leaving .app-headers {
+                animation: wpOut 0.2s cubic-bezier(0.5, 0, 1, 0.5) forwards;
+            }
+
+            /* Penampil foto layar penuh */
+            .photo-viewer {
+                position: fixed;
+                inset: 0;
+                z-index: 1000;
+                background: #000;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                touch-action: pinch-zoom;
+            }
+
+            .photo-viewer.open {
+                display: flex;
+                animation: pvIn 0.25s ease-out both;
+            }
+
+            .photo-viewer img {
+                max-width: 100%;
+                max-height: 100%;
+                object-fit: contain;
+            }
+
+            .pv-close {
+                position: absolute;
+                top: calc(env(safe-area-inset-top, 0px) + 8px);
+                right: calc(env(safe-area-inset-right, 0px) + 8px);
+                width: 44px;
+                height: 44px;
+                background: none;
+                border: 0;
+                color: #fff;
+                font-size: 22px;
+                z-index: 2;
+            }
+
+            .pv-count {
+                position: absolute;
+                top: calc(env(safe-area-inset-top, 0px) + 20px);
+                left: var(--pad-l);
+                font-size: 13px;
+                color: rgba(255, 255, 255, 0.7);
+                pointer-events: none;
+            }
+
+            .pv-caption {
+                position: absolute;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                padding: 40px var(--pad-r) calc(env(safe-area-inset-bottom, 0px) + 16px) var(--pad-l);
+                background: linear-gradient(to top, rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0));
+                pointer-events: none;
+            }
+
+            .pv-caption .gallery-text {
+                font-size: 15px;
+            }
+        }
+
+        @keyframes wpIn {
+            from {
+                opacity: 0;
+                transform: translateX(var(--from, 48px));
+            }
+
+            to {
+                opacity: 1;
+                transform: none;
+            }
+        }
+
+        @keyframes wpOut {
+            to {
+                opacity: 0;
+                transform: translateX(48px);
+            }
+        }
+
+        @keyframes pvIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+
+            *,
+            *::before,
+            *::after {
+                animation: none !important;
+                transition: none !important;
+                scroll-behavior: auto !important;
             }
         }
     </style>
 </head>
-<body>
 
-    <!-- 1. TOP BLACK BAR (STAY AT TOP) -->
+<body>
     <header class="app-bar">
         <div class="app-bar-left">
             <div class="app-icon"><i class="fa-solid fa-award"></i></div>
@@ -370,15 +697,15 @@
         </div>
     </header>
 
-    <!-- 2. SUB-HEADERS (DENGAN UNDERLINE AKTIF) -->
+    <!-- Header tab dibuat otomatis oleh script dari daftar ini -->
     <nav class="app-headers">
-        <div class="header-item active" onclick="switchTab(0)">Leadership Management International</div>
-        <div class="header-item" onclick="switchTab(1)">Badan Nasional Sertifikasi Profesi</div>
+        <div class="pivot-track" id="pivotTrack">
+            <div class="header-item">Leadership Management International</div>
+            <div class="header-item">Badan Nasional Sertifikasi Profesi</div>
+        </div>
     </nav>
 
-    <!-- 3. CONTENT AREA -->
     <main class="app-content">
-        
         <!-- ================= TAB 0 ================= -->
         <section class="content-section active" id="section-0">
             <div class="reader-top-section">
@@ -390,32 +717,42 @@
                 <div class="reader-headers-left">
                     <h2 class="reader-main-title">LMI - Effective Personal Productivity</h2>
                     <div class="reader-year">2025</div>
-                    <div class="reader-short-desc">First and foundational step in LMI's Total Leader® framework, which also includes Personal Leadership, Motivational Leadership, and Strategic Leadership.</div>
+                    <div class="reader-short-desc">First and foundational step in LMI's Total Leader® framework, which
+                        also includes Personal Leadership, Motivational Leadership, and Strategic Leadership.</div>
                 </div>
             </div>
             <div class="reader-middle-content">
-                <p>The Effective Personal Productivity (EPP) program by Leadership Management International (LMI) provided practical learning in personal effectiveness, goal setting, time management, and productivity management. The program covered identifying high- and low-value activities, prioritizing tasks based on their impact, setting clear objectives, planning action steps, and managing time more effectively.</p>
-                <p>It also emphasized evaluating work habits, identifying bottlenecks, and implementing improvements to increase efficiency and achieve measurable results.</p>
-                <p>The program also focused on effective communication, collaboration, and empathy. Key learnings included organizing thoughts before communicating, understanding different perspectives, recognizing others' needs, and adapting communication styles to different individuals.</p>
-                <p>Through these concepts, the program strengthened my understanding of how self-management, interpersonal skills, and continuous improvement contribute to better individual performance and more effective teamwork.</p>
+                <p>The Effective Personal Productivity (EPP) program by Leadership Management International (LMI)
+                    provided practical learning in personal effectiveness, goal setting, time management, and
+                    productivity management. The program covered identifying high- and low-value activities,
+                    prioritizing tasks based on their impact, setting clear objectives, planning action steps, and
+                    managing time more effectively.</p>
+                <p>It also emphasized evaluating work habits, identifying bottlenecks, and implementing improvements to
+                    increase efficiency and achieve measurable results.</p>
+                <p>The program also focused on effective communication, collaboration, and empathy. Key learnings
+                    included organizing thoughts before communicating, understanding different perspectives, recognizing
+                    others' needs, and adapting communication styles to different individuals.</p>
+                <p>Through these concepts, the program strengthened my understanding of how self-management,
+                    interpersonal skills, and continuous improvement contribute to better individual performance and
+                    more effective teamwork.</p>
             </div>
             <div class="reader-bottom-gallery">
                 <div class="gallery-box">
-                    <img src="assets/img/app-certifications/lmi1.jpg" alt="LMI 1">
+                    <img src="assets/img/app-certifications/lmi1.jpg" alt="LMI 1" loading="lazy" decoding="async">
                     <div class="gallery-overlay">
                         <span class="gallery-tag">Moment</span>
                         <div class="gallery-text">Final Presentation</div>
                     </div>
                 </div>
                 <div class="gallery-box">
-                    <img src="assets/img/app-certifications/lmi2.jpg" alt="LMI 2">
+                    <img src="assets/img/app-certifications/lmi2.jpg" alt="LMI 2" loading="lazy" decoding="async">
                     <div class="gallery-overlay">
                         <span class="gallery-tag">Moment</span>
                         <div class="gallery-text">EPP Program Completion</div>
                     </div>
                 </div>
                 <div class="gallery-box">
-                    <img src="assets/img/app-certifications/lmi3.png" alt="LMI 3">
+                    <img src="assets/img/app-certifications/lmi3.png" alt="LMI 3" loading="lazy" decoding="async">
                     <div class="gallery-overlay">
                         <span class="gallery-tag">Certificate</span>
                         <div class="gallery-text">Achievement Proof</div>
@@ -435,24 +772,30 @@
                 <div class="reader-headers-left">
                     <h2 class="reader-main-title">BNSP - Program Analyst</h2>
                     <div class="reader-year">2022 - 2025</div>
-                    <div class="reader-short-desc">Independent institution formed by the Indonesian government to regulate and implement professional competence certification for the Indonesian workforce.</div>
+                    <div class="reader-short-desc">Independent institution formed by the Indonesian government to
+                        regulate and implement professional competence certification for the Indonesian workforce.</div>
                 </div>
             </div>
             <div class="reader-middle-content">
-                <p>Completed the BNSP-certified Program Analyst training and certification program, covering software scalability analysis, SQL, database access, programming algorithms, and code documentation.</p>
-                <p>The training provided an understanding of key programming concepts, database operations, and software development practices.</p>
-                <p>The program also covered debugging, program profiling, code review, unit testing, and integration testing. These competencies focus on identifying software issues, evaluating program performance, reviewing code quality, and verifying that individual components and integrated systems function as expected.</p>
+                <p>Completed the BNSP-certified Program Analyst training and certification program, covering software
+                    scalability analysis, SQL, database access, programming algorithms, and code documentation.</p>
+                <p>The training provided an understanding of key programming concepts, database operations, and software
+                    development practices.</p>
+                <p>The program also covered debugging, program profiling, code review, unit testing, and integration
+                    testing. These competencies focus on identifying software issues, evaluating program performance,
+                    reviewing code quality, and verifying that individual components and integrated systems function as
+                    expected.</p>
             </div>
             <div class="reader-bottom-gallery">
                 <div class="gallery-box">
-                    <img src="assets/img/app-certifications/bnsp1.png" alt="BNSP 1">
+                    <img src="assets/img/app-certifications/bnsp1.png" alt="BNSP 1" loading="lazy" decoding="async">
                     <div class="gallery-overlay">
                         <span class="gallery-tag">Certificate</span>
                         <div class="gallery-text">Program Analyst License</div>
                     </div>
                 </div>
                 <div class="gallery-box">
-                    <img src="assets/img/app-certifications/bnsp2.png" alt="BNSP 2">
+                    <img src="assets/img/app-certifications/bnsp2.png" alt="BNSP 2" loading="lazy" decoding="async">
                     <div class="gallery-overlay">
                         <span class="gallery-tag">Certificate</span>
                         <div class="gallery-text">Assessment Sheet</div>
@@ -460,48 +803,361 @@
                 </div>
             </div>
         </section>
-
     </main>
 
+    <!-- App bar bawah (hanya tampil di mobile) -->
+    <footer class="app-appbar">
+        <button class="appbar-btn" type="button" onclick="backToStartMenu()" aria-label="Back to Start Menu">
+            <span class="circle"><i class="fa-solid fa-arrow-left"></i></span>
+            <span class="lbl">back</span>
+        </button>
+    </footer>
+
+    <!-- Penampil foto (mobile) -->
+    <div class="photo-viewer" id="photoViewer" aria-hidden="true">
+        <button class="pv-close" id="pvClose" type="button" aria-label="Close">✕</button>
+        <span class="pv-count" id="pvCount"></span>
+        <img id="pvImg" alt="">
+        <div class="pv-caption">
+            <span class="gallery-tag" id="pvTag"></span>
+            <div class="gallery-text" id="pvText"></div>
+        </div>
+    </div>
+
     <script>
-        // Fungsi untuk mengganti tab aktif
-        function switchTab(index) {
-            const headers = document.querySelectorAll('.header-item');
-            const sections = document.querySelectorAll('.content-section');
+        (function () {
+            var mq = window.matchMedia('(max-width: 640px)');
+            var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+            var leaving = false;
+            var viewerOpen = false;
+            var pvList = [];
+            var pvIndex = 0;
 
-            headers.forEach((h) => {
-                const tabIdx = h.getAttribute('data-tab-index');
-                const oc = h.getAttribute('onclick') || '';
-                if (tabIdx === String(index) || oc.includes('switchTab(' + index + ')')) {
-                    h.classList.add('active');
-                } else {
-                    h.classList.remove('active');
-                }
+            var track = document.getElementById('pivotTrack');
+            var headerBar = document.querySelector('.app-headers');
+            var main = document.querySelector('.app-content');
+            var viewer = document.getElementById('photoViewer');
+            var sections = Array.prototype.slice.call(document.querySelectorAll('.content-section'));
+
+            function mod(a, b) { return ((a % b) + b) % b; }
+
+            /* =====================================================
+               PIVOT INFINITE
+               p = posisi "virtual" (boleh negatif / lebih dari n).
+               Tab aktif = mod(p, n).
+               Mobile: header digandakan 5 siklus, setelah animasi
+               selesai posisi dinormalkan diam-diam ke 0..n-1.
+               Desktop: header biasa (tanpa klon).
+               ===================================================== */
+            var labels = Array.prototype.map.call(track.children, function (c) {
+                return c.textContent.trim();
             });
-
-            sections.forEach((s, i) => {
-                if (i === index) {
-                    s.classList.add('active');
-                } else {
-                    s.classList.remove('active');
-                }
-            });
-
-            const activeHeaders = Array.from(document.querySelectorAll('.app-headers .header-item.active'));
-            const inViewHeader = activeHeaders.find(h => {
-                const r = h.getBoundingClientRect();
-                return r.left >= -50 && r.left <= window.innerWidth;
-            }) || activeHeaders[0];
-
-            if (inViewHeader) {
-                inViewHeader.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+            var n = labels.length;
+            var p = 0;
+            for (var si = 0; si < sections.length; si++) {
+                if (sections[si].classList.contains('active')) { p = si; break; }
             }
-        }
+            var items = [];
+            var infinite = false;
+            var normTimer = null;
 
-        // Fungsi tombol close / back ke start menu
-        function backToStartMenu() {
-            window.location.href = "index.php";
-        }
+            function itemIndex(pos) { return infinite ? pos + n : pos; }
+
+            function build() {
+                infinite = mq.matches && n > 1;
+                p = mod(p, n);
+                track.innerHTML = '';
+                items = [];
+                var start = infinite ? -n : 0;
+                var end = infinite ? 4 * n : n;
+                for (var k = start; k < end; k++) {
+                    var d = document.createElement('div');
+                    d.className = 'header-item';
+                    d.textContent = labels[mod(k, n)];
+                    d.title = labels[mod(k, n)];
+                    d.setAttribute('data-pos', k);
+                    d.addEventListener('click', onHeaderClick);
+                    track.appendChild(d);
+                    items.push(d);
+                }
+                setActive();
+                position(false);
+            }
+
+            function setActive() {
+                for (var i = 0; i < items.length; i++) {
+                    items[i].classList.toggle('active', +items[i].getAttribute('data-pos') === p);
+                }
+            }
+
+            function position(animate, extra) {
+                var it = items[itemIndex(p)];
+                if (!it) return;
+                if (!mq.matches) {
+                    track.style.transition = '';
+                    track.style.transform = '';
+                    return;
+                }
+                track.style.transition = (animate && !reduce.matches) ? '' : 'none';
+                track.style.transform = 'translateX(' + (-it.offsetLeft + (extra || 0)) + 'px)';
+            }
+
+            function normalize() {
+                if (!infinite) return;
+                var m = mod(p, n);
+                if (m === p) return;
+                p = m;
+                setActive();
+                position(false);
+            }
+
+            function showSection(i, dir) {
+                sections.forEach(function (s, k) {
+                    if (k === i) {
+                        s.style.setProperty('--from', (dir * 48) + 'px');
+                        s.classList.add('active');
+                    } else {
+                        s.classList.remove('active');
+                    }
+                });
+                if (main) main.scrollTop = 0;
+            }
+
+            function goTo(target) {
+                if (target === p) return;
+                if (!infinite) { target = mod(target, n); if (target === p) return; }
+                var dir = target > p ? 1 : -1;
+
+                // Pengaman: kalau terlalu jauh dari tengah (tap beruntun), normalkan dulu
+                if (infinite && (itemIndex(target) < 1 || itemIndex(target) > items.length - 4)) {
+                    var shift = p - mod(p, n);
+                    p -= shift;
+                    target -= shift;
+                    setActive();
+                    position(false);
+                    void track.offsetWidth;
+                }
+
+                var oldIdx = mod(p, n);
+                p = target;
+                var newIdx = mod(p, n);
+
+                if (newIdx !== oldIdx) showSection(newIdx, dir);
+                setActive();
+                position(true);
+
+                clearTimeout(normTimer);
+                normTimer = setTimeout(normalize, reduce.matches ? 0 : 400);
+            }
+
+            function onHeaderClick(e) {
+                goTo(+e.currentTarget.getAttribute('data-pos'));
+            }
+
+            window.switchTab = function (index) {
+                if (infinite) {
+                    var delta = mod(index - mod(p, n), n);
+                    if (delta > n / 2) delta -= n;
+                    goTo(p + delta);
+                } else {
+                    goTo(index);
+                }
+            };
+
+            /* =====================================================
+               GESTURE GESER KIRI/KANAN (mobile)
+               Konten & header ikut jari, lepas jari = pindah / kembali.
+               ===================================================== */
+            var sx = 0, sy = 0, st = 0, axis = null, tracking = false, baseX = 0;
+
+            function curSection() { return sections[mod(p, n)]; }
+
+            function onStart(e) {
+                if (e.touches.length !== 1 || !mq.matches || !infinite ||
+                    e.target.closest('.reader-bottom-gallery')) {
+                    tracking = false;
+                    return;
+                }
+                sx = e.touches[0].clientX;
+                sy = e.touches[0].clientY;
+                st = Date.now();
+                axis = null;
+                tracking = true;
+            }
+
+            function onMove(e) {
+                if (!tracking) return;
+                var dx = e.touches[0].clientX - sx;
+                var dy = e.touches[0].clientY - sy;
+
+                if (!axis) {
+                    if (Math.abs(dx) < 8 && Math.abs(dy) < 8) return;
+                    if (Math.abs(dx) > Math.abs(dy) * 1.2) {
+                        axis = 'x';
+                        var it = items[itemIndex(p)];
+                        baseX = it ? -it.offsetLeft : 0;
+                        var s = curSection();
+                        if (s) s.style.transition = 'none';
+                        track.style.transition = 'none';
+                    } else {
+                        axis = 'y';
+                    }
+                }
+                if (axis !== 'x') return;
+
+                var sec = curSection();
+                if (sec) {
+                    sec.style.transform = 'translateX(' + dx + 'px)';
+                    sec.style.opacity = String(1 - Math.min(Math.abs(dx) / (window.innerWidth * 1.4), 0.45));
+                }
+                // Header bergerak lebih pelan dari konten, seperti WP
+                track.style.transform = 'translateX(' + (baseX + dx * 0.35) + 'px)';
+            }
+
+            function resetSection(animated) {
+                var s = curSection();
+                if (!s) return;
+                if (animated) {
+                    s.style.transition = 'transform 0.25s cubic-bezier(0.1, 0.9, 0.2, 1), opacity 0.25s';
+                    s.style.transform = '';
+                    s.style.opacity = '';
+                    setTimeout(function () { s.style.transition = ''; }, 270);
+                } else {
+                    s.style.transition = '';
+                    s.style.transform = '';
+                    s.style.opacity = '';
+                }
+            }
+
+            function onEnd(e, cancelled) {
+                if (!tracking) return;
+                tracking = false;
+                if (axis !== 'x') return;
+                var t = e.changedTouches[0];
+                var dx = t.clientX - sx;
+                var dt = Math.max(Date.now() - st, 1);
+                var v = Math.abs(dx) / dt; // px per ms
+                var commit = !cancelled && (Math.abs(dx) > window.innerWidth * 0.25 ||
+                    (Math.abs(dx) > 40 && v > 0.5));
+                if (commit) {
+                    resetSection(false);
+                    goTo(p + (dx < 0 ? 1 : -1));
+                } else {
+                    resetSection(true);
+                    position(true);
+                }
+            }
+
+            [main, headerBar].forEach(function (el) {
+                if (!el) return;
+                el.addEventListener('touchstart', onStart, { passive: true });
+                el.addEventListener('touchmove', onMove, { passive: true });
+                el.addEventListener('touchend', function (e) { onEnd(e, false); }, { passive: true });
+                el.addEventListener('touchcancel', function (e) { onEnd(e, true); }, { passive: true });
+            });
+
+            /* =====================================================
+               PENAMPIL FOTO (hanya mobile)
+               ===================================================== */
+            function showPhoto(i) {
+                var box = pvList[i];
+                if (!box) return;
+                pvIndex = i;
+                var img = box.querySelector('img');
+                var tag = box.querySelector('.gallery-tag');
+                var txt = box.querySelector('.gallery-text');
+                var pvImg = document.getElementById('pvImg');
+                pvImg.src = img.currentSrc || img.src;
+                pvImg.alt = img.alt;
+                document.getElementById('pvTag').textContent = tag ? tag.textContent : '';
+                document.getElementById('pvText').textContent = txt ? txt.textContent : '';
+                document.getElementById('pvCount').textContent = pvList.length > 1 ? (i + 1) + ' / ' + pvList.length : '';
+            }
+            function openViewer(box) {
+                pvList = Array.prototype.slice.call(box.parentNode.querySelectorAll('.gallery-box'));
+                showPhoto(pvList.indexOf(box));
+                viewer.classList.add('open');
+                viewer.setAttribute('aria-hidden', 'false');
+                viewerOpen = true;
+                history.pushState({ pv: 1 }, '');
+            }
+            function hideViewer() {
+                viewer.classList.remove('open');
+                viewer.setAttribute('aria-hidden', 'true');
+                viewerOpen = false;
+            }
+            function closeViewer() {
+                if (viewerOpen) history.back();
+            }
+
+            document.querySelectorAll('.gallery-box').forEach(function (box) {
+                box.addEventListener('click', function () {
+                    if (mq.matches) openViewer(box);
+                });
+            });
+
+            // Tap di mana saja (termasuk tombol ✕) menutup penampil
+            viewer.addEventListener('click', closeViewer);
+
+            // Swipe kiri/kanan di penampil: foto berikutnya / sebelumnya
+            var vx = 0, vy = 0;
+            viewer.addEventListener('touchstart', function (e) {
+                if (e.touches.length !== 1) { vx = 0; return; }
+                vx = e.touches[0].clientX;
+                vy = e.touches[0].clientY;
+            }, { passive: true });
+            viewer.addEventListener('touchend', function (e) {
+                if (!vx || pvList.length < 2) return;
+                var t = e.changedTouches[0];
+                var dx = t.clientX - vx;
+                var dy = t.clientY - vy;
+                vx = 0;
+                if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.6) {
+                    var next = pvIndex + (dx < 0 ? 1 : -1);
+                    if (next >= 0 && next < pvList.length) showPhoto(next);
+                }
+            }, { passive: true });
+
+            window.addEventListener('popstate', function () { if (viewerOpen) hideViewer(); });
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape') closeViewer();
+                else if (!viewerOpen && e.key === 'ArrowRight') window.switchTab(mod(p, n) + 1);
+                else if (!viewerOpen && e.key === 'ArrowLeft') window.switchTab(mod(p, n) - 1);
+            });
+
+            /* =====================================================
+               KEMBALI KE START
+               ===================================================== */
+            window.backToStartMenu = function () {
+                if (viewerOpen) { closeViewer(); return; }
+                if (leaving) return;
+                leaving = true;
+                var go = function () { window.location.href = 'index.html'; };
+                if (mq.matches && !reduce.matches) {
+                    document.body.classList.add('leaving');
+                    setTimeout(go, 210);
+                } else {
+                    go();
+                }
+            };
+
+            // Kembali dari bfcache: reset animasi keluar
+            window.addEventListener('pageshow', function (e) {
+                if (e.persisted) {
+                    leaving = false;
+                    document.body.classList.remove('leaving');
+                }
+            });
+
+            /* ---------- Init ---------- */
+            window.addEventListener('resize', function () { position(false); });
+            if (mq.addEventListener) mq.addEventListener('change', build);
+            build();
+            if (document.fonts && document.fonts.ready) {
+                document.fonts.ready.then(function () { position(false); });
+            }
+        })();
     </script>
 </body>
+
 </html>
