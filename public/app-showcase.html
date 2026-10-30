@@ -307,8 +307,8 @@
         </div>
     </header>
     <nav class="app-headers">
-        <div class="header-item active" onclick="switchTab(0)">Self Learning</div>
-        <div class="header-item" onclick="switchTab(1)">For Community</div>
+        <div class="header-item active" onclick="switchTab(0)">Self Projects</div>
+        <div class="header-item" onclick="switchTab(1)">Community</div>
     </nav>
     <main class="app-content">
         <section class="content-section active" id="section-0">
@@ -331,7 +331,7 @@
                     <div class="showcase-tile-img">
                         <img src="assets/img/tile/evr1.png" alt="Portfolio">
                     </div>
-                    <div class="showcase-info" onclick="openTicketing()">
+                    <div class="showcase-info">
                         <div class="showcase-name">Productivity Tools</div>
                         <div class="showcase-category">Website • Productivity</div>
                         <div class="showcase-desc">
@@ -344,16 +344,29 @@
 
         <section class="content-section" id="section-1">
             <div class="showcase-container">
-                <div class="showcase-card">
-                    <div class="showcase-badge">Church Event</div>
+                <div class="showcase-card" onclick="openTicketing()">
+                    <div class="showcase-badge">Event</div>
                     <div class="showcase-tile-img">
-                        <img src="assets/img/tile/bnsp.jpg" alt="Comm 1">
+                        <img src="assets/img/tile/tkt1.png" alt="Comm 1">
                     </div>
                     <div class="showcase-info">
                         <div class="showcase-name">Ticketing Systems</div>
                         <div class="showcase-category">Website • Cinema Concept</div>
                         <div class="showcase-desc">
                             Ticketing System is a web application designed to help users manage their daily tasks, notes, and goals. It provides a simple and intuitive interface for organizing your life and achieving your goals.
+                        </div>
+                    </div>
+                </div>
+                <div class="showcase-card" onclick="openAr26()">
+                    <div class="showcase-badge">Event</div>
+                    <div class="showcase-tile-img">
+                        <img src="assets/img/tile/tkt1.png" alt="Comm 1">
+                    </div>
+                    <div class="showcase-info">
+                        <div class="showcase-name">Augmented Reality</div>
+                        <div class="showcase-category">Website • 360° Media</div>
+                        <div class="showcase-desc">
+                            An interactive web application that transforms standard 2D web interfaces into an Augmented Reality (AR) experience. Built with GLB 3D models, it allows users to view and inspect detailed community event models in 3D using their smartphone cameras without needing an external app installation.
                         </div>
                     </div>
                 </div>
@@ -396,18 +409,11 @@
                 inViewHeader.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
             }
         }
-        function backToStartMenu() {
-            window.location.href = "index.php";
-        }
-        function openHappay() {
-            window.location.href = "app-happay.php";
-        }
-        function openEveryday() {
-            window.location.href = "app-everyday.php";
-        }
-        function openTicketing() {
-            window.location.href = "app-ticketing.php";
-        }
+        function backToStartMenu() {window.location.href = "index.php";}
+        function openHappay() {window.location.href = "app-happay.php";}
+        function openEveryday() {window.location.href = "app-everyday.php";}
+        function openTicketing() {window.location.href = "app-ticketing.php";}
+        function openAr26() {window.location.href = "app-ar26.php";}
     </script>
 </body>
 </html>

@@ -1,1288 +1,1336 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<meta name="theme-color" content="#0078d7">
-<title>Playground</title>
-<link rel="preload" as="image" href="assets/img/8.jpg">
-<link rel="stylesheet" href="assets/css/style.css">
-<script src="https://cdn.tailwindcss.com"></script>
-<script src="https://kit.fontawesome.com/c66aa74d08.js" crossorigin="anonymous"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#0078d7">
+    <meta name="theme-color" content="#000000" media="(max-width: 640px)">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Playground</title>
+    <link rel="preload" as="image" href="assets/img/8.jpg">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <script src="https://kit.fontawesome.com/c66aa74d08.js" crossorigin="anonymous" defer></script>
+    <script>
+        // Sembunyikan lock screen sebelum halaman tampil kalau sudah pernah di-unlock (anti-berkedip)
+        try {
+            if (sessionStorage.getItem("ls_unlocked")) {
+                document.documentElement.classList.add("ls-unlocked");
+            }
+        } catch (_) { }
+    </script>
 </head>
 
 <body>
-<img class="bg-img" src="assets/img/8.jpg" alt="" aria-hidden="true"
-     decoding="async" fetchpriority="high">
-<div class="scrim"></div>
+    <img class="bg-img" src="assets/img/8.jpg" alt="" aria-hidden="true" decoding="async" fetchpriority="high">
+    <div class="scrim"></div>
 
-<header class="topbar">
-    <div>
-        <h1 class="start-title">Start<span class="title-dot"></span></h1>
-    </div>
-
-    <div class="top-right">
-        <div class="clock">
-            <strong id="clock-time">Drs. T</strong>
-            <span id="clock-date">System Analyst</span>
+    <header class="topbar">
+        <div>
+            <h1 class="start-title">Start<span class="title-dot"></span></h1>
         </div>
-        <img class="avatar" src="assets/img/profile.jpg" alt="Foto profil" title="Your Name">
-    </div>
-</header>
 
-<main class="workspace">
-    <div class="section-group">
-        <h2 class="group-title">Main Apps</h2>
-        <section class="tile-grid" style="grid-template-columns: repeat(10, var(--tile));" aria-label="Section 1 tiles">
-            <button class="tile big" id="tile-weather" data-app="weather"
-                style="text-decoration:none;background:linear-gradient(180deg,rgba(7,28,45,.85) 0%,rgba(7,28,45,.2) 80%,transparent 100%),url('assets/img/tile/weather.jpg') center/cover;border:none;outline:none;">
-                <div class="weather-container">
-                    <div class="weather-info">
-                        <div class="weather-tag" id="tile-weather-tag" style="font-size:10px;text-transform:uppercase;letter-spacing:1px;opacity:.8;"></div>
-                        <div class="weather-temp-large" id="tile-weather-temp">--°</div>
-                        <div class="weather-city" id="tile-weather-city">Jakarta, Indonesia</div>
-                        <div class="weather-desc" id="tile-weather-subtitle">Today</div>
-                        <div class="weather-desc" id="tile-weather-condition">Loading...</div>
-                    </div>
-                    <div class="weather-icon-lg" id="tile-weather-icon">⛅</div>
-                </div>
-            </button>
-            <button class="tile wide cyan" id="tile-greeting" data-app="greeting">
-                <div class="live-copy">
-                    <div class="live-main" id="tile-greeting-text">
-                        Welcome<br>everyone
-                    </div>
-                </div>
-            </button>
-            <button class="tile two dynamic-tile" id="tile-profile" data-app="profile" style="cursor: pointer;" onclick="openProfile();">
-                <div class="dt-bg" id="tile-profile-bg"></div>
-                <div class="dt-overlay" id="tile-profile-overlay"></div>
-                <div class="live-copy dt-copy" id="tile-profile-copy">
-                    <div class="dt-icon-wrap" id="tile-profile-icon-wrap"></div>
-                    <div class="dt-tag" id="tile-profile-tag"></div>
-                    <div class="dt-text" id="tile-profile-text">Memuat...</div>
-                </div>
-            </button>
-            <button class="tile two dynamic-tile" id="tile-maps" data-app="maps" style="cursor:pointer;" onclick="openMap()">
-                <div class="dt-bg" id="tile-maps-bg"></div>
-                <div class="dt-overlay" id="tile-maps-overlay"></div>
-                <div class="live-copy dt-copy" id="tile-maps-copy">
-                    <div class="dt-icon-wrap" id="tile-maps-icon-wrap"></div>
-                    <div class="dt-tag" id="tile-maps-tag"></div>
-                    <div class="dt-text" id="tile-maps-text">Memuat...</div>
-                </div>
-            </button>
-            <a href="https://portfoliotirta-l9yr6mtus-partnerspocks-projects.vercel.app" target="_blank" rel="noopener"
-                class="tile two cyan" title="Portfolio" style="cursor: pointer;">
-                <span class="tile-icon-two"><i class="fa-solid fa-cubes-stacked"></i></span>
-                <span class="tile-caption">Portfolio</span>
-            </a>
-            <a href="tel:+6281234567890" class="tile one cyan"
-                style="cursor: pointer;" title="Telepon Saya">
-                <span class="tile-icon"><i class="fa-solid fa-phone"></i></span>
-            </a>
-            <a href="mailto:trax@gmail.com" class="tile one cyan"
-                style="cursor: pointer;" title="Kirim Email">
-                <span class="tile-icon"><i class="fa-solid fa-envelope"></i></span>
-            </a>
-            <a href="https://linkedin.com/in/naufalfahmi" target="_blank" rel="noopener"
-                class="tile one blue" title="LinkedIn" style="cursor: pointer;">
-                <span class="tile-icon"><i class="fa-brands fa-linkedin"></i></span>
-            </a>
-            <a href="https://wa.me/6281383038888" target="_blank" rel="noopener"
-                class="tile one green" title="WhatsApp" style="cursor: pointer;">
-                <span class="tile-icon"><i class="fa-brands fa-whatsapp"></i></span>
-            </a>
-            <button class="tile big indigo" id="tile-calendar-greetings" data-app="calendar" onclick="openCalendar()" style="cursor: pointer;">
-                <div class="calendar-container">
-                    <div class="calendar-top">
-                        <div class="calendar-date" id="tile-calendar-greetings-date">00</div>
-                        <div class="calendar-day" id="tile-calendar-greetings-day">HARI</div>
-                    </div>
-                    <div class="tile-bottom-icon">
-                        <i class="fa-solid fa-calendar-days calendar-icon"></i>
-                        <span class="tile-caption-icon" id="tile-calendar-caption">Calendar</span>
-                    </div>
-                </div>
-            </button>
-            <button class="tile big dynamic-tile" id="tile-experience" data-app="experience" style="cursor:pointer;" onclick="openExperience();">
-                <div class="dt-bg" id="tile-experience-bg"></div>
-                <div class="dt-overlay" id="tile-experience-overlay"></div>
-                <div class="live-copy dt-copy" id="tile-experience-copy">
-                    <div class="dt-icon-wrap" id="tile-experience-icon-wrap"></div>
-                    <div class="dt-tag" id="tile-experience-tag"></div>
-                    <div class="dt-text" id="tile-experience-text">Loading...</div>
-                </div>
-            </button>
-            <button class="tile two dark-red" title="Education" onclick="openEducation()" style="cursor: pointer;">
-                <span class="tile-icon-two"><i class="fa-solid fa-graduation-cap"></i></span>
-                <div class="tile-caption">Education</div>
-            </button>
-            <button class="tile two purple" title="Certificate" style="cursor: pointer;" onclick="openCertificate()">
-                <span class="tile-icon-two"><i class="fa-solid fa-trophy"></i></span>
-                <span class="tile-caption">Certificate</span>
-            </button>
-        </section>
-    </div>
+        <div class="top-right">
+            <div class="clock">
+                <strong id="clock-time">Drs. T</strong>
+                <span id="clock-date">System Analyst</span>
+            </div>
+            <img class="avatar" src="assets/img/profile.jpg" alt="Foto profil" title="Your Name">
+        </div>
+    </header>
 
-    <div class="section-group">
-        <h2 class="group-title">Project Showcases</h2>
-        <section class="tile-grid" style="grid-template-columns:repeat(6,var(--tile));" aria-label="Section 3 tiles">
-            <button target="_blank" rel="noopener" class="tile two dynamic-tile" id="tile-hptb" data-app="hptb" style="cursor:pointer;" onclick="openHappay()">
-                <div class="dt-bg" id="tile-hptb-bg"></div>
-                <div class="dt-overlay" id="tile-hptb-overlay"></div>
-                <div class="live-copy dt-copy" id="tile-hptb-copy">
-                    <div class="dt-icon-wrap" id="tile-hptb-icon-wrap"></div>
-                    <div class="dt-tag" id="tile-hptb-tag"></div>
-                    <div class="dt-text" id="tile-hptb-text">Loading...</div>
-                </div>
-            </button>
-            <button onclick="openShowcase()" class="tile big dynamic-tile" id="tile-showcase" data-app="showcase" style="cursor:pointer;">
-                <div class="dt-bg" id="tile-showcase-bg"></div>
-                <div class="dt-overlay" id="tile-showcase-overlay"></div>
-                <div class="live-copy dt-copy" id="tile-showcase-copy">
-                    <div class="dt-icon-wrap" id="tile-showcase-icon-wrap"></div>
-                    <div class="dt-tag" id="tile-showcase-tag"></div>
-                    <div class="dt-text" id="tile-showcase-text">Loading...</div>
-                </div>
-            </button>
-            <button class="tile two dynamic-tile" id="tile-evtb" data-app="evtb" style="cursor:pointer;" onclick="openEveryday()">
-                <div class="dt-bg" id="tile-evtb-bg"></div>
-                <div class="dt-overlay" id="tile-evtb-overlay"></div>
-                <div class="live-copy dt-copy" id="tile-evtb-copy">
-                    <div class="dt-icon-wrap" id="tile-evtb-icon-wrap"></div>
-                    <div class="dt-tag" id="tile-evtb-tag"></div>
-                    <div class="dt-text" id="tile-evtb-text">Loading...</div>
-                </div>
-            </button>
-            <button class="tile two dynamic-tile" id="tile-ticketing25" data-app="ticketing25" onclick="openTicketing25()" style="cursor:pointer;">
-                <div class="dt-bg" id="tile-ticketing25-bg"></div>
-                <div class="dt-overlay" id="tile-ticketing25-overlay"></div>
-                <div class="live-copy dt-copy" id="tile-ticketing25-copy">
-                    <div class="dt-icon-wrap" id="tile-ticketing25-icon-wrap"></div>
-                    <div class="dt-tag" id="tile-ticketing25-tag"></div>
-                    <div class="dt-text" id="tile-ticketing25-text">Loading...</div>
-                </div>
-            </button>
-            <button class="tile wide cyan" id="tile-music-main" aria-label="Putar musik">
-                <span class="music-status" id="tile-music-main-status" style="position:absolute;top:8px;right:10px;font-size:10px;opacity:.8;">OFF</span>
-                <div style="display:flex;gap:14px;align-items:center;width:100%;justify-content:center;margin-top:auto;margin-bottom:auto;">
-                    <span id="tile-music-main-prev" role="button" aria-label="Lagu sebelumnya"
-                        title="Previous Song"
-                        style="width:32px;height:32px;display:flex;align-items:center;justify-content:center;border:1.5px solid rgba(255,255,255,.3);border-radius:50%;font-size:13px;opacity:.85;cursor:pointer;">
-                        <i class="fa-solid fa-step-backward"></i>
-                    </span>
-                    <span class="tile-icon" id="tile-music-main-icon" title="Play / Pause"
-                        style="width:48px;height:48px;display:flex;align-items:center;justify-content:center;border:2px solid rgba(255,255,255,.4);border-radius:50%;font-size:20px;line-height:1;cursor:pointer;">
-                        <i class="fa-solid fa-play"></i>
-                    </span>
-                    <span id="tile-music-main-next" role="button" aria-label="Lagu berikutnya"
-                        title="Next Song"
-                        style="width:32px;height:32px;display:flex;align-items:center;justify-content:center;border:1.5px solid rgba(255,255,255,.3);border-radius:50%;font-size:13px;opacity:.85;cursor:pointer;">
-                        <i class="fa-solid fa-forward-step"></i>
-                    </span>
-                    <span class="tile-caption" style="position:absolute;left:12px;bottom:2px;font-size:12px;">Music Player</span>
-                </div>
-            </button>
-            <a href="https://archristmast26.vercel.app" class="tile two green" data-app="playground" target="_blank" rel="noopener" style="cursor:pointer;">
-                    <span class="tile-icon">◈</span>
-                    <span class="tile-caption">Upcoming...</span>
+    <main class="workspace">
+        <div class="section-group">
+            <h2 class="group-title">Main Apps</h2>
+            <section class="tile-grid" style="grid-template-columns: repeat(10, var(--tile));"
+                aria-label="Section 1 tiles">
+                <button class="tile big" id="tile-weather" data-app="weather"
+                    style="text-decoration:none;background:linear-gradient(180deg,rgba(7,28,45,.85) 0%,rgba(7,28,45,.2) 80%,transparent 100%),url('assets/img/tile/weather.jpg') center/cover;border:none;outline:none;">
+                    <div class="weather-container">
+                        <div class="weather-info">
+                            <div class="weather-tag" id="tile-weather-tag"></div>
+                            <div class="weather-temp-large" id="tile-weather-temp">--°</div>
+                            <div class="weather-city" id="tile-weather-city">Jakarta, Indonesia</div>
+                            <div class="weather-desc" id="tile-weather-subtitle">Today</div>
+                            <div class="weather-desc" id="tile-weather-condition">Loading...</div>
+                        </div>
+                        <div class="weather-icon-lg" id="tile-weather-icon">⛅</div>
+                    </div>
+                </button>
+                <button class="tile wide cyan" id="tile-greeting" data-app="greeting">
+                    <div class="live-copy">
+                        <div class="live-main" id="tile-greeting-text">
+                            Welcome<br>everyone
+                        </div>
+                    </div>
+                </button>
+                <button class="tile two dynamic-tile" id="tile-profile" data-app="profile" style="cursor: pointer;"
+                    onclick="openProfile();">
+                    <div class="dt-bg" id="tile-profile-bg"></div>
+                    <div class="dt-overlay" id="tile-profile-overlay"></div>
+                    <div class="live-copy dt-copy" id="tile-profile-copy">
+                        <div class="dt-icon-wrap" id="tile-profile-icon-wrap"></div>
+                        <div class="dt-tag" id="tile-profile-tag"></div>
+                        <div class="dt-text" id="tile-profile-text">Memuat...</div>
+                    </div>
+                </button>
+                <button class="tile two dynamic-tile" id="tile-maps" data-app="maps" style="cursor:pointer;"
+                    onclick="openMap()">
+                    <div class="dt-bg" id="tile-maps-bg"></div>
+                    <div class="dt-overlay" id="tile-maps-overlay"></div>
+                    <div class="live-copy dt-copy" id="tile-maps-copy">
+                        <div class="dt-icon-wrap" id="tile-maps-icon-wrap"></div>
+                        <div class="dt-tag" id="tile-maps-tag"></div>
+                        <div class="dt-text" id="tile-maps-text">Memuat...</div>
+                    </div>
+                </button>
+                <a href="https://portfoliotirta-l9yr6mtus-partnerspocks-projects.vercel.app" target="_blank"
+                    rel="noopener" class="tile two cyan" title="Portfolio" style="cursor: pointer;">
+                    <span class="tile-icon-two"><i class="fa-solid fa-cubes-stacked"></i></span>
+                    <span class="tile-caption">Portfolio</span>
                 </a>
-        </section>
-    </div>
-    <div class="section-group tools-section">
-        <h2 class="group-title">Tools</h2>
-        <div class="tools-row">
-            <section class="tile-grid"
-                style="grid-template-columns:repeat(4,var(--tile));"
-                aria-label="Design tools">
-                
-                <button class="tile two dynamic-tile" id="tile-servertb" data-app="servertb">
-                    <div class="dt-bg" id="tile-servertb-bg"></div>
-                    <div class="dt-overlay" id="tile-servertb-overlay"></div>
-                    <div class="live-copy dt-copy" id="tile-servertb-copy">
-                        <div class="dt-icon-wrap" id="tile-servertb-icon-wrap"></div>
-                        <div class="dt-tag" id="tile-servertb-tag"></div>
-                        <div class="dt-text" id="tile-servertb-text">Loading...</div>
+
+                <!-- 4 tile kecil digabung jadi 1 blok -->
+                <div class="tile-cluster">
+                    <a href="tel:+6281234567890" class="tile one cyan" style="cursor: pointer;" title="Telepon Saya">
+                        <span class="tile-icon"><i class="fa-solid fa-phone"></i></span>
+                    </a>
+                    <a href="mailto:trax@gmail.com" class="tile one cyan" style="cursor: pointer;" title="Kirim Email">
+                        <span class="tile-icon"><i class="fa-solid fa-envelope"></i></span>
+                    </a>
+                    <a href="https://linkedin.com/in/naufalfahmi" target="_blank" rel="noopener" class="tile one blue"
+                        title="LinkedIn" style="cursor: pointer;">
+                        <span class="tile-icon"><i class="fa-brands fa-linkedin"></i></span>
+                    </a>
+                    <a href="https://wa.me/6281383038888" target="_blank" rel="noopener" class="tile one green"
+                        title="WhatsApp" style="cursor: pointer;">
+                        <span class="tile-icon"><i class="fa-brands fa-whatsapp"></i></span>
+                    </a>
+                </div>
+
+                <button class="tile big indigo" id="tile-calendar-greetings" data-app="calendar"
+                    onclick="openCalendar()" style="cursor: pointer;">
+                    <div class="calendar-container">
+                        <div class="calendar-top">
+                            <div class="calendar-date" id="tile-calendar-greetings-date">00</div>
+                            <div class="calendar-day" id="tile-calendar-greetings-day">HARI</div>
+                        </div>
+                        <div class="tile-bottom-icon">
+                            <i class="fa-solid fa-calendar-days calendar-icon"></i>
+                            <span class="tile-caption-icon" id="tile-calendar-caption">Calendar</span>
+                        </div>
                     </div>
                 </button>
-                <button class="tile two dynamic-tile" id="tile-sqltb" data-app="sqltb">
-                    <div class="dt-bg" id="tile-sqltb-bg"></div>
-                    <div class="dt-overlay" id="tile-sqltb-overlay"></div>
-                    <div class="live-copy dt-copy" id="tile-sqltb-copy">
-                        <div class="dt-icon-wrap" id="tile-sqltb-icon-wrap"></div>
-                        <div class="dt-tag" id="tile-sqltb-tag"></div>
-                        <div class="dt-text" id="tile-sqltb-text">Loading...</div>
+                <button class="tile big dynamic-tile" id="tile-experience" data-app="experience" style="cursor:pointer;"
+                    onclick="openExperience();">
+                    <div class="dt-bg" id="tile-experience-bg"></div>
+                    <div class="dt-overlay" id="tile-experience-overlay"></div>
+                    <div class="live-copy dt-copy" id="tile-experience-copy">
+                        <div class="dt-icon-wrap" id="tile-experience-icon-wrap"></div>
+                        <div class="dt-tag" id="tile-experience-tag"></div>
+                        <div class="dt-text" id="tile-experience-text">Loading...</div>
                     </div>
                 </button>
-                <button class="tile two dynamic-tile" id="tile-prodtb" data-app="prodtb">
-                    <div class="dt-bg" id="tile-prodtb-bg"></div>
-                    <div class="dt-overlay" id="tile-prodtb-overlay"></div>
-                    <div class="live-copy dt-copy" id="tile-prodtb-copy">
-                        <div class="dt-icon-wrap" id="tile-prodtb-icon-wrap"></div>
-                        <div class="dt-tag" id="tile-prodtb-tag"></div>
-                        <div class="dt-text" id="tile-prodtb-text">Loading...</div>
-                    </div>
+                <button class="tile two dark-red" title="Education" onclick="openEducation()" style="cursor: pointer;">
+                    <span class="tile-icon-two"><i class="fa-solid fa-graduation-cap"></i></span>
+                    <div class="tile-caption">Education</div>
                 </button>
-                <button class="tile one slate" data-app="github">
-                    <span class="tile-icon"><i class="fa-brands fa-github"></i></span>
-                </button>
-                <button class="tile one orange-half" data-app="drawio">
-                    <span class="tile-icon"><i class="fa-solid fa-timeline"></i></span>
-                </button>
-                <button class="tile one white" data-app="antigravity">
-                    <img src="assets/img/tile/antigravity.jpg" alt="antigravity" class="tile-image-icon">
-                </button>
-                <button class="tile one dynamic-tile" id="tile-officetools" data-app="officetools">
-                    <div class="dt-bg" id="tile-officetools-bg"></div>
-                    <div class="dt-overlay" id="tile-officetools-overlay"></div>
-                    <div class="live-copy dt-copy" id="tile-officetools-copy">
-                        <div class="dt-icon-wrap" id="tile-officetools-icon-wrap"></div>
-                        <div class="dt-tag" id="tile-officetools-tag"></div>
-                        <div class="dt-text" id="tile-officetools-text">Loading...</div>
-                    </div>
-                </button>
-                <button class="tile wide slate" data-app="values">
-                    <img src="assets/img/tile/figma.png" class="tile-image-icon" style="width:48px;">
-                    <span class="tile-caption">Figma</span>
+                <button class="tile two purple" title="Certificate" style="cursor: pointer;"
+                    onclick="openCertificate()">
+                    <span class="tile-icon-two"><i class="fa-solid fa-trophy"></i></span>
+                    <span class="tile-caption">Certificate</span>
                 </button>
             </section>
         </div>
-        <h2 class="group-title">Utilities</h2>
-        <div class="tools-row">
-            <section class="tile-grid"
-                style="grid-template-columns:repeat(4,var(--tile));" aria-label="Other tools">
-                <button class="tile two cyan" style="cursor:pointer;" onclick="openAbout()">
-                    <span class="tile-icon-two">
-                        <i class="fa-solid fa-info"></i>
-                    </span>
-                    <span class="tile-caption">About</span>
+
+        <div class="section-group">
+            <h2 class="group-title">Project Showcases</h2>
+            <section class="tile-grid" style="grid-template-columns:repeat(6,var(--tile));"
+                aria-label="Section 3 tiles">
+                <button class="tile two dynamic-tile" id="tile-hptb" data-app="hptb" style="cursor:pointer;"
+                    onclick="openHappay()">
+                    <div class="dt-bg" id="tile-hptb-bg"></div>
+                    <div class="dt-overlay" id="tile-hptb-overlay"></div>
+                    <div class="live-copy dt-copy" id="tile-hptb-copy">
+                        <div class="dt-icon-wrap" id="tile-hptb-icon-wrap"></div>
+                        <div class="dt-tag" id="tile-hptb-tag"></div>
+                        <div class="dt-text" id="tile-hptb-text">Loading...</div>
+                    </div>
                 </button>
-                <button class="tile two cyan" id="tile-lockscreen" onclick="showLockscreen()" title="Lock Screen" style="cursor:pointer;">
-                    <span class="tile-icon-two"><i class="fa-solid fa-lock"></i></span>
-                    <span class="tile-caption">Lock Screen</span>
+                <button onclick="openShowcase()" class="tile big dynamic-tile" id="tile-showcase" data-app="showcase"
+                    style="cursor:pointer;">
+                    <div class="dt-bg" id="tile-showcase-bg"></div>
+                    <div class="dt-overlay" id="tile-showcase-overlay"></div>
+                    <div class="live-copy dt-copy" id="tile-showcase-copy">
+                        <div class="dt-icon-wrap" id="tile-showcase-icon-wrap"></div>
+                        <div class="dt-tag" id="tile-showcase-tag"></div>
+                        <div class="dt-text" id="tile-showcase-text">Loading...</div>
+                    </div>
+                </button>
+                <button class="tile two dynamic-tile" id="tile-evtb" data-app="evtb" style="cursor:pointer;"
+                    onclick="openEveryday()">
+                    <div class="dt-bg" id="tile-evtb-bg"></div>
+                    <div class="dt-overlay" id="tile-evtb-overlay"></div>
+                    <div class="live-copy dt-copy" id="tile-evtb-copy">
+                        <div class="dt-icon-wrap" id="tile-evtb-icon-wrap"></div>
+                        <div class="dt-tag" id="tile-evtb-tag"></div>
+                        <div class="dt-text" id="tile-evtb-text">Loading...</div>
+                    </div>
+                </button>
+                <button class="tile two dynamic-tile" id="tile-ticketing25" data-app="ticketing25"
+                    onclick="openTicketing25()" style="cursor:pointer;">
+                    <div class="dt-bg" id="tile-ticketing25-bg"></div>
+                    <div class="dt-overlay" id="tile-ticketing25-overlay"></div>
+                    <div class="live-copy dt-copy" id="tile-ticketing25-copy">
+                        <div class="dt-icon-wrap" id="tile-ticketing25-icon-wrap"></div>
+                        <div class="dt-tag" id="tile-ticketing25-tag"></div>
+                        <div class="dt-text" id="tile-ticketing25-text">Loading...</div>
+                    </div>
+                </button>
+                <button class="tile wide cyan" id="tile-music-main" aria-label="Putar musik">
+                    <span class="music-status" id="tile-music-main-status">OFF</span>
+                    <div
+                        style="display:flex;gap:14px;align-items:center;width:100%;justify-content:center;margin-top:auto;margin-bottom:auto;">
+                        <span id="tile-music-main-prev" role="button" aria-label="Lagu sebelumnya" title="Previous Song"
+                            style="width:32px;height:32px;display:flex;align-items:center;justify-content:center;border:1.5px solid rgba(255,255,255,.3);border-radius:50%;font-size:13px;opacity:.85;cursor:pointer;">
+                            <i class="fa-solid fa-step-backward"></i>
+                        </span>
+                        <span class="tile-icon" id="tile-music-main-icon" title="Play / Pause"
+                            style="width:48px;height:48px;display:flex;align-items:center;justify-content:center;border:2px solid rgba(255,255,255,.4);border-radius:50%;font-size:20px;line-height:1;cursor:pointer;">
+                            <i class="fa-solid fa-play"></i>
+                        </span>
+                        <span id="tile-music-main-next" role="button" aria-label="Lagu berikutnya" title="Next Song"
+                            style="width:32px;height:32px;display:flex;align-items:center;justify-content:center;border:1.5px solid rgba(255,255,255,.3);border-radius:50%;font-size:13px;opacity:.85;cursor:pointer;">
+                            <i class="fa-solid fa-forward-step"></i>
+                        </span>
+                        <span class="tile-caption" style="position:absolute;left:12px;bottom:2px;font-size:12px;">Music
+                            Player</span>
+                    </div>
+                </button>
+                <button class="tile two dynamic-tile" id="tile-ar26" data-app="ar26" onclick="openAr26()"
+                    style="cursor:pointer;">
+                    <div class="dt-bg" id="tile-ar26-bg"></div>
+                    <div class="dt-overlay" id="tile-ar26-overlay"></div>
+                    <div class="live-copy dt-copy" id="tile-ar26-copy">
+                        <div class="dt-icon-wrap" id="tile-ar26-icon-wrap"></div>
+                        <div class="dt-tag" id="tile-ar26-tag"></div>
+                        <div class="dt-text" id="tile-ar26-text">Loading...</div>
+                    </div>
                 </button>
             </section>
         </div>
-    </div>
-</main>
-<audio id="background-music" preload="auto">
-    <source src="assets/audio/above.mp3" type="audio/mp3">
-</audio>
-<div id="lockscreen-overlay" role="dialog" aria-modal="true" aria-label="Lock Screen">
-    <div id="lockscreen-panel">
-        <img class="ls-wallpaper" src="assets/img/7.jpg" alt="" aria-hidden="true" draggable="false">
-        <div class="ls-scrim"></div>
-        <div class="ls-datetime">
-            <div class="ls-time" id="ls-time-display">00:00</div>
-            <div class="ls-date" id="ls-date-display">Kamis, 29 Oktober 2026</div>
+
+        <div class="section-group tools-section">
+            <h2 class="group-title">Tools</h2>
+            <div class="tools-row">
+                <section class="tile-grid" style="grid-template-columns:repeat(4,var(--tile));"
+                    aria-label="Design tools">
+                    <button class="tile two dynamic-tile" id="tile-servertb" data-app="servertb">
+                        <div class="dt-bg" id="tile-servertb-bg"></div>
+                        <div class="dt-overlay" id="tile-servertb-overlay"></div>
+                        <div class="live-copy dt-copy" id="tile-servertb-copy">
+                            <div class="dt-icon-wrap" id="tile-servertb-icon-wrap"></div>
+                            <div class="dt-tag" id="tile-servertb-tag"></div>
+                            <div class="dt-text" id="tile-servertb-text">Loading...</div>
+                        </div>
+                    </button>
+                    <button class="tile two dynamic-tile" id="tile-sqltb" data-app="sqltb">
+                        <div class="dt-bg" id="tile-sqltb-bg"></div>
+                        <div class="dt-overlay" id="tile-sqltb-overlay"></div>
+                        <div class="live-copy dt-copy" id="tile-sqltb-copy">
+                            <div class="dt-icon-wrap" id="tile-sqltb-icon-wrap"></div>
+                            <div class="dt-tag" id="tile-sqltb-tag"></div>
+                            <div class="dt-text" id="tile-sqltb-text">Loading...</div>
+                        </div>
+                    </button>
+                    <button class="tile two dynamic-tile" id="tile-prodtb" data-app="prodtb">
+                        <div class="dt-bg" id="tile-prodtb-bg"></div>
+                        <div class="dt-overlay" id="tile-prodtb-overlay"></div>
+                        <div class="live-copy dt-copy" id="tile-prodtb-copy">
+                            <div class="dt-icon-wrap" id="tile-prodtb-icon-wrap"></div>
+                            <div class="dt-tag" id="tile-prodtb-tag"></div>
+                            <div class="dt-text" id="tile-prodtb-text">Loading...</div>
+                        </div>
+                    </button>
+
+                    <!-- 4 tile kecil digabung jadi 1 blok -->
+                    <div class="tile-cluster">
+                        <button class="tile one slate" data-app="github">
+                            <span class="tile-icon"><i class="fa-brands fa-github"></i></span>
+                        </button>
+                        <button class="tile one orange-half" data-app="drawio">
+                            <span class="tile-icon"><i class="fa-solid fa-timeline"></i></span>
+                        </button>
+                        <button class="tile one white" data-app="antigravity">
+                            <img src="assets/img/tile/antigravity.jpg" alt="antigravity" class="tile-image-icon">
+                        </button>
+                        <button class="tile one dynamic-tile" id="tile-officetools" data-app="officetools">
+                            <div class="dt-bg" id="tile-officetools-bg"></div>
+                            <div class="dt-overlay" id="tile-officetools-overlay"></div>
+                            <div class="live-copy dt-copy" id="tile-officetools-copy">
+                                <div class="dt-icon-wrap" id="tile-officetools-icon-wrap"></div>
+                                <div class="dt-tag" id="tile-officetools-tag"></div>
+                                <div class="dt-text" id="tile-officetools-text">Loading...</div>
+                            </div>
+                        </button>
+                    </div>
+
+                    <button class="tile wide slate" data-app="values">
+                        <img src="assets/img/tile/figma.png" alt="Figma" class="tile-image-icon" style="width:48px;">
+                        <span class="tile-caption">Figma</span>
+                    </button>
+                </section>
+            </div>
+
+            <h2 class="group-title">Utilities</h2>
+            <div class="tools-row">
+                <section class="tile-grid" style="grid-template-columns:repeat(4,var(--tile));"
+                    aria-label="Other tools">
+                    <button class="tile two cyan" style="cursor:pointer;" onclick="openAbout()">
+                        <span class="tile-icon-two"><i class="fa-solid fa-info"></i></span>
+                        <span class="tile-caption">About</span>
+                    </button>
+                    <button class="tile two cyan" id="tile-lockscreen" onclick="showLockscreen()" title="Lock Screen"
+                        style="cursor:pointer;">
+                        <span class="tile-icon-two"><i class="fa-solid fa-lock"></i></span>
+                        <span class="tile-caption">Lock Screen</span>
+                    </button>
+                </section>
+            </div>
         </div>
-        <div class="ls-hint" id="ls-hint">
-            <i class="fa-solid fa-chevron-up ls-hint-chevron"></i>
+    </main>
+
+    <audio id="background-music" preload="auto">
+        <source src="assets/audio/above.mp3" type="audio/mpeg">
+    </audio>
+
+    <div id="lockscreen-overlay" role="dialog" aria-modal="true" aria-label="Lock Screen">
+        <div id="lockscreen-panel">
+            <img class="ls-wallpaper" src="assets/img/7.jpg" alt="" aria-hidden="true" draggable="false">
+            <div class="ls-scrim"></div>
+            <div class="ls-datetime">
+                <div class="ls-time" id="ls-time-display">00:00</div>
+                <div class="ls-date" id="ls-date-display">Jumat, 30 Oktober 2026</div>
+            </div>
+            <div class="ls-hint" id="ls-hint">
+                <i class="fa-solid fa-chevron-up ls-hint-chevron"></i>
+            </div>
         </div>
     </div>
-</div>
 
-<script>
-"use strict";
-const byId = (id) => document.getElementById(id);
-const greetingText = byId("tile-greeting-text");
-const greetingMessages = [
-    ["Welcome", "everyone"],
-    ["On my", "playground"],
-    ["Just", "started"],
-    ["Matthew", "6:13"]
-];
-let greetingIndex = 0;
-if (greetingText) {
-    setInterval(() => {
-        greetingIndex = (greetingIndex + 1) % greetingMessages.length;
+    <script>
+        "use strict";
 
-        greetingText.classList.add("tile-animate-out");
+        const byId = (id) => document.getElementById(id);
 
-        setTimeout(() => {
-            greetingText.innerHTML =
-                `${greetingMessages[greetingIndex][0]}<br>${greetingMessages[greetingIndex][1]}`;
+        /* =========================================================
+           Greeting tile
+        ========================================================= */
+        const greetingText = byId("tile-greeting-text");
+        const greetingMessages = [
+            ["Welcome", "everyone"],
+            ["On my", "playground"],
+            ["Just", "started"],
+            ["Matthew", "6:13"]
+        ];
+        let greetingIndex = 0;
 
-            greetingText.classList.remove("tile-animate-out");
-            greetingText.classList.add("tile-animate-in");
+        if (greetingText) {
+            setInterval(() => {
+                greetingIndex = (greetingIndex + 1) % greetingMessages.length;
 
-            setTimeout(() => {
-                greetingText.classList.remove("tile-animate-in");
-            }, 400);
+                greetingText.classList.add("tile-animate-out");
 
-        }, 350);
+                setTimeout(() => {
+                    greetingText.innerHTML =
+                        `${greetingMessages[greetingIndex][0]}<br>${greetingMessages[greetingIndex][1]}`;
 
-    }, 4500);
-}
+                    greetingText.classList.remove("tile-animate-out");
+                    greetingText.classList.add("tile-animate-in");
 
-async function fetchWeather() {
-    const tempElement = byId("tile-weather-temp");
-    const conditionElement = byId("tile-weather-condition");
-    const iconElement = byId("tile-weather-icon");
-    const cityElement = byId("tile-weather-city");
-    const subtitleElement = byId("tile-weather-subtitle");
-    const tagElement = byId("tile-weather-tag");
-
-    if (!tempElement) return;
-
-    try {
-        const response = await fetch(
-            "https://api.open-meteo.com/v1/forecast?latitude=-6.2088&longitude=106.8456&current=temperature_2m,weather_code"
-        );
-
-        if (!response.ok) {
-            throw new Error(`HTTP ${response.status}`);
+                    setTimeout(() => {
+                        greetingText.classList.remove("tile-animate-in");
+                    }, 400);
+                }, 350);
+            }, 4500);
         }
 
-        const data = await response.json();
+        /* =========================================================
+           Weather
+        ========================================================= */
+        async function fetchWeather() {
+            const tempElement = byId("tile-weather-temp");
+            const conditionElement = byId("tile-weather-condition");
+            const iconElement = byId("tile-weather-icon");
+            const cityElement = byId("tile-weather-city");
+            const subtitleElement = byId("tile-weather-subtitle");
+            const tagElement = byId("tile-weather-tag");
 
-        if (!data.current) {
-            throw new Error("Data cuaca tidak tersedia.");
+            if (!tempElement) return;
+
+            try {
+                const response = await fetch(
+                    "https://api.open-meteo.com/v1/forecast?latitude=-6.2088&longitude=106.8456&current=temperature_2m,weather_code"
+                );
+
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+
+                const data = await response.json();
+
+                if (!data.current) {
+                    throw new Error("Data cuaca tidak tersedia.");
+                }
+
+                const temp = Math.round(data.current.temperature_2m);
+                const code = data.current.weather_code;
+
+                let condition = "Sunny";
+                let icon = "☀️";
+
+                if ([1, 2, 3].includes(code)) {
+                    condition = "Cloudy";
+                    icon = "⛅";
+                } else if ((code >= 51 && code <= 67) || (code >= 80 && code <= 82)) {
+                    condition = "Rain";
+                    icon = "🌧️";
+                } else if (code >= 95) {
+                    condition = "Thunderstorm";
+                    icon = "⚡";
+                }
+
+                tempElement.textContent = `${temp}°`;
+
+                if (conditionElement) conditionElement.textContent = condition;
+                if (iconElement) iconElement.textContent = icon;
+                if (cityElement) cityElement.textContent = "Jakarta, Indonesia";
+                if (subtitleElement) subtitleElement.textContent = "Today";
+                if (tagElement) tagElement.textContent = "";
+            } catch (error) {
+                console.error("Gagal memuat cuaca:", error);
+
+                tempElement.textContent = "--°";
+                if (conditionElement) conditionElement.textContent = "Offline";
+            }
         }
 
-        const temp = Math.round(data.current.temperature_2m);
-        const code = data.current.weather_code;
+        fetchWeather();
+        setInterval(fetchWeather, 15 * 60 * 1000);
 
-        let condition = "Sunny";
-        let icon = "☀️";
+        /* =========================================================
+           Calendar tile
+        ========================================================= */
+        function updateCalendar(tileId) {
+            const dayElement = byId(`${tileId}-day`);
+            const dateElement = byId(`${tileId}-date`);
+            const now = new Date();
 
-        if ([1, 2, 3].includes(code)) {
-            condition = "Cloudy";
-            icon = "⛅";
-        } else if (
-            (code >= 51 && code <= 67) ||
-            (code >= 80 && code <= 82)
-        ) {
-            condition = "Rain";
-            icon = "🌧️";
-        } else if (code >= 95) {
-            condition = "Thunderstorm";
-            icon = "⚡";
+            if (dayElement) {
+                dayElement.textContent = now.toLocaleDateString("en-US", { weekday: "long" });
+            }
+
+            if (dateElement) {
+                dateElement.textContent = now.getDate();
+            }
         }
 
-        tempElement.textContent = `${temp}°`;
+        updateCalendar("tile-calendar-greetings");
 
-        if (conditionElement) conditionElement.textContent = condition;
-        if (iconElement) iconElement.textContent = icon;
-        if (cityElement) cityElement.textContent = "Jakarta, Indonesia";
-        if (subtitleElement) subtitleElement.textContent = "Today";
-        if (tagElement) tagElement.textContent = "";
+        /* =========================================================
+           Music player
+        ========================================================= */
+        const backgroundMusic = byId("background-music");
 
-    } catch (error) {
-        console.error("Still Load the Current Weather:", error);
+        const playlist = [
+            "assets/audio/foster.mp3",
+            "assets/audio/above.mp3"
+        ];
 
-        tempElement.textContent = "--°";
+        let currentSongIndex = 0;
+        let loadedSongIndex = -1;
 
-        if (conditionElement) {
-            conditionElement.textContent = "Offline";
-        }
-    }
-}
+        const musicControllers = [
+            {
+                button: byId("tile-music-main"),
+                status: byId("tile-music-main-status"),
+                icon: byId("tile-music-main-icon"),
+                iconIdle: '<i class="fa-solid fa-play"></i>',
+                iconPlaying: '<i class="fa-solid fa-pause"></i>',
+                previous: byId("tile-music-main-prev"),
+                next: byId("tile-music-main-next")
+            }
+        ];
 
-fetchWeather();
-setInterval(fetchWeather, 15 * 60 * 1000);
+        function setMusicUI(isPlaying, message = null) {
+            musicControllers.forEach((controller) => {
+                if (controller.status) {
+                    controller.status.textContent = message || (isPlaying ? "PLAY" : "OFF");
+                }
 
-function updateCalendar(tileId) {
-    const dayElement = byId(`${tileId}-day`);
-    const dateElement = byId(`${tileId}-date`);
-    const now = new Date();
+                if (controller.icon) {
+                    controller.icon.innerHTML = isPlaying ? controller.iconPlaying : controller.iconIdle;
+                }
 
-    if (dayElement) {
-        dayElement.textContent = now.toLocaleDateString("en-EN", {
-            weekday: "long"
-        });
-    }
-
-    if (dateElement) {
-        dateElement.textContent = now.getDate();
-    }
-}
-
-[
-    "tile-calendar-greetings",
-    "tile-calendar-tools"
-].forEach(updateCalendar);
-
-const backgroundMusic = byId("background-music");
-
-const playlist = [
-    "assets/audio/foster.mp3",
-    "assets/audio/above.mp3"
-];
-
-let currentSongIndex = 0;
-let loadedSongIndex = -1;
-
-const musicControllers = [
-    {
-        button: byId("tile-music-main"),
-        status: byId("tile-music-main-status"),
-        icon: byId("tile-music-main-icon"),
-        iconIdle: '<i class="fa-solid fa-play"></i>',
-        iconPlaying: '<i class="fa-solid fa-pause"></i>',
-        previous: byId("tile-music-main-prev"),
-        next: byId("tile-music-main-next")
-    },
-    {
-        button: byId("tile-music-compact"),
-        status: byId("tile-music-compact-status"),
-        icon: byId("tile-music-compact-icon"),
-        iconIdle: "♫",
-        iconPlaying: "Ⅱ",
-        previous: null,
-        next: byId("tile-music-compact-next")
-    }
-];
-
-function setMusicUI(isPlaying, message = null) {
-    musicControllers.forEach((controller) => {
-        if (controller.status) {
-            controller.status.textContent =
-                message || (isPlaying ? "PLAY" : "OFF");
+                if (controller.button) {
+                    controller.button.setAttribute("aria-label", isPlaying ? "Jeda musik" : "Putar musik");
+                    controller.button.setAttribute("aria-pressed", String(isPlaying));
+                }
+            });
         }
 
-        if (controller.icon) {
-            controller.icon.innerHTML =
-                isPlaying ? controller.iconPlaying : controller.iconIdle;
+        async function playCurrentSong() {
+            if (!backgroundMusic || !playlist.length) return;
+
+            try {
+                if (loadedSongIndex !== currentSongIndex) {
+                    backgroundMusic.src = playlist[currentSongIndex];
+                    backgroundMusic.load();
+                    loadedSongIndex = currentSongIndex;
+                }
+
+                await backgroundMusic.play();
+                setMusicUI(true);
+            } catch (error) {
+                console.error("Musik gagal diputar:", error);
+
+                loadedSongIndex = -1;
+                setMusicUI(false, "CEK FILE");
+            }
         }
 
-        if (controller.button) {
-            controller.button.setAttribute(
-                "aria-label",
-                isPlaying ? "Jeda musik" : "Putar musik"
-            );
+        function changeSong(direction) {
+            if (!playlist.length) return;
 
-            controller.button.setAttribute(
-                "aria-pressed",
-                String(isPlaying)
-            );
-        }
-    });
-}
-
-async function playCurrentSong() {
-    if (!backgroundMusic || !playlist.length) return;
-
-    try {
-        if (loadedSongIndex !== currentSongIndex) {
-            backgroundMusic.src = playlist[currentSongIndex];
-            backgroundMusic.load();
-            loadedSongIndex = currentSongIndex;
+            currentSongIndex = (currentSongIndex + direction + playlist.length) % playlist.length;
+            loadedSongIndex = -1;
+            playCurrentSong();
         }
 
-        await backgroundMusic.play();
-        setMusicUI(true);
+        musicControllers.forEach((controller) => {
+            if (controller.button) {
+                controller.button.addEventListener("click", () => {
+                    if (!backgroundMusic) return;
 
-    } catch (error) {
-        console.error("Musik gagal diputar:", error);
+                    if (backgroundMusic.paused) {
+                        playCurrentSong();
+                    } else {
+                        backgroundMusic.pause();
+                        setMusicUI(false);
+                    }
+                });
+            }
 
-        loadedSongIndex = -1;
-        setMusicUI(false, "CEK FILE");
-    }
-}
+            if (controller.previous) {
+                controller.previous.addEventListener("click", (event) => {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    changeSong(-1);
+                });
+            }
 
-function changeSong(direction) {
-    if (!playlist.length) return;
-
-    currentSongIndex =
-        (currentSongIndex + direction + playlist.length) % playlist.length;
-
-    loadedSongIndex = -1;
-    playCurrentSong();
-}
-
-musicControllers.forEach((controller) => {
-    if (controller.button) {
-        controller.button.addEventListener("click", () => {
-            if (!backgroundMusic) return;
-
-            if (backgroundMusic.paused) {
-                playCurrentSong();
-            } else {
-                backgroundMusic.pause();
-                setMusicUI(false);
+            if (controller.next) {
+                controller.next.addEventListener("click", (event) => {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    changeSong(1);
+                });
             }
         });
-    }
 
-    if (controller.previous) {
-        controller.previous.addEventListener("click", (event) => {
-            event.preventDefault();
-            event.stopPropagation();
-            changeSong(-1);
-        });
-    }
+        if (backgroundMusic) {
+            backgroundMusic.removeAttribute("loop");
 
-    if (controller.next) {
-        controller.next.addEventListener("click", (event) => {
-            event.preventDefault();
-            event.stopPropagation();
-            changeSong(1);
-        });
-    }
-});
+            backgroundMusic.addEventListener("playing", () => setMusicUI(true));
 
-if (backgroundMusic) {
-    backgroundMusic.removeAttribute("loop");
+            backgroundMusic.addEventListener("pause", () => {
+                if (!backgroundMusic.ended && !backgroundMusic.error) {
+                    setMusicUI(false);
+                }
+            });
 
-    backgroundMusic.addEventListener("playing", () => {
-        setMusicUI(true);
-    });
-
-    backgroundMusic.addEventListener("pause", () => {
-        if (!backgroundMusic.ended && !backgroundMusic.error) {
-            setMusicUI(false);
-        }
-    });
-
-    backgroundMusic.addEventListener("ended", () => {
-        if (playlist.length > 1) {
-            changeSong(1);
-        } else {
-            setMusicUI(false);
-        }
-    });
-}
-
-const DT_DEFAULT_COLOR = "#008ed0";
-const DT_DEFAULT_ICON_SIZE = "32px";
-const DT_TRANSITION_MS = 300;
-
-class DynamicTile {
-    constructor(tileId, slides, intervalMs = 5000) {
-        this.tileId = tileId;
-        this.slides = Array.isArray(slides) ? slides : [];
-        this.intervalMs = intervalMs;
-
-        this.index = 0;
-        this.timer = null;
-        this.transitionTimer = null;
-        this.animationTimer = null;
-
-        this.tile = byId(tileId);
-
-        if (!this.tile) {
-            console.warn(`[DynamicTile] Markup '#${tileId}' tidak ditemukan.`);
-            return;
+            backgroundMusic.addEventListener("ended", () => {
+                if (playlist.length > 1) {
+                    changeSong(1);
+                } else {
+                    setMusicUI(false);
+                }
+            });
         }
 
-        const part = (name) => byId(`${tileId}-${name}`);
+        /* =========================================================
+           Dynamic tiles
+        ========================================================= */
+        const DT_DEFAULT_COLOR = "#008ed0";
+        const DT_DEFAULT_ICON_SIZE = "32px";
+        const DT_TRANSITION_MS = 300;
 
-        this.bg = part("bg");
-        this.overlay = part("overlay");
-        this.copy = part("copy");
-        this.iconWrap = part("icon-wrap");
-        this.tag = part("tag");
-        this.text = part("text");
+        class DynamicTile {
+            constructor(tileId, slides, intervalMs = 5000) {
+                this.tileId = tileId;
+                this.slides = Array.isArray(slides) ? slides : [];
+                this.intervalMs = intervalMs;
 
-        const required = {
-            bg: this.bg,
-            overlay: this.overlay,
-            copy: this.copy,
-            "icon-wrap": this.iconWrap,
-            tag: this.tag,
-            text: this.text
-        };
+                this.index = 0;
+                this.timer = null;
+                this.transitionTimer = null;
+                this.animationTimer = null;
 
-        const missing = Object.keys(required).filter((name) => !required[name]);
+                this.tile = byId(tileId);
 
-        if (missing.length) {
-            console.warn(
-                `[DynamicTile] '#${tileId}' kekurangan elemen: ` +
-                missing.map((name) => `${tileId}-${name}`).join(", ")
-            );
-            return;
-        }
+                if (!this.tile) {
+                    console.warn(`[DynamicTile] Markup '#${tileId}' tidak ditemukan.`);
+                    return;
+                }
 
-        if (!this.slides.length) {
-            console.warn(`[DynamicTile] '#${tileId}' tidak punya slide.`);
-            return;
-        }
+                const part = (name) => byId(`${tileId}-${name}`);
 
-        this.caption = this.tile.querySelector(".tile-caption");
+                this.bg = part("bg");
+                this.overlay = part("overlay");
+                this.copy = part("copy");
+                this.iconWrap = part("icon-wrap");
+                this.tag = part("tag");
+                this.text = part("text");
 
-        if (!this.caption) {
-            this.caption = document.createElement("span");
-            this.caption.className = "tile-caption";
-            this.tile.appendChild(this.caption);
-        }
+                const required = {
+                    bg: this.bg,
+                    overlay: this.overlay,
+                    copy: this.copy,
+                    "icon-wrap": this.iconWrap,
+                    tag: this.tag,
+                    text: this.text
+                };
 
-        this.caption.setAttribute("aria-hidden", "true");
+                const missing = Object.keys(required).filter((name) => !required[name]);
 
-        this.render(this.slides[0]);
-        this.start();
-    }
+                if (missing.length) {
+                    console.warn(
+                        `[DynamicTile] '#${tileId}' kekurangan elemen: ` +
+                        missing.map((name) => `${tileId}-${name}`).join(", ")
+                    );
+                    return;
+                }
 
-    start() {
-        if (this.timer || this.slides.length < 2) return;
+                if (!this.slides.length) {
+                    console.warn(`[DynamicTile] '#${tileId}' tidak punya slide.`);
+                    return;
+                }
 
-        this.timer = setInterval(() => this.next(), this.intervalMs);
-    }
+                this.caption = this.tile.querySelector(".tile-caption");
 
-    stop() {
-        clearInterval(this.timer);
-        clearTimeout(this.transitionTimer);
-        clearTimeout(this.animationTimer);
+                if (!this.caption) {
+                    this.caption = document.createElement("span");
+                    this.caption.className = "tile-caption";
+                    this.tile.appendChild(this.caption);
+                }
 
-        this.timer = null;
-        this.transitionTimer = null;
-        this.animationTimer = null;
-    }
+                this.caption.setAttribute("aria-hidden", "true");
 
-    render(slide) {
-        if (!slide) return;
-
-        const mode = slide.mode || "content";
-        const align = slide.align || "left";
-
-        this.tile.dataset.slideMode = mode;
-        this.tile.dataset.slideAlign = mode === "icon" ? "center" : align;
-
-        if (this.caption) {
-            const captionText =
-                typeof slide.caption === "string" ? slide.caption.trim() : "";
-
-            this.caption.textContent = captionText;
-            this.caption.style.display = captionText ? "block" : "none";
-            this.caption.style.visibility = "visible";
-            this.caption.style.opacity = "1";
-        }
-
-        if (slide.image) {
-            this.bg.style.backgroundImage = `url("${slide.image}")`;
-            this.bg.style.backgroundColor = slide.color || "transparent";
-            this.bg.style.backgroundPosition = "center";
-            this.bg.style.backgroundSize = "cover";
-            this.bg.style.backgroundRepeat = "no-repeat";
-        } else {
-            this.bg.style.backgroundImage = "none";
-            this.bg.style.backgroundColor = slide.color || DT_DEFAULT_COLOR;
-        }
-
-        const overlayOpacity = Math.min(
-            1,
-            Math.max(0, Number(slide.overlay) || 0)
-        );
-
-        this.overlay.style.background = overlayOpacity > 0
-            ? `rgba(0, 0, 0, ${overlayOpacity})`
-            : "transparent";
-
-        this.copy.style.display = "";
-        this.copy.style.flexDirection = "";
-        this.copy.style.alignItems = "";
-        this.copy.style.justifyContent = "";
-        this.copy.style.textAlign = "";
-        this.copy.style.position = "";
-        this.copy.style.inset = "";
-        this.copy.style.width = "";
-        this.copy.style.height = "";
-        this.copy.style.padding = "";
-        this.copy.style.margin = "";
-        this.copy.style.gap = "";
-        this.copy.style.zIndex = "";
-
-        this.tile.style.backgroundColor = "";
-
-        const showIcon =
-            mode !== "image" &&
-            typeof slide.icon === "string" &&
-            slide.icon.trim() !== "";
-
-        this.iconWrap.replaceChildren();
-
-        if (showIcon) {
-            const iconElement = document.createElement("i");
-
-            iconElement.className = slide.icon.trim();
-            iconElement.style.fontSize = slide.iconSize || DT_DEFAULT_ICON_SIZE;
-            iconElement.style.color = slide.iconColor || "#ffffff";
-            iconElement.style.lineHeight = "1";
-            iconElement.style.display = "inline-block";
-
-            this.iconWrap.appendChild(iconElement);
-
-            this.iconWrap.style.display = "flex";
-            this.iconWrap.style.alignItems = "center";
-            this.iconWrap.style.justifyContent =
-                mode === "icon" || align === "center" ? "center" : "flex-start";
-            this.iconWrap.style.width = "100%";
-            this.iconWrap.style.flexShrink = "0";
-
-            if (
-                window.FontAwesome?.dom &&
-                typeof window.FontAwesome.dom.i2svg === "function"
-            ) {
-                window.FontAwesome.dom.i2svg({ node: this.iconWrap });
+                this.render(this.slides[0]);
+                this.start();
             }
-        } else {
-            this.iconWrap.style.display = "none";
-            this.iconWrap.style.width = "";
-            this.iconWrap.style.flexShrink = "";
-            this.iconWrap.style.alignItems = "";
-            this.iconWrap.style.justifyContent = "";
-        }
 
-        if (mode === "image") {
-            this.tag.textContent = "";
-            this.tag.style.display = "none";
-
-            this.text.textContent = "";
-            this.text.style.display = "none";
-
-            return;
-        }
-
-        if (mode === "icon") {
-            this.copy.style.display = "flex";
-            this.copy.style.flexDirection = "column";
-            this.copy.style.alignItems = "center";
-            this.copy.style.justifyContent = "center";
-            this.copy.style.textAlign = "center";
-            this.copy.style.position = "absolute";
-            this.copy.style.inset = "0";
-            this.copy.style.width = "100%";
-            this.copy.style.height = "100%";
-            this.copy.style.padding = "0";
-            this.copy.style.margin = "0";
-            this.copy.style.gap = "0";
-            this.copy.style.zIndex = "3";
-
-            this.tag.textContent = "";
-            this.tag.style.display = "none";
-
-            this.text.textContent = "";
-            this.text.style.display = "none";
-
-            this.tile.style.backgroundColor = slide.color || DT_DEFAULT_COLOR;
-
-            return;
-        }
-
-        const showTag = mode === "content" && Boolean(slide.tag);
-        const showText = mode === "content" && Boolean(slide.text);
-
-        this.tag.textContent = showTag ? slide.tag : "";
-        this.tag.style.display = showTag ? "" : "none";
-
-        this.text.textContent = showText ? slide.text : "";
-        this.text.style.display = showText ? "" : "none";
-
-        if (mode === "content" && align === "center") {
-            this.copy.style.textAlign = "center";
-            this.tag.style.textAlign = "center";
-            this.text.style.textAlign = "center";
-        } else {
-            this.copy.style.textAlign = "";
-            this.tag.style.textAlign = "";
-            this.text.style.textAlign = "";
-        }
-    }
-
-    next() {
-        if (this.slides.length < 2) return;
-
-        const nextIndex = (this.index + 1) % this.slides.length;
-        const nextSlide = this.slides[nextIndex];
-
-        this.index = nextIndex;
-
-        clearTimeout(this.transitionTimer);
-        clearTimeout(this.animationTimer);
-
-        this.copy.classList.remove("tile-animate-in", "tile-animate-out");
-        this.copy.classList.add("tile-animate-out");
-
-        this.transitionTimer = setTimeout(() => {
-            this.render(nextSlide);
-
-            this.copy.classList.remove("tile-animate-out");
-            this.copy.classList.add("tile-animate-in");
-
-            this.animationTimer = setTimeout(() => {
-                this.copy.classList.remove("tile-animate-in");
-            }, 400);
-        }, DT_TRANSITION_MS);
-    }
-}
-
-const dataProfile = [
-    {
-        mode: "image",
-        image: "assets/img/profile2.jpg",
-    },
-    {
-        mode: "content",
-        color: "#00a4ef",
-        tag: "Profile",
-        text: "Hello, My name is Naufal Fahmi",
-    }
-];
-
-const dataMaps = [
-    {
-        mode: "icon",
-        color: "#008ed0",
-        icon: "fa-solid fa-map",
-        iconSize: "42px",
-        iconColor: "#ffffff",
-        caption: "Maps"
-    },
-    {
-        mode: "image",
-        image: "assets/img/tile/map.jpg",
-    },
-    {
-        mode: "content",
-        image: "assets/img/tile/map.jpg",
-        tag: "Indonesia",
-        text: "Jakarta Pusat"
-    }
-];
-
-const dataShowcase = [
-    {
-        mode: "icon",
-        icon: "fa-solid fa-shop",
-        iconSize: "38px",
-        caption: "Project Showcases"
-    },
-    {
-        mode: "content",
-        image: "assets/img/tile/hap1.png"
-    },
-    {
-        mode: "content",
-        image: "assets/img/tile/evr1.png"
-    },
-    {
-        mode: "content",
-        image: "assets/img/tile/tkt1.png"
-    }
-];
-
-const dataHptb = [
-    {
-        mode: "icon",
-        color: "#443bc7",
-        icon: "fa-solid fa-bars-staggered",
-        iconSize: "38px",
-        caption: "Happay"
-    },
-    {
-        mode: "content",
-        color: "#443bc7",
-        icon: "fa-solid fa-bars-staggered",
-        iconSize: "38px",
-        tag: "POS Systems"
-    }
-];
-
-const dataEvtb = [
-    {
-        mode: "icon",
-        color: "#291C0F",
-        icon: "fa-brands fa-accusoft",
-        iconSize: "38px",
-        caption: "Everyday"
-    },
-    {
-        mode: "content",
-        color: "#291C0F",
-        icon: "fa-brands fa-accusoft",
-        iconSize: "38px",
-        tag: "Productivity Tools"
-    }
-];
-
-const dataTicketing25 = [
-    {
-        mode: "icon",
-        color: "#5ec26a",
-        icon: "fa-solid fa-ticket",
-        iconSize: "42px",
-        iconColor: "#ffffff",
-        caption: "Ticketing"
-    },
-    {
-        mode: "content",
-        color: "#5ec26a",
-        icon: "fa-solid fa-ticket",
-        iconSize: "42px",
-        iconColor: "#ffffff",
-        tag: "Booking Your Seats Easily",
-        text: "Community Event"
-    }
-];
-
-const dataSqltb = [
-    {
-        mode: "image",
-        image: "assets/img/tile/sqltb1.png"
-    },
-    {
-        mode: "image",
-        image: "assets/img/tile/sqltb2.png"
-    }
-];
-
-const dataServertb = [
-    {
-        mode: "image",
-        image: "assets/img/tile/ngrok.png"
-    },
-    {
-        mode: "image",
-        image: "assets/img/tile/vercel.png"
-    }
-];
-
-const dataProdtb = [
-    {
-        mode: "image",
-        image: "assets/img/tile/php.png"
-    },
-    {
-        mode: "image",
-        image: "assets/img/tile/laravel.png"
-    }
-];
-
-const dataOfficetools = [
-    {
-        mode: "image",
-        image: "assets/img/tile/ms.png",
-        color: "#ffffff"
-    },
-    {
-        mode: "image",
-        image: "assets/img/tile/g.png",
-        color: "#ffffff"
-    }
-];
-
-const dataExperience = [
-    {
-        mode: "content",
-        image: "assets/img/tile/1m-square.png",
-        overlay: 0.48,
-        tag: "Mitra 2000 (2023 - 2026)",
-        text: "System Analyst",
-        caption: "Experience"
-    },
-    {
-        mode: "content",
-        image: "assets/img/tile/1m-square.png",
-        overlay: 0.48,
-        tag: "Mitra 2000 (2022 - 2023)",
-        text: "Product Data Standardization & PIM Migration",
-        caption: "Experience"
-    },
-    {
-        mode: "content",
-        image: "assets/img/tile/2s-square.png",
-        overlay: 0.48,
-        tag: "Shopee Express (2021 - 2022)",
-        text: "Geolocation Data & Internal Mapping",
-        caption: "Experience"
-    },
-    {
-        mode: "content",
-        image: "assets/img/tile/3i-square.png",
-        overlay: 0.48,
-        tag: "Idemitsu (2020 - 2021)",
-        text: "ERP Migration",
-        caption: "Experience"
-    }
-];
-
-new DynamicTile("tile-profile", dataProfile, 10500);
-new DynamicTile("tile-maps", dataMaps, 15000);
-new DynamicTile("tile-experience", dataExperience, 9500);
-
-new DynamicTile("tile-showcase", dataShowcase, 10500);
-new DynamicTile("tile-hptb", dataHptb, 15000);
-new DynamicTile("tile-evtb", dataEvtb, 11000);
-new DynamicTile("tile-ticketing25", dataTicketing25, 16000);
-
-new DynamicTile("tile-sqltb", dataSqltb, 1850);
-new DynamicTile("tile-servertb", dataServertb, 2050);
-new DynamicTile("tile-prodtb", dataProdtb, 2250);
-new DynamicTile("tile-officetools", dataOfficetools, 2450);
-
-function openCalendar() {
-    window.location.href = "app-calendar.php";
-}
-
-function openCertificate() {
-    window.location.href = "app-certificate.php";
-}
-
-function openExperience() {
-    window.location.href = "app-experience.php";
-}
-
-function openEducation() {
-    window.location.href = "app-education.php";
-}
-
-function openAbout() {
-    window.location.href = "app-about.php";
-}
-
-function openProfile() {
-    window.location.href = "app-profile.php";
-}
-
-function openMap() {
-    window.location.href = "app-map.php";
-}
-
-function openHappay() {
-    window.location.href = "app-happay.php";
-}
-
-function openEveryday() {
-    window.location.href = "app-everyday.php";
-}
-
-function openTicketing25() {
-    window.location.href = "app-ticketing.php";
-}
-
-function openShowcase() {
-    window.location.href = "app-showcase.php";
-}
-
-(function () {
-    const SESSION_KEY = "ls_unlocked";
-
-    const overlay  = document.getElementById("lockscreen-overlay");
-    const panel    = document.getElementById("lockscreen-panel");
-    const lsTime   = document.getElementById("ls-time-display");
-    const lsDate   = document.getElementById("ls-date-display");
-
-    if (!overlay || !panel) return;
-
-    const DAYS   = ["Minggu","Senin","Selasa","Rabu","Kamis","Jumat","Sabtu"];
-    const MONTHS = ["Januari","Februari","Maret","April","Mei","Juni",
-                    "Juli","Agustus","September","Oktober","November","Desember"];
-
-    function updateLsClock() {
-        const now = new Date();
-        const hh  = String(now.getHours()).padStart(2, "0");
-        const mm  = String(now.getMinutes()).padStart(2, "0");
-        if (lsTime) lsTime.textContent = `${hh}:${mm}`;
-        if (lsDate) lsDate.textContent =
-            `${DAYS[now.getDay()]}, ${now.getDate()} ${MONTHS[now.getMonth()]} ${now.getFullYear()}`;
-    }
-
-    let lsClockTimer = null;
-
-    
-    let dragStartY   = 0;
-    let currentY     = 0;
-    let isDragging   = false;
-    let hasMoved     = false;
-    let lastY        = 0;
-    let lastTime     = 0;
-    let velocityY    = 0;
-    let rafId        = null;
-
-    function dismissLockscreen(markSession, direction = null) {
-        if (overlay.classList.contains("ls-hidden")) return;
-        panel.classList.remove("ls-bounce");
-
-        const h = window.innerHeight || 800;
-        const remaining = Math.max(40, h - Math.abs(currentY));
-        const ratio = remaining / h;
-        const duration = Math.max(0.18, Math.min(0.42, ratio * 0.9)).toFixed(2);
-
-        const dir = direction !== null ? direction : (currentY >= 0 ? 1 : -1);
-        panel.style.transition = `transform ${duration}s cubic-bezier(0.16, 1, 0.3, 1)`;
-        panel.style.transform = `translateY(${dir * (h + 50)}px)`;
-
-        setTimeout(() => {
-            overlay.classList.add("ls-hidden");
-            panel.style.transition = "";
-            panel.style.transform = "";
-            currentY = 0;
-            isDragging = false;
-            hasMoved = false;
-            overlay.classList.remove("ls-dragging");
-            clearInterval(lsClockTimer);
-            lsClockTimer = null;
-            if (markSession !== false) {
-                sessionStorage.setItem(SESSION_KEY, "1");
+            start() {
+                if (this.timer || this.slides.length < 2) return;
+                this.timer = setInterval(() => this.next(), this.intervalMs);
             }
-        }, parseFloat(duration) * 1000 + 30);
-    }
 
-    function bounceLockscreen() {
-        panel.classList.remove("ls-bounce");
-        if (currentY !== 0) {
-            panel.style.transition = "transform 0.28s cubic-bezier(0.2, 0.9, 0.3, 1)";
-            panel.style.transform = "translateY(0)";
-            setTimeout(() => {
-                panel.style.transition = "";
-                currentY = 0;
-                void panel.offsetWidth;
+            stop() {
+                clearInterval(this.timer);
+                clearTimeout(this.transitionTimer);
+                clearTimeout(this.animationTimer);
+
+                this.timer = null;
+                this.transitionTimer = null;
+                this.animationTimer = null;
+            }
+
+            render(slide) {
+                if (!slide) return;
+
+                const mode = slide.mode || "content";
+                const align = slide.align || "left";
+
+                this.tile.dataset.slideMode = mode;
+                this.tile.dataset.slideAlign = mode === "icon" ? "center" : align;
+
+                if (this.caption) {
+                    const captionText = typeof slide.caption === "string" ? slide.caption.trim() : "";
+
+                    this.caption.textContent = captionText;
+                    this.caption.style.display = captionText ? "block" : "none";
+                    this.caption.style.visibility = "visible";
+                    this.caption.style.opacity = "1";
+                }
+
+                if (slide.image) {
+                    this.bg.style.backgroundImage = `url("${slide.image}")`;
+                    this.bg.style.backgroundColor = slide.color || "transparent";
+                    this.bg.style.backgroundPosition = "center";
+                    this.bg.style.backgroundSize = "cover";
+                    this.bg.style.backgroundRepeat = "no-repeat";
+                } else {
+                    this.bg.style.backgroundImage = "none";
+                    this.bg.style.backgroundColor = slide.color || DT_DEFAULT_COLOR;
+                }
+
+                const overlayOpacity = Math.min(1, Math.max(0, Number(slide.overlay) || 0));
+
+                this.overlay.style.background = overlayOpacity > 0
+                    ? `rgba(0, 0, 0, ${overlayOpacity})`
+                    : "transparent";
+
+                // Reset gaya inline dari render sebelumnya
+                this.copy.style.display = "";
+                this.copy.style.flexDirection = "";
+                this.copy.style.alignItems = "";
+                this.copy.style.justifyContent = "";
+                this.copy.style.textAlign = "";
+                this.copy.style.position = "";
+                this.copy.style.inset = "";
+                this.copy.style.width = "";
+                this.copy.style.height = "";
+                this.copy.style.padding = "";
+                this.copy.style.margin = "";
+                this.copy.style.gap = "";
+                this.copy.style.zIndex = "";
+
+                this.tile.style.backgroundColor = "";
+
+                const showIcon =
+                    mode !== "image" &&
+                    typeof slide.icon === "string" &&
+                    slide.icon.trim() !== "";
+
+                this.iconWrap.replaceChildren();
+
+                if (showIcon) {
+                    const iconElement = document.createElement("i");
+
+                    iconElement.className = slide.icon.trim();
+                    iconElement.style.fontSize = slide.iconSize || DT_DEFAULT_ICON_SIZE;
+                    iconElement.style.color = slide.iconColor || "#ffffff";
+                    iconElement.style.lineHeight = "1";
+                    iconElement.style.display = "inline-block";
+
+                    this.iconWrap.appendChild(iconElement);
+
+                    this.iconWrap.style.display = "flex";
+                    this.iconWrap.style.alignItems = "center";
+                    this.iconWrap.style.justifyContent =
+                        mode === "icon" || align === "center" ? "center" : "flex-start";
+                    this.iconWrap.style.width = "100%";
+                    this.iconWrap.style.flexShrink = "0";
+
+                    if (window.FontAwesome?.dom && typeof window.FontAwesome.dom.i2svg === "function") {
+                        window.FontAwesome.dom.i2svg({ node: this.iconWrap });
+                    }
+                } else {
+                    this.iconWrap.style.display = "none";
+                    this.iconWrap.style.width = "";
+                    this.iconWrap.style.flexShrink = "";
+                    this.iconWrap.style.alignItems = "";
+                    this.iconWrap.style.justifyContent = "";
+                }
+
+                if (mode === "image") {
+                    this.tag.textContent = "";
+                    this.tag.style.display = "none";
+
+                    this.text.textContent = "";
+                    this.text.style.display = "none";
+
+                    return;
+                }
+
+                if (mode === "icon") {
+                    this.copy.style.display = "flex";
+                    this.copy.style.flexDirection = "column";
+                    this.copy.style.alignItems = "center";
+                    this.copy.style.justifyContent = "center";
+                    this.copy.style.textAlign = "center";
+                    this.copy.style.position = "absolute";
+                    this.copy.style.inset = "0";
+                    this.copy.style.width = "100%";
+                    this.copy.style.height = "100%";
+                    this.copy.style.padding = "0";
+                    this.copy.style.margin = "0";
+                    this.copy.style.gap = "0";
+                    this.copy.style.zIndex = "3";
+
+                    this.tag.textContent = "";
+                    this.tag.style.display = "none";
+
+                    this.text.textContent = "";
+                    this.text.style.display = "none";
+
+                    this.tile.style.backgroundColor = slide.color || DT_DEFAULT_COLOR;
+
+                    return;
+                }
+
+                const showTag = mode === "content" && Boolean(slide.tag);
+                const showText = mode === "content" && Boolean(slide.text);
+
+                this.tag.textContent = showTag ? slide.tag : "";
+                this.tag.style.display = showTag ? "" : "none";
+
+                this.text.textContent = showText ? slide.text : "";
+                this.text.style.display = showText ? "" : "none";
+
+                if (mode === "content" && align === "center") {
+                    this.copy.style.textAlign = "center";
+                    this.tag.style.textAlign = "center";
+                    this.text.style.textAlign = "center";
+                } else {
+                    this.copy.style.textAlign = "";
+                    this.tag.style.textAlign = "";
+                    this.text.style.textAlign = "";
+                }
+            }
+
+            next() {
+                if (this.slides.length < 2) return;
+
+                const nextIndex = (this.index + 1) % this.slides.length;
+                const nextSlide = this.slides[nextIndex];
+
+                this.index = nextIndex;
+
+                clearTimeout(this.transitionTimer);
+                clearTimeout(this.animationTimer);
+
+                this.copy.classList.remove("tile-animate-in", "tile-animate-out");
+                this.copy.classList.add("tile-animate-out");
+
+                this.transitionTimer = setTimeout(() => {
+                    this.render(nextSlide);
+
+                    this.copy.classList.remove("tile-animate-out");
+                    this.copy.classList.add("tile-animate-in");
+
+                    this.animationTimer = setTimeout(() => {
+                        this.copy.classList.remove("tile-animate-in");
+                    }, 400);
+                }, DT_TRANSITION_MS);
+            }
+        }
+
+        /* ---------- Data slide ---------- */
+
+        const dataProfile = [
+            { mode: "image", image: "assets/img/profile2.jpg" },
+            { mode: "content", color: "#00a4ef", tag: "Profile", text: "Hello, My name is Naufal Fahmi" }
+        ];
+
+        const dataMaps = [
+            {
+                mode: "icon",
+                color: "#008ed0",
+                icon: "fa-solid fa-map",
+                iconSize: "42px",
+                iconColor: "#ffffff",
+                caption: "Maps"
+            },
+            { mode: "image", image: "assets/img/tile/map.jpg" },
+            { mode: "content", image: "assets/img/tile/map.jpg", tag: "Indonesia", text: "Jakarta Pusat" }
+        ];
+
+        const dataShowcase = [
+            { mode: "icon", icon: "fa-solid fa-shop", iconSize: "38px", caption: "Project Showcases" },
+            { mode: "content", image: "assets/img/tile/hap1.png" },
+            { mode: "content", image: "assets/img/tile/evr1.png" },
+            { mode: "content", image: "assets/img/tile/tkt1.png" }
+        ];
+
+        const dataHptb = [
+            {
+                mode: "icon",
+                color: "#443bc7",
+                icon: "fa-solid fa-bars-staggered",
+                iconSize: "38px",
+                caption: "Happay"
+            },
+            {
+                mode: "content",
+                color: "#443bc7",
+                icon: "fa-solid fa-bars-staggered",
+                iconSize: "38px",
+                tag: "POS Systems"
+            }
+        ];
+
+        const dataEvtb = [
+            {
+                mode: "icon",
+                color: "#291C0F",
+                icon: "fa-brands fa-accusoft",
+                iconSize: "38px",
+                caption: "Everyday"
+            },
+            {
+                mode: "content",
+                color: "#291C0F",
+                icon: "fa-brands fa-accusoft",
+                iconSize: "38px",
+                tag: "Productivity Tools"
+            }
+        ];
+
+        const dataTicketing25 = [
+            {
+                mode: "icon",
+                color: "#5ec26a",
+                icon: "fa-solid fa-ticket",
+                iconSize: "42px",
+                iconColor: "#ffffff",
+                caption: "Ticketing"
+            },
+            {
+                mode: "content",
+                color: "#5ec26a",
+                icon: "fa-solid fa-ticket",
+                iconSize: "42px",
+                iconColor: "#ffffff",
+                tag: "Booking Your Seats Easily",
+            }
+        ];
+
+        const dataAr26 = [
+            {
+                mode: "icon",
+                color: "#FF007F",
+                icon: "fa-brands fa-unity",
+                iconSize: "42px",
+                iconColor: "#ffffff",
+                caption: "Augmented Reality"
+            },
+            {
+                mode: "content",
+                color: "#FF007F",
+                icon: "fa-brands fa-unity",
+                iconSize: "42px",
+                iconColor: "#ffffff",
+                tag: "Coming Soon...",
+            }
+        ];
+
+        const dataSqltb = [
+            { mode: "image", image: "assets/img/tile/sqltb1.png" },
+            { mode: "image", image: "assets/img/tile/sqltb2.png" }
+        ];
+
+        const dataServertb = [
+            { mode: "image", image: "assets/img/tile/ngrok.png" },
+            { mode: "image", image: "assets/img/tile/vercel.png" }
+        ];
+
+        const dataProdtb = [
+            { mode: "image", image: "assets/img/tile/php.png" },
+            { mode: "image", image: "assets/img/tile/laravel.png" }
+        ];
+
+        const dataOfficetools = [
+            { mode: "image", image: "assets/img/tile/ms.png", color: "#ffffff" },
+            { mode: "image", image: "assets/img/tile/g.png", color: "#ffffff" }
+        ];
+
+        const dataExperience = [
+            {
+                mode: "content",
+                image: "assets/img/tile/1m-square.png",
+                overlay: 0.48,
+                tag: "Mitra 2000 (2023 - 2026)",
+                text: "System Analyst",
+                caption: "Experience"
+            },
+            {
+                mode: "content",
+                image: "assets/img/tile/1m-square.png",
+                overlay: 0.48,
+                tag: "Mitra 2000 (2022 - 2023)",
+                text: "Product Data Standardization & PIM Migration",
+                caption: "Experience"
+            },
+            {
+                mode: "content",
+                image: "assets/img/tile/2s-square.png",
+                overlay: 0.48,
+                tag: "Shopee Express (2021 - 2022)",
+                text: "Geolocation Data & Internal Mapping",
+                caption: "Experience"
+            },
+            {
+                mode: "content",
+                image: "assets/img/tile/3i-square.png",
+                overlay: 0.48,
+                tag: "Idemitsu (2020 - 2021)",
+                text: "ERP Migration",
+                caption: "Experience"
+            }
+        ];
+
+        /* ---------- Inisialisasi tile ---------- */
+
+        new DynamicTile("tile-profile", dataProfile, 10500);
+        new DynamicTile("tile-maps", dataMaps, 15000);
+        new DynamicTile("tile-experience", dataExperience, 9500);
+
+        new DynamicTile("tile-showcase", dataShowcase, 10500);
+        new DynamicTile("tile-hptb", dataHptb, 15000);
+        new DynamicTile("tile-evtb", dataEvtb, 11000);
+        new DynamicTile("tile-ticketing25", dataTicketing25, 16000);
+        new DynamicTile("tile-ar26", dataAr26, 1450);
+
+        new DynamicTile("tile-sqltb", dataSqltb, 1850);
+        new DynamicTile("tile-servertb", dataServertb, 2050);
+        new DynamicTile("tile-prodtb", dataProdtb, 2250);
+        new DynamicTile("tile-officetools", dataOfficetools, 2450);
+
+        /* =========================================================
+           Navigasi
+        ========================================================= */
+        function openCalendar() { window.location.href = "app-calendar.html"; }
+        function openCertificate() { window.location.href = "app-certificate.html"; }
+        function openExperience() { window.location.href = "app-experience.html"; }
+        function openEducation() { window.location.href = "app-education.html"; }
+        function openAbout() { window.location.href = "app-about.html"; }
+        function openProfile() { window.location.href = "app-profile.html"; }
+        function openMap() { window.location.href = "app-map.html"; }
+        function openHappay() { window.location.href = "app-happay.html"; }
+        function openEveryday() { window.location.href = "app-everyday.html"; }
+        function openTicketing25() { window.location.href = "app-ticketing.html"; }
+        function openAr26() { window.location.href = "app-ar26.html"; }
+        function openShowcase() { window.location.href = "app-showcase.html"; }
+
+        /* =========================================================
+           Lock screen
+        ========================================================= */
+        (function () {
+            const SESSION_KEY = "ls_unlocked";
+            const overlay = byId("lockscreen-overlay");
+            const panel = byId("lockscreen-panel");
+            const lsTime = byId("ls-time-display");
+            const lsDate = byId("ls-date-display");
+
+            if (!overlay || !panel) return;
+
+            const DAYS = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+            const MONTHS = ["Januari", "Februari", "Maret", "April", "Mei", "Juni",
+                "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+
+            // sessionStorage bisa error (mode private / diblokir), jadi dibungkus try/catch
+            const store = {
+                get() { try { return sessionStorage.getItem(SESSION_KEY); } catch (_) { return null; } },
+                set() { try { sessionStorage.setItem(SESSION_KEY, "1"); } catch (_) { } },
+                clear() { try { sessionStorage.removeItem(SESSION_KEY); } catch (_) { } }
+            };
+
+            let lsClockTimer = null;
+            let hideTimer = null;
+            let wheelTimer = null;
+            let rafId = null;
+            let dragStartY = 0;
+            let currentY = 0;
+            let lastY = 0;
+            let lastTime = 0;
+            let velocityY = 0;
+            let isDragging = false;
+            let hasMoved = false;
+
+            function updateLsClock() {
+                const now = new Date();
+                const hh = String(now.getHours()).padStart(2, "0");
+                const mm = String(now.getMinutes()).padStart(2, "0");
+
+                if (lsTime) lsTime.textContent = `${hh}:${mm}`;
+                if (lsDate) {
+                    lsDate.textContent =
+                        `${DAYS[now.getDay()]}, ${now.getDate()} ${MONTHS[now.getMonth()]} ${now.getFullYear()}`;
+                }
+            }
+
+            function startClock() {
+                updateLsClock();
+                clearInterval(lsClockTimer);
+                lsClockTimer = setInterval(updateLsClock, 15000);
+            }
+
+            function stopClock() {
+                clearInterval(lsClockTimer);
+                lsClockTimer = null;
+            }
+
+            function dismissLockscreen(markSession = true, direction = null) {
+                if (overlay.classList.contains("ls-hidden")) return;
+
+                panel.classList.remove("ls-bounce");
+
+                const h = window.innerHeight || 800;
+                const remaining = Math.max(40, h - Math.abs(currentY));
+                const duration = Math.max(0.18, Math.min(0.42, (remaining / h) * 0.9));
+                const dir = direction !== null ? direction : (currentY >= 0 ? 1 : -1);
+
+                panel.style.transition = `transform ${duration.toFixed(2)}s cubic-bezier(0.16, 1, 0.3, 1)`;
+                panel.style.transform = `translateY(${dir * (h + 50)}px)`;
+
+                clearTimeout(hideTimer);
+                hideTimer = setTimeout(() => {
+                    overlay.classList.add("ls-hidden");
+                    overlay.classList.remove("ls-dragging");
+                    panel.style.transition = "";
+                    panel.style.transform = "";
+                    currentY = 0;
+                    isDragging = false;
+                    hasMoved = false;
+                    stopClock();
+                    if (markSession) store.set();
+                }, duration * 1000 + 30);
+            }
+
+            function playBounce() {
+                void panel.offsetWidth; // restart animasi
                 panel.classList.add("ls-bounce");
                 panel.addEventListener("animationend", () => {
                     panel.classList.remove("ls-bounce");
                 }, { once: true });
-            }, 290);
-        } else {
-            void panel.offsetWidth;
-            panel.classList.add("ls-bounce");
-            panel.addEventListener("animationend", () => {
-                panel.classList.remove("ls-bounce");
-            }, { once: true });
-        }
-    }
-
-    function onDown(e) {
-        if (e.button && e.button !== 0) return;
-        dragStartY = e.clientY ?? e.touches?.[0]?.clientY ?? 0;
-        lastY      = dragStartY;
-        lastTime   = performance.now();
-        velocityY  = 0;
-        currentY   = 0;
-        isDragging = true;
-        hasMoved   = false;
-        panel.style.transition = "none";
-        overlay.classList.add("ls-dragging");
-        if (e.pointerId && overlay.setPointerCapture) {
-            try { overlay.setPointerCapture(e.pointerId); } catch (_) {}
-        }
-    }
-
-    function onMove(e) {
-        if (!isDragging) return;
-        const clientY = e.clientY ?? e.touches?.[0]?.clientY ?? 0;
-        const now = performance.now();
-        const dt = now - lastTime;
-        if (dt > 10) {
-            velocityY = (clientY - lastY) / dt;
-            lastY = clientY;
-            lastTime = now;
-        }
-
-        currentY = clientY - dragStartY;
-        if (Math.abs(currentY) > 5) hasMoved = true;
-
-        if (!rafId) {
-            rafId = requestAnimationFrame(() => {
-                panel.style.transform = `translateY(${currentY}px)`;
-                rafId = null;
-            });
-        }
-    }
-
-    function onUp(e) {
-        if (!isDragging) return;
-        isDragging = false;
-        overlay.classList.remove("ls-dragging");
-        if (e && e.pointerId && overlay.releasePointerCapture) {
-            try { overlay.releasePointerCapture(e.pointerId); } catch (_) {}
-        }
-        if (rafId) {
-            cancelAnimationFrame(rafId);
-            rafId = null;
-        }
-
-        const h = window.innerHeight || 800;
-        const threshold = h * 0.2;
-
-        if (currentY < -threshold || (currentY < -40 && velocityY < -0.35)) {
-            dismissLockscreen(true, -1);
-        } else if (currentY > threshold || (currentY > 40 && velocityY > 0.35)) {
-            dismissLockscreen(true, 1);
-        } else {
-            bounceLockscreen();
-        }
-    }
-
-    overlay.addEventListener("click", () => {
-        if (!hasMoved) bounceLockscreen();
-        hasMoved = false;
-    });
-
-    if (window.PointerEvent) {
-        overlay.addEventListener("pointerdown", onDown);
-        overlay.addEventListener("pointermove", onMove);
-        overlay.addEventListener("pointerup", onUp);
-        overlay.addEventListener("pointercancel", onUp);
-    } else {
-        overlay.addEventListener("mousedown", onDown);
-        window.addEventListener("mousemove", onMove);
-        window.addEventListener("mouseup", onUp);
-
-        overlay.addEventListener("touchstart", onDown, { passive: true });
-        window.addEventListener("touchmove", onMove, { passive: true });
-        window.addEventListener("touchend", onUp);
-    }
-
-    let wheelTimer = null;
-    overlay.addEventListener("wheel", (e) => {
-        if (overlay.classList.contains("ls-hidden") || isDragging) return;
-        e.preventDefault();
-        hasMoved = true;
-        panel.style.transition = "none";
-
-        currentY -= e.deltaY;
-        const h = window.innerHeight || 800;
-        if (currentY < -h) currentY = -h;
-        if (currentY > h) currentY = h;
-
-        panel.style.transform = `translateY(${currentY}px)`;
-
-        clearTimeout(wheelTimer);
-        wheelTimer = setTimeout(() => {
-            const threshold = (window.innerHeight || 800) * 0.2;
-            if (currentY < -threshold) {
-                dismissLockscreen(true, -1);
-            } else if (currentY > threshold) {
-                dismissLockscreen(true, 1);
-            } else {
-                bounceLockscreen();
             }
-        }, 100);
-    }, { passive: false });
 
-    document.addEventListener("keydown", (e) => {
-        if (overlay.classList.contains("ls-hidden")) return;
-        if (e.key === "Escape" || e.key === "ArrowUp" || e.key === "Enter" || e.key === " ") {
-            dismissLockscreen(true, -1);
-        } else if (e.key === "ArrowDown") {
-            dismissLockscreen(true, 1);
-        }
-    });
+            function bounceLockscreen() {
+                panel.classList.remove("ls-bounce");
 
-    window.showLockscreen = function () {
-        updateLsClock();
-        currentY = 0;
-        isDragging = false;
-        hasMoved = false;
-        panel.style.transition = "";
-        panel.style.transform = "translateY(0)";
-        panel.classList.remove("ls-bounce");
-        overlay.classList.remove("ls-hidden", "ls-dragging");
-        clearInterval(lsClockTimer);
-        lsClockTimer = setInterval(updateLsClock, 15000);
-        sessionStorage.removeItem(SESSION_KEY);
-    };
+                if (currentY !== 0) {
+                    panel.style.transition = "transform 0.28s cubic-bezier(0.2, 0.9, 0.3, 1)";
+                    panel.style.transform = "translateY(0)";
+                    setTimeout(() => {
+                        panel.style.transition = "";
+                        currentY = 0;
+                        playBounce();
+                    }, 290);
+                } else {
+                    playBounce();
+                }
+            }
 
-    if (!sessionStorage.getItem(SESSION_KEY)) {
-        updateLsClock();
-        lsClockTimer = setInterval(updateLsClock, 15000);
-    } else {
-        overlay.classList.add("ls-hidden");
-    }
-}());
+            /* ---------- Drag (Pointer Events: mouse + touch) ---------- */
 
-</script>
+            function onDown(e) {
+                if (overlay.classList.contains("ls-hidden")) return;
+                if (e.pointerType === "mouse" && e.button !== 0) return;
 
+                clearTimeout(hideTimer);
+                dragStartY = e.clientY;
+                lastY = dragStartY;
+                lastTime = performance.now();
+                velocityY = 0;
+                currentY = 0;
+                isDragging = true;
+                hasMoved = false;
+
+                panel.style.transition = "none";
+                overlay.classList.add("ls-dragging");
+
+                try { overlay.setPointerCapture(e.pointerId); } catch (_) { }
+            }
+
+            function onMove(e) {
+                if (!isDragging) return;
+
+                const clientY = e.clientY;
+                const now = performance.now();
+                const dt = now - lastTime;
+
+                if (dt > 10) {
+                    velocityY = (clientY - lastY) / dt;
+                    lastY = clientY;
+                    lastTime = now;
+                }
+
+                currentY = clientY - dragStartY;
+                if (Math.abs(currentY) > 5) hasMoved = true;
+
+                if (!rafId) {
+                    rafId = requestAnimationFrame(() => {
+                        panel.style.transform = `translateY(${currentY}px)`;
+                        rafId = null;
+                    });
+                }
+            }
+
+            function onUp(e) {
+                if (!isDragging) return;
+
+                isDragging = false;
+                overlay.classList.remove("ls-dragging");
+
+                try { overlay.releasePointerCapture(e.pointerId); } catch (_) { }
+
+                if (rafId) {
+                    cancelAnimationFrame(rafId);
+                    rafId = null;
+                }
+
+                const h = window.innerHeight || 800;
+                const threshold = Math.min(100, Math.max(60, h * 0.12));
+
+                const swipedUp = currentY < -threshold || (currentY < -30 && velocityY < -0.25);
+                const swipedDown = currentY > threshold || (currentY > 30 && velocityY > 0.25);
+
+                if (swipedUp) {
+                    dismissLockscreen(true, -1);
+                } else if (swipedDown) {
+                    dismissLockscreen(true, 1);
+                } else if (hasMoved) {
+                    bounceLockscreen();
+                }
+            }
+
+            overlay.addEventListener("pointerdown", onDown);
+            overlay.addEventListener("pointermove", onMove);
+            overlay.addEventListener("pointerup", onUp);
+            overlay.addEventListener("pointercancel", onUp);
+
+            overlay.addEventListener("click", () => {
+                if (!hasMoved) bounceLockscreen();
+                hasMoved = false;
+            });
+
+            /* ---------- Mouse wheel ---------- */
+
+            overlay.addEventListener("wheel", (e) => {
+                if (overlay.classList.contains("ls-hidden") || isDragging) return;
+                e.preventDefault();
+
+                hasMoved = true;
+                panel.style.transition = "none";
+
+                const h = window.innerHeight || 800;
+                currentY = Math.max(-h, Math.min(h, currentY - e.deltaY));
+                panel.style.transform = `translateY(${currentY}px)`;
+
+                clearTimeout(wheelTimer);
+                wheelTimer = setTimeout(() => {
+                    const threshold = h * 0.2;
+                    if (currentY < -threshold) dismissLockscreen(true, -1);
+                    else if (currentY > threshold) dismissLockscreen(true, 1);
+                    else bounceLockscreen();
+                }, 100);
+            }, { passive: false });
+
+            /* ---------- Keyboard ---------- */
+
+            document.addEventListener("keydown", (e) => {
+                if (overlay.classList.contains("ls-hidden")) return;
+
+                if (e.key === "Escape" || e.key === "ArrowUp" || e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    dismissLockscreen(true, -1);
+                } else if (e.key === "ArrowDown") {
+                    e.preventDefault();
+                    dismissLockscreen(true, 1);
+                }
+            });
+
+            /* ---------- API publik (dipakai tombol "Lock Screen") ---------- */
+
+            window.showLockscreen = function () {
+                clearTimeout(hideTimer);
+                currentY = 0;
+                isDragging = false;
+                hasMoved = false;
+                panel.style.transition = "";
+                panel.style.transform = "translateY(0)";
+                panel.classList.remove("ls-bounce");
+                document.documentElement.classList.remove("ls-unlocked");
+                overlay.classList.remove("ls-hidden", "ls-dragging");
+                startClock();
+                store.clear();
+            };
+
+            /* ---------- Init ---------- */
+
+            if (store.get()) {
+                overlay.classList.add("ls-hidden");
+            } else {
+                startClock();
+            }
+        })();
+
+        /* home-mobile.js — efek khusus mobile (<= 640px). Dimuat di akhir <body>. */
+        (function () {
+            "use strict";
+            const root = document.documentElement, body = document.body;
+            const ws = document.querySelector(".workspace");
+            const overlay = document.getElementById("lockscreen-overlay");
+            const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+            const mobile = matchMedia("(max-width: 640px)"); // efek hanya jalan di mobile
+
+            const isLocked = () => !!overlay && !overlay.classList.contains("ls-hidden") && !root.classList.contains("ls-unlocked");
+            const syncScrollLock = () => root.classList.toggle("ls-locked", isLocked());
+
+            /* Animasi masuk tile: jalan saat pertama tampil & setiap habis unlock */
+            document.querySelectorAll(".workspace .tile").forEach((t, i) => t.style.setProperty("--i", Math.min(i, 24)));
+            let enterTimer;
+            function playEnter() {
+                if (reduce || !mobile.matches) return;
+                clearTimeout(enterTimer);
+                body.classList.remove("start-enter");
+                void body.offsetWidth;
+                body.classList.add("start-enter");
+                enterTimer = setTimeout(() => body.classList.remove("start-enter"), 1800);
+            }
+
+            let wasLocked = isLocked();
+            syncScrollLock();
+            if (!wasLocked) playEnter();
+            if (overlay) {
+                new MutationObserver(() => {
+                    const now = isLocked();
+                    syncScrollLock();
+                    if (wasLocked && !now) { window.scrollTo(0, 0); playEnter(); }
+                    wasLocked = now;
+                }).observe(overlay, { attributes: true, attributeFilter: ["class"] });
+            }
+
+            /* Efek tekan: tile miring ke arah titik sentuh */
+            if (ws) {
+                let cur = null, timer = 0, sx = 0, sy = 0;
+                const release = () => {
+                    clearTimeout(timer);
+                    if (!cur) return;
+                    cur.classList.remove("pressed");
+                    cur.style.removeProperty("--rx");
+                    cur.style.removeProperty("--ry");
+                    cur = null;
+                };
+                ws.addEventListener("pointerdown", (e) => {
+                    if (!mobile.matches) return;
+                    if (e.pointerType === "mouse" && e.button !== 0) return;
+                    const t = e.target.closest(".tile");
+                    if (!t) return;
+                    release();
+                    sx = e.clientX; sy = e.clientY;
+                    // jeda singkat agar tidak "berkedip" saat jari mulai scroll
+                    timer = setTimeout(() => {
+                        const r = t.getBoundingClientRect();
+                        const nx = ((sx - r.left) / r.width - .5) * 2;
+                        const ny = ((sy - r.top) / r.height - .5) * 2;
+                        const max = r.width > 150 ? 5 : 9;
+                        t.style.setProperty("--ry", (nx * max).toFixed(1) + "deg");
+                        t.style.setProperty("--rx", (-ny * max).toFixed(1) + "deg");
+                        t.classList.add("pressed");
+                        cur = t;
+                    }, e.pointerType === "touch" ? 70 : 0);
+                });
+                ws.addEventListener("pointermove", (e) => { if (Math.hypot(e.clientX - sx, e.clientY - sy) > 10) release(); });
+                ["pointerup", "pointercancel", "pointerleave"].forEach((n) =>
+                    ws.addEventListener(n, () => { clearTimeout(timer); setTimeout(release, 90); }));
+            }
+
+        })();
+    </script>
 </body>
+
 </html>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Experience</title>
+    <title>Showcase | Augmented Reality</title>
     <script src="https://cdn.tailwindcss.com">
         function setupInfiniteAppHeaders() {
             const nav = document.querySelector('.app-headers');
@@ -44,6 +44,8 @@
         setupInfiniteAppHeaders();
 
     </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://kit.fontawesome.com/c66aa74d08.js" crossorigin="anonymous"></script>
     <style>
         /* 1. KUNCI UTAMA AGAR FIT HORIZONTAL & LAYAR TERKUNCI */
@@ -68,7 +70,7 @@
 
         /* 2. TOP BLACK BAR (APP BAR) - STICKY / TETAP DI ATAS */
         .app-bar {
-            background-color: #008ed0; 
+            background-color: #FF007F; 
             height: 55px;
             width: 100%;
             display: flex;
@@ -121,16 +123,15 @@
             background-color: rgba(255, 255, 255, 0.2);
         }
 
-        /* 3. SUB-HEADERS (PANORAMIC STYLE) - STICKY IKUT DI ATAS */
         .app-headers {
             width: 100%;
-            padding: 25px 40px 15px 40px;
+            padding: 20px 40px 0 40px;
             display: flex;
             gap: 40px;
             flex-shrink: 0;
-            background-color: #1d1d1d; /* Supaya tidak tembus pandang saat di-scroll */
+            background-color: #1d1d1d;
             z-index: 99;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
         
             overflow-x: auto;
             overflow-y: hidden;
@@ -150,7 +151,9 @@
             font-weight: 300;
             color: #7a7a7a;
             cursor: pointer;
-            transition: color 0.2s;
+            padding-bottom: 10px;
+            border-bottom: 4px solid transparent;
+            transition: color 0.2s, border-color 0.2s;
         
             flex-shrink: 0;
             white-space: nowrap;
@@ -159,19 +162,20 @@
         .header-item.active {
             color: #ffffff;
             font-weight: 400;
+            border-bottom: 4px solid #FF007F;
         }
 
         .header-item:hover {
             color: #cccccc;
-        }
+}
 
-        /* 4. CONTENT AREA - AREA INI SAJA YANG BISA SCROLL VERTIKAL */
+        /* 4. CONTENT AREA - AREA SCROLL VERTIKAL */
         .app-content {
             width: 100%;
             flex-grow: 1;
             padding: 20px 40px 50px 40px;
-            overflow-y: auto;   /* Scroll vertikal aktif di sini */
-            overflow-x: hidden; /* Mencegah scroll samping */
+            overflow-y: auto;
+            overflow-x: hidden;
             display: flex;
             flex-direction: column;
         }
@@ -188,102 +192,96 @@
             display: flex;
         }
 
-        .app-headers {
+        /* --- TAB 1: OVERVIEW (Windows Store Style Detail) --- */
+        .overview-top-section {
             width: 100%;
-            padding: 20px 40px 0 40px; /* Padding bawah disesuaikan jadi 0 agar garis bawah pas di ujung bawah */
             display: flex;
             gap: 40px;
-            flex-shrink: 0;
-            background-color: #1d1d1d;
-            z-index: 99;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08); /* Garis tipis dasar penjelas area header */
-        }
-
-        .header-item {
-            font-size: 28px;
-            font-weight: 300;
-            color: #7a7a7a;
-            cursor: pointer;
-            padding-bottom: 10px;                  /* Memberikan ruang untuk garis bawah */
-            border-bottom: 4px solid transparent;   /* Default transparan untuk state biasa */
-            transition: color 0.2s, border-color 0.2s;
-        }
-
-        .header-item.active {
-            color: #ffffff;
-            font-weight: 400;
-            border-bottom: 4px solid #008ed0;       /* INI YANG DITAMBAHKAN: Garis tebal warna aksen saat aktif */
-        }
-
-        .header-item:hover {
-            color: #cccccc;
-            border-bottom: 4px solid rgba(40, 182, 243, 0.49)/* Efek hover interaktif saat kursor mendekat */
-        }
-
-        /* --- BAGIAN ATAS --- */
-        .reader-top-section {
-            width: 100%;
-            display: flex;
-            gap: 30px;
             align-items: flex-start;
         }
 
-        .reader-headers-left {
-            flex-grow: 0;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            min-width: 0;
-        }
-
-        .reader-main-title {
-            font-size: 32px;
-            font-weight: 300;
-            color: #ffffff;
-            word-break: break-word;
-        }
-
-        .reader-year {
-            font-size: 16px;
-            font-weight: 400;
-            color: #00bcf2;
-        }
-
-        .reader-short-desc {
-            font-size: 14px;
-            color: #aaaaaa;
-            font-weight: 300;
-            line-height: 1.5;
-            word-break: break-word;
-        }
-
-        .reader-top-image {
-            width: 140px;
-            height: 140px;
+        .overview-hero-image {
+            width: 220px;
+            height: 220px;
+            background-color: #ffffff;
             display: flex;
             align-items: center;
             justify-content: center;
-            background-color: #ffffff;
             flex-shrink: 0;
             overflow: hidden;
         }
 
-        .reader-top-image img {
+        .overview-hero-image img {
             width: 100%;
             height: 100%;
             object-fit: contain;
             object-position: center;
         }
 
-        /* --- BAGIAN TENGAH: Teks Bacaan --- */
-        .reader-middle-content {
+        .overview-info {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            flex-grow: 1;
+            min-width: 0;
+        }
+
+        .overview-title {
+            font-size: 36px;
+            font-weight: 300;
+            color: #ffffff;
+            word-break: break-word;
+        }
+
+        .overview-subtitle {
+            font-size: 16px;
+            color: #FF007F;
+            font-weight: 400;
+        }
+
+        .overview-meta {
+            font-size: 14px;
+            color: #aaaaaa;
+            font-weight: 300;
+        }
+
+        /* Tombol Install ala Windows Store */
+        .install-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background-color: #FF007F;
+            color: #ffffff;
+            border: none;
+            padding: 10px 30px;
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            width: fit-content;
+            transition: background 0.2s, transform 0.1s;
+            margin-top: 5px;
+        }
+
+        .install-btn:hover {
+            background-color: #FF007F;
+        }
+
+        .install-btn:active {
+            transform: scale(0.98);
+        }
+
+        .overview-middle-content {
             width: 100%;
             display: flex;
             flex-direction: column;
             gap: 16px;
+            margin-top: 10px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            padding-top: 25px;
         }
 
-        .reader-middle-content p {
+        .overview-middle-content p {
             font-size: 15px;
             line-height: 1.8;
             color: #dddddd;
@@ -291,14 +289,12 @@
             word-break: break-word;
         }
 
-        /* --- BAGIAN BAWAH: 3 Kotak Gambar Vertikal / Berjajar dengan Hover Effect --- */
-        .reader-bottom-gallery {
+        /* --- TAB 2: GALLERY (Grid dengan Hover Effect) --- */
+        .gallery-grid {
             width: 100%;
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 20px;
-            height: auto;
-            margin-bottom: 20px;
         }
 
         .gallery-box {
@@ -311,7 +307,7 @@
             cursor: pointer;
             overflow: hidden;
             width: 100%;
-            height: 100%;
+            height: auto;
             transition: border-color 0.2s;
         }
 
@@ -322,16 +318,14 @@
             transition: opacity 0.3s ease;
         }
 
-        /* Efek Redup (Opacity) pada Gambar saat Hover */
         .gallery-box:hover img {
             opacity: 0.3;
         }
 
         .gallery-box:hover {
-            border-color: #00bcf2;
+            border-color: #FF007F;
         }
 
-        /* Konten Text & Tag yang Muncul saat Hover */
         .gallery-overlay {
             position: absolute;
             inset: 0;
@@ -339,7 +333,7 @@
             flex-direction: column;
             justify-content: flex-end;
             padding: 15px;
-            background: rgba(0, 0, 0, 0.4); /* Efek gelap tipis di balik text */
+            background: rgba(0, 0, 0, 0.4);
             opacity: 0;
             transition: opacity 0.3s ease;
         }
@@ -350,7 +344,7 @@
 
         .gallery-tag {
             align-self: flex-start;
-            background-color: #00bcf2;
+            background-color: #FF007F;
             color: #ffffff;
             font-size: 10px;
             font-weight: 600;
@@ -365,6 +359,68 @@
             font-weight: 400;
             color: #ffffff;
             line-height: 1.3;
+        }
+
+        /* --- TAB 3: TOOLS (2 Columns App List ala Windows Store) --- */
+        .tools-grid {
+            width: 100%;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* 2 Kolom Kiri & Kanan */
+            gap: 20px;
+        }
+
+        .tool-card {
+            background-color: #262626;
+            padding: 18px;
+            display: flex;
+            gap: 15px;
+            align-items: flex-start;
+            border: 2px solid transparent;
+            transition: background 0.2s, border-color 0.2s;
+        }
+
+        .tool-card:hover {
+            background-color: #303030;
+            border-color: #FF007F;
+        }
+
+        .tool-tile {
+            width: 56px;
+            height: 56px;
+            background-color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            overflow: hidden;
+        }
+
+        .tool-tile img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .tool-info {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            min-width: 0;
+        }
+
+        .tool-name {
+            font-size: 16px;
+            font-weight: 500;
+            color: #ffffff;
+        }
+
+        .tool-desc {
+            font-size: 13px;
+            color: #aaaaaa;
+            font-weight: 300;
+            line-height: 1.4;
+            opacity: 0.85; /* Transparansi teks sesuai request */
+            word-break: break-word;
         }
     
         @media (max-width: 768px) {
@@ -388,169 +444,145 @@
     </style>
 </head>
 <body>
-
-    <!-- 1. TOP BLACK BAR (STAY AT TOP) -->
     <header class="app-bar">
         <div class="app-bar-left">
-            <div class="app-icon"><i class="fa-solid fa-briefcase"></i></div>
-            <span class="app-title">Experience</span>
+            <div class="app-icon"><i class="fa-brands fa-unity"></i></div>
+            <span class="app-title">Augmented Reality</span>
         </div>
         <div class="app-bar-right">
             <button class="close-btn" onclick="backToStartMenu()" title="Back to Start Menu">✕</button>
         </div>
     </header>
-
     <nav class="app-headers">
-        <div class="header-item active" onclick="switchTab(0)">Mitra 2000 - SA</div>
-        <div class="header-item" onclick="switchTab(1)">Mitra 2000 - PDA</div>
-        <div class="header-item" onclick="switchTab(2)">Shopee Express</div>
-        <div class="header-item" onclick="switchTab(3)">Idemitsu</div>
+        <div class="header-item active" onclick="switchTab(0)">Overview</div>
+        <div class="header-item" onclick="switchTab(1)">Gallery</div>
+        <div class="header-item" onclick="switchTab(2)">Tools</div>
     </nav>
-
     <main class="app-content">
         <section class="content-section active" id="section-0">
-            <div class="reader-top-section">
-                <div class="reader-headers-left">
-                    <div class="reader-top-image">
-                        <img src="assets/img/tile/1m-square.png" alt="nusamandiri">
-                    </div>
+            <div class="overview-top-section">
+                <div class="overview-hero-image">
+                    <img src="assets/img/tile/hap1.png" alt="Happay">
                 </div>
-                <div class="reader-headers-left">
-                    <h2 class="reader-main-title">System Analyst</h2>
-                    <div class="reader-year">2023 - 2026</div>
-                    <div class="reader-short-desc"><i class="fa-solid fa-location-dot"></i> Jakarta Timur, Indonesia - Hybrid</div>
+                <div class="overview-info">
+                    <h2 class="overview-title">Augmented Reality</h2>
+                    <div class="overview-subtitle">Free</div>
+                    <div class="overview-meta"><i class="fa-solid fa-layer-group"></i> 360° Media</div>
+                    <div style="display: flex; gap: 15px;">
+                        <a href="https://archristmast26.vercel.app" target="_blank" class="install-btn">
+                            <i class="fa-solid fa-link"></i> Open
+                        </a>
+                        <a href="https://github.com/partnerspock/ARChristmast26" target="_blank" class="install-btn" style="background: #2b2b2b;">
+                            <i class="fa-brands fa-github"></i> Repo
+                        </a>
+                    </div>
                 </div>
             </div>
-            <div class="reader-middle-content">
-                <p>Supported ERP and business system implementation across Head Office and Branch operations, covering Sales, Purchasing, Warehouse, Logistics, Finance, Accounting, Marketplace Fulfillment, POS, service booking, and reporting.</p>
-                <p>Validated modules from development through UAT and deployment by testing functional workflows, assessing downstream impacts, and coordinating fixes and retesting with developers.</p>
-                <p>Investigated transaction, inventory, reporting, and accounting issues by tracing system behavior and underlying data to identify root causes and determine whether developer changes or data corrections were required.</p>
-                <p>Identified a marketplace inventory gap where stock was deducted at checkout before fulfillment, and worked with developers to move the stock-out trigger to the fulfillment process to align inventory movement with operational and accounting flow.</p>
-                <p>Translated operational requests into functional workflows, including a marketplace fulfillment report with filtering, pickup status tracking, reversal handling, and validation rules; also supported branch implementation, user training, and operational monitoring.</p>
-            </div>
-            <div class="reader-bottom-gallery">
-                <div class="gallery-box">
-                    <img src="assets/img/app-experience/1m.png" alt="Gallery 1">
-                    <div class="gallery-overlay">
-                        <span class="gallery-tag">My Team</span>
-                        <div class="gallery-text">IT Development</div>
-                    </div>
-                </div>
-                <div class="gallery-box">
-                    <img src="assets/img/app-experience/2m.jpg" alt="Gallery 2">
-                    <div class="gallery-overlay">
-                        <span class="gallery-tag">Time Block</span>
-                        <div class="gallery-text">Focus without any Distractions</div>
-                    </div>
-                </div>
-                <div class="gallery-box">
-                    <img src="assets/img/app-experience/3m.png" alt="Gallery 3">
-                    <div class="gallery-overlay">
-                        <span class="gallery-tag">Training & UAT</span>
-                        <div class="gallery-text">Medan's Branch</div>
-                    </div>
-                </div>
-                <div class="gallery-box">
-                    <img src="assets/img/app-experience/4m.png" alt="Gallery 3">
-                    <div class="gallery-overlay">
-                        <span class="gallery-tag">Training & UAT</span>
-                        <div class="gallery-text">Jakarta's Branch</div>
-                    </div>
-                </div>
-                <div class="gallery-box">
-                    <img src="assets/img/app-experience/6m.png" alt="Gallery 3">
-                    <div class="gallery-overlay">
-                        <span class="gallery-tag">My Workspace</span>
-                        <div class="gallery-text">Where Ideas Are Conceived and Ways to Execute Are Found</div>
-                    </div>
-                </div>
+            <div class="overview-middle-content">
+                <p>Developed an interactive Web Augmented Reality (WebAR) platform designed for community events, enabling users to visualize event models in immersive 3D directly through their mobile web browsers.</p>
+                <p>Implemented WebAR functionality using GLB 3D models, allowing attendees and visitors to inspect detailed digital designs, layouts, or objects in real-world scale using just their device camera—no app download required.</p>
+                <p>Built the application utilizing modern web technologies and 3D rendering integration, ensuring smooth performance, responsive design, and an accessible user experience across various mobile devices.</p>
+                <p>Designed the platform to boost community engagement and event interaction, creating a seamless bridge between digital 3D modeling and real-world visualization.<p>
+                <p>Currently preparing the production deployment environment using a VPS, with domain configuration and final deployment planned as the next steps. Source code and version control are managed through GitHub.</p>
             </div>
         </section>
-
         <section class="content-section" id="section-1">
-            <div class="reader-top-section">
-                <div class="reader-headers-left">
-                    <div class="reader-top-image">
-                        <img src="assets/img/tile/1m-square.png" alt="nusamandiri">
+            <div class="gallery-grid">
+                <div class="gallery-box">
+                    <img src="assets/img/app-happay/h1.png">
+                    <div class="gallery-overlay">
+                        <span class="gallery-tag">Desktop</span>
+                        <div class="gallery-text">Item Inventory Report</div>
                     </div>
                 </div>
-                <div class="reader-headers-left">
-                    <h2 class="reader-main-title">Product Data Analyst</h2>
-                    <div class="reader-year">2022 - 2023</div>
-                    <div class="reader-short-desc"><i class="fa-solid fa-location-dot"></i> Jakarta Timur, Indonesia - On Site</div>
-                </div>
-            </div>
-            <div class="reader-middle-content">
-                <p>Migrated and standardized 10,935 product records from an in-house legacy system into a new PIM after restructuring and cleansing raw data for system requirements.</p>
-                <p>Improved processing throughput approximately 4×, from 28 to 112 SKU/hour, by combining spreadsheet automation with SQL-based bulk processing.</p>
-                <p>Developed SQL queries and stored procedures for bulk database updates and performed duplicate checks across SKU, part number, and product code to maintain data quality.</p>
-            </div>
-            <div class="reader-bottom-gallery">
                 <div class="gallery-box">
-                    <img src="assets/img/app-experience/5m.png" alt="Gallery 3">
+                    <img src="assets/img/app-happay/h2.png">
                     <div class="gallery-overlay">
-                        <span class="gallery-tag">Event</span>
-                        <div class="gallery-text">Company's Gathering</div>
+                        <span class="gallery-tag">Desktop</span>
+                        <div class="gallery-text">Item Management</div>
+                    </div>
+                </div>
+                <div class="gallery-box">
+                    <img src="assets/img/app-happay/h3.png">
+                    <div class="gallery-overlay">
+                        <span class="gallery-tag">Desktop</span>
+                        <div class="gallery-text">Region Management</div>
+                    </div>
+                </div>
+                <div class="gallery-box">
+                    <img src="assets/img/app-happay/h4.png">
+                    <div class="gallery-overlay">
+                        <span class="gallery-tag">Mobile</span>
+                        <div class="gallery-text">Sales & Payment</div>
+                    </div>
+                </div>
+                <div class="gallery-box">
+                    <img src="assets/img/app-happay/h5.png">
+                    <div class="gallery-overlay">
+                        <span class="gallery-tag">Mobile</span>
+                        <div class="gallery-text">Region Management</div>
+                    </div>
+                </div>
+                <div class="gallery-box">
+                    <img src="assets/img/app-happay/h6.png">
+                    <div class="gallery-overlay">
+                        <span class="gallery-tag">Mobile</span>
+                        <div class="gallery-text">Stock HIstory Audit</div>
                     </div>
                 </div>
             </div>
         </section>
 
         <section class="content-section" id="section-2">
-            <div class="reader-top-section">
-                <div class="reader-headers-left">
-                    <div class="reader-top-image">
-                        <img src="assets/img/tile/2s-square.png" alt="Google">
+            <div class="tools-grid">
+                <div class="tool-card">
+                    <div class="tool-tile">
+                        <img src="assets/img/tile/php.png" alt="ERP System">
+                    </div>
+                    <div class="tool-info">
+                        <div class="tool-name">PHP</div>
+                        <div class="tool-desc">Programming Language</div>
                     </div>
                 </div>
-                <div class="reader-headers-left">
-                    <h2 class="reader-main-title">Geolocation Data Support</h2>
-                    <div class="reader-year">2021 - 2022</div>
-                    <div class="reader-short-desc"><i class="fa-solid fa-location-dot"></i> Jakarta Utara, Indonesia - Hybrid</div>
+                <div class="tool-card">
+                    <div class="tool-tile" style="background-color: #008ed0; font-size:28px;">
+                        <i class="fa-brands fa-css"></i>
+                    </div>
+                    <div class="tool-info">
+                        <div class="tool-name">CSS</div>
+                        <div class="tool-desc">Programming Language</div>
+                    </div>
                 </div>
-            </div>
-            <div class="reader-middle-content">
-                <p>Processed 100–120+ geolocation cases per day, cleansing and validating customer location data from the existing system and Google Maps for internal mapping database integration.</p>
-                <p>Coordinated daily workload across a 6-person team, distributing approximately 100–120+ cases per person and monitoring district coverage, import failures, and progress.</p>
-            </div>
-            <div class="reader-bottom-gallery">
-                <div class="gallery-box">
-                    <img src="assets/img/app-experience/1s.jpg" alt="1s">
-                    <div class="gallery-overlay">
-                        <span class="gallery-tag">My Team</span>
-                        <div class="gallery-text">Geolocation Support</div>
+                <div class="tool-card">
+                    <div class="tool-tile" style="background-color: #ffffff; font-size:28px;">
+                        <i class="fa-solid fa-font-awesome" style="color: rgb(116, 192, 252);"></i>
+                    </div>
+                    <div class="tool-info">
+                        <div class="tool-name">Font Awesome</div>
+                        <div class="tool-desc">Icon Library</div>
+                    </div>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-tile" style="background-color: #000000;">
+                        <i class="fa-brands fa-github" alt="Github" style="font-size:28px;"></i>
+                    </div>
+                    <div class="tool-info">
+                        <div class="tool-name">Github</div>
+                        <div class="tool-desc">Multi-Device Syncing</div>
+                    </div>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-tile">
+                        <img src="assets/img/tile/antigravity.jpg" alt="Antigravity" style="width:24px;">
+                    </div>
+                    <div class="tool-info">
+                        <div class="tool-name">Antigravity</div>
+                        <div class="tool-desc">Code Editor</div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section class="content-section" id="section-3">
-            <div class="reader-top-section">
-                <div class="reader-headers-left">
-                    <div class="reader-top-image">
-                        <img src="assets/img/tile/3i-square.png" alt="Idemitsu B2B">
-                    </div>
-                </div>
-                <div class="reader-headers-left">
-                    <h2 class="reader-main-title">Finance & Accounting ERP Support</h2>
-                    <div class="reader-year">2020 - 2021</div>
-                    <div class="reader-short-desc"><i class="fa-solid fa-location-dot"></i> Jakarta Utara, Indonesia - On Site</div>
-                </div>
-            </div>
-            <div class="reader-middle-content">
-                <p>Supported SAP ERP → Infor ERP migration by validating invoice and sales data during the system transition.</p>
-                <p>Reconciled Sales and VAT accounts against the legacy system and investigated invoice processing issues with Finance, Accounting, Logistics, and Sales Administration.</p>
-            </div>
-            <div class="reader-bottom-gallery">
-                <div class="gallery-box">
-                    <img src="assets/img/app-experience/1i.jpg" alt="1s">
-                    <div class="gallery-overlay">
-                        <span class="gallery-tag">My Team</span>
-                        <div class="gallery-text">Finance & Accounting</div>
-                    </div>
-                </div>
-            </div>
-        </section>
     </main>
 
     <script>

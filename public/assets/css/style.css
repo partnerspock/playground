@@ -16,10 +16,14 @@ body {
 
 html {
     background-color: #123b64;
+    -webkit-text-size-adjust: 100%;
+    overscroll-behavior-y: none;
+    -webkit-tap-highlight-color: transparent;
 }
 
 body {
     min-height: 100vh;
+    min-height: 100dvh;
     overflow-x: hidden;
     position: relative;
     isolation: isolate;
@@ -31,7 +35,8 @@ body {
 
 .bg-img {
     position: fixed;
-    inset: 0;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -50,6 +55,8 @@ body {
             rgba(0, 30, 65, 0.2),
             rgba(0, 30, 65, 0.1));
 }
+
+/* ---------- Animations ---------- */
 
 @keyframes slideUpIn {
     0% {
@@ -89,6 +96,21 @@ body {
     will-change: transform, opacity;
 }
 
+/* Animasi masuk tile (turnstile ala Windows Phone) */
+@keyframes tileIn {
+    from {
+        opacity: 0;
+        transform: perspective(700px) rotateY(-80deg) translateX(-14px);
+    }
+
+    to {
+        opacity: 1;
+        transform: perspective(700px) rotateY(0) translateX(0);
+    }
+}
+
+/* ---------- Base controls ---------- */
+
 button {
     font: inherit;
 }
@@ -103,6 +125,8 @@ a,
 a .tile {
     cursor: pointer;
 }
+
+/* ---------- Top bar ---------- */
 
 .topbar {
     display: flex;
@@ -152,6 +176,8 @@ a .tile {
     box-shadow: 0 2px 12px #0004;
 }
 
+/* ---------- Workspace / sections ---------- */
+
 .workspace {
     display: flex;
     flex-direction: row;
@@ -177,7 +203,7 @@ a .tile {
 .group-title {
     margin: 0 0 8px 2px;
     font-size: 18px;
-    text-transform: normal;
+    text-transform: none;
     letter-spacing: -1px;
     color: rgba(255, 255, 255, 0.75);
     font-weight: 200;
@@ -213,6 +239,18 @@ a .tile {
     align-content: start;
 }
 
+/* 4 tile kecil digabung jadi 1 blok medium (seperti Windows Phone) */
+.tile-cluster {
+    grid-column: span 2;
+    grid-row: span 2;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: var(--tile-gap);
+}
+
+/* ---------- Tiles ---------- */
+
 .tile {
     position: relative;
     display: flex;
@@ -224,9 +262,18 @@ a .tile {
     color: #fff;
     cursor: default;
     text-align: left;
+    text-decoration: none;
     isolation: isolate;
     box-shadow: 0 3px 8px #0001;
     transition: filter 0.16s ease, box-shadow 0.16s ease;
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+    touch-action: manipulation;
+}
+
+.tile img {
+    -webkit-user-drag: none;
 }
 
 .tile:hover {
@@ -235,8 +282,13 @@ a .tile {
     z-index: 2;
 }
 
-.tile:active {
-    transform: none;
+/* di layar sentuh, hover tidak boleh "nyangkut" setelah tap */
+@media (hover: none) {
+    .tile:hover {
+        filter: none;
+        box-shadow: 0 3px 8px #0001;
+        z-index: auto;
+    }
 }
 
 .tile:focus-visible {
@@ -277,11 +329,13 @@ a .tile {
     opacity: 1;
     color: #fff;
     font-size: 12px;
-    font-weight: 400;
+    font-weight: 100;
     line-height: 1.4;
     text-shadow: 0 1px 4px rgba(0, 0, 0, 0.65);
     pointer-events: none;
 }
+
+/* ---------- Dynamic tiles ---------- */
 
 .dynamic-tile {
     position: relative;
@@ -367,11 +421,13 @@ a .tile {
     opacity: 1;
     color: #fff;
     font-size: 12px;
-    font-weight: 400;
+    font-weight: 100;
     line-height: 1.4;
     text-shadow: 0 1px 4px rgba(0, 0, 0, 0.65);
     pointer-events: none;
 }
+
+/* ---------- Tile sizes ---------- */
 
 .one {
     grid-column: span 1;
@@ -392,6 +448,8 @@ a .tile {
     grid-column: span 4;
     grid-row: span 4;
 }
+
+/* ---------- Tile colors ---------- */
 
 .blue {
     background: linear-gradient(135deg, #0078d7 0%, #0084e6 100%);
@@ -461,6 +519,8 @@ a .tile {
     background: linear-gradient(135deg, #4f46e5 0%, #5b53f5 100%);
 }
 
+/* ---------- Live tile content ---------- */
+
 .live-copy {
     display: flex;
     flex-direction: column;
@@ -500,6 +560,8 @@ a .tile {
     font-size: 10px;
     opacity: 0.8;
 }
+
+/* ---------- Weather ---------- */
 
 .weather-container {
     display: flex;
@@ -546,6 +608,8 @@ a .tile {
     font-size: 14px;
     opacity: 0.8;
 }
+
+/* ---------- Calendar ---------- */
 
 .calendar-container {
     display: flex;
@@ -600,137 +664,13 @@ a .tile {
     opacity: 0.9;
 }
 
-@media (max-width: 768px) {
-    :root {
-        --tile-gap: 6px;
-    }
+/* ---------- Lock screen ---------- */
 
-    body {
-        overflow-y: auto !important;
-        overflow-x: hidden !important;
-    }
-
-    .topbar {
-        padding: max(16px, env(safe-area-inset-top)) 16px 8px 16px !important;
-        gap: 12px !important;
-    }
-
-    .start-title {
-        font-size: clamp(2rem, 8vw, 2.6rem) !important;
-    }
-
-    .clock strong {
-        font-size: 17px !important;
-    }
-
-    .clock span {
-        font-size: 12px !important;
-    }
-
-    .avatar {
-        width: 38px !important;
-        height: 38px !important;
-    }
-
-    .workspace {
-        flex-direction: column !important;
-        overflow-y: visible !important;
-        overflow-x: hidden !important;
-        width: 100% !important;
-        max-width: 100vw !important;
-        padding: 6px 16px max(50px, env(safe-area-inset-bottom)) 16px !important;
-        gap: 22px !important;
-        box-sizing: border-box !important;
-    }
-
-    .section-group {
-        width: 100% !important;
-        max-width: 100% !important;
-        flex-shrink: 0 !important;
-    }
-
-    .group-title {
-        font-size: 15px !important;
-        margin: 0 0 6px 2px !important;
-    }
-
-    .tools-row {
-        width: 100% !important;
-        flex-direction: column !important;
-        gap: var(--tile-gap) !important;
-        margin-bottom: 0 !important;
-    }
-
-    .tile-grid {
-        display: grid !important;
-        grid-template-columns: repeat(6, 1fr) !important;
-        grid-auto-rows: calc((100vw - 32px - (5 * var(--tile-gap))) / 6) !important;
-        gap: var(--tile-gap) !important;
-        width: 100% !important;
-        max-width: 100% !important;
-        grid-auto-flow: dense !important;
-    }
-
-    .weather-temp-large {
-        font-size: clamp(38px, 12vw, 64px) !important;
-    }
-
-    .weather-city {
-        font-size: clamp(12px, 3.4vw, 16px) !important;
-        margin-top: 6px !important;
-    }
-
-    .calendar-date {
-        font-size: clamp(38px, 12vw, 64px) !important;
-    }
-
-    .calendar-day {
-        font-size: clamp(12px, 3.2vw, 15px) !important;
-    }
-
-    .tile-caption {
-        font-size: 10.5px !important;
-        left: 5px !important;
-        bottom: 2px !important;
-    }
-
-    .tile-icon-two {
-        font-size: 28px !important;
-    }
-
-    .tile-icon {
-        font-size: 18px !important;
-    }
-
-    .dt-text {
-        font-size: clamp(10.5px, 2.8vw, 12.5px) !important;
-        margin-top: 2px !important;
-    }
-
-    .dt-tag {
-        font-size: 9.5px !important;
-    }
-
-    .live-main {
-        font-size: clamp(14px, 4vw, 18px) !important;
-    }
-
-    #lockscreen-panel .ls-datetime {
-        bottom: max(45px, calc(env(safe-area-inset-bottom) + 25px)) !important;
-        left: 20px !important;
-    }
-
-    #lockscreen-panel .ls-time {
-        font-size: clamp(3.8rem, 15vw, 6rem) !important;
-    }
-
-    #lockscreen-panel .ls-date {
-        font-size: clamp(0.95rem, 3.4vw, 1.3rem) !important;
-    }
-
-    #lockscreen-panel .ls-hint {
-        bottom: max(12px, env(safe-area-inset-bottom)) !important;
-    }
+/* Saat lock screen tampil, halaman di belakangnya tidak boleh ikut scroll */
+.ls-locked,
+.ls-locked body {
+    overflow: hidden;
+    height: 100%;
 }
 
 #lockscreen-overlay {
@@ -738,12 +678,19 @@ a .tile {
     inset: 0;
     z-index: 9999;
     overflow: hidden;
+    background: #000;
     cursor: grab;
-    touch-action: pan-y;
+    touch-action: none;
+    overscroll-behavior: none;
     user-select: none;
 }
 
 #lockscreen-overlay.ls-hidden {
+    display: none !important;
+}
+
+/* Dipakai oleh script kecil di <head> agar lock screen tidak berkedip saat reload */
+.ls-unlocked #lockscreen-overlay {
     display: none !important;
 }
 
@@ -770,9 +717,11 @@ a .tile {
 
 .ls-wallpaper {
     position: absolute;
-    inset: 0;
+    top: 0;
+    left: 0;
     width: 100%;
-    height: 100%;
+    /* ekstra tinggi supaya animasi bounce tidak membuka celah di bawah */
+    height: calc(100% + 100px);
     object-fit: cover;
     object-position: center;
     z-index: 0;
@@ -806,7 +755,7 @@ a .tile {
 #lockscreen-panel .ls-time {
     font-size: 150px;
     font-weight: 100;
-    letter-spacing: -9px;
+    letter-spacing: -2px;
     line-height: 1;
     color: #fff;
     text-shadow: 0 2px 28px rgba(0, 0, 0, 0.55);
@@ -908,4 +857,167 @@ a .tile {
 
 .ls-bounce {
     animation: lsBounce 0.65s cubic-bezier(0.36, 0.07, 0.19, 0.97) both !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .start-enter .tile,
+    .ls-wallpaper {
+        animation: none;
+    }
+}
+
+/* ---------- Mobile ---------- */
+/* Efek (tilt, animasi masuk) + background hitam + tanpa header/judul grup: hanya di mobile */
+
+@media (max-width: 640px) {
+    :root {
+        --tile-gap: 6px;
+    }
+
+    html,
+    body {
+        background: #000;
+    }
+
+    .bg-img,
+    .scrim,
+    .topbar,
+    .group-title {
+        display: none;
+    }
+
+    /* Efek tekan ala WP 8.1: tile miring ke arah titik sentuh (diatur home-mobile.js) */
+    .tile {
+        transform: perspective(500px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) scale(var(--s, 1));
+        transition: transform 0.14s ease-out, filter 0.16s ease, box-shadow 0.16s ease;
+    }
+
+    .tile.pressed {
+        --s: 0.96;
+    }
+
+    /* Animasi masuk (turnstile) */
+    .start-enter .tile {
+        transform-origin: left center;
+        animation: tileIn 0.55s cubic-bezier(0.2, 0.8, 0.2, 1) backwards;
+        animation-delay: calc(var(--i, 0) * 28ms);
+    }
+
+    .workspace {
+        container-type: inline-size;
+        flex-direction: column;
+        overflow: visible;
+        gap: var(--tile-gap);
+        width: 100%;
+        max-width: 560px;
+        margin: 0 auto;
+        padding: calc(14px + env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) calc(40px + env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
+    }
+
+    .section-group,
+    .tools-section {
+        width: 100%;
+        align-items: stretch;
+    }
+
+    .tools-row {
+        width: 100%;
+        margin-bottom: var(--tile-gap);
+    }
+
+    .tools-row:last-child {
+        margin-bottom: 0;
+    }
+
+    /* 6 kolom, sel persegi. cqw = lebar konten .workspace (fallback ke vw) */
+    .tile-grid {
+        --cell: calc((100vw - 32px - 5 * var(--tile-gap)) / 6);
+        grid-template-columns: repeat(6, 1fr) !important;
+        grid-auto-rows: var(--cell);
+        width: 100%;
+        grid-auto-flow: dense;
+    }
+
+    @supports (width: 1cqw) {
+        .tile-grid {
+            --cell: calc((100cqw - 5 * var(--tile-gap)) / 6);
+        }
+    }
+
+    .tile {
+        padding: 8px;
+    }
+
+    .tile-icon {
+        font-size: calc(var(--cell) * 0.42);
+    }
+
+    .tile-icon-two {
+        font-size: calc(var(--cell) * 0.62);
+    }
+
+    .tile-image-icon {
+        width: calc(var(--cell) * 0.45);
+    }
+
+    .tile-caption {
+        font-size: 10.5px;
+        left: 6px;
+        bottom: 2px;
+    }
+
+    .dynamic-tile .dt-copy {
+        padding: 8px;
+    }
+
+    .dt-text {
+        font-size: max(11px, calc(var(--cell) * 0.24));
+        margin-top: 2px;
+    }
+
+    .dt-tag {
+        font-size: 10px;
+    }
+
+    .live-main {
+        font-size: clamp(15px, calc(var(--cell) * 0.36), 22px);
+    }
+
+    .weather-temp-large,
+    .calendar-date {
+        font-size: calc(var(--cell) * 1.15);
+    }
+
+    .weather-city {
+        font-size: calc(var(--cell) * 0.3);
+        margin-top: 6px;
+    }
+
+    .weather-desc {
+        font-size: 12px;
+    }
+
+    .calendar-day {
+        font-size: calc(var(--cell) * 0.28);
+    }
+
+    #lockscreen-panel .ls-datetime {
+        bottom: max(48px, calc(env(safe-area-inset-bottom) + 28px));
+        left: 22px;
+    }
+
+    #lockscreen-panel .ls-time {
+        font-size: clamp(3.6rem, 18vw, 5.8rem);
+        letter-spacing: -1px;
+    }
+
+    #lockscreen-panel .ls-date {
+        font-size: clamp(1rem, 4.2vw, 1.4rem);
+        letter-spacing: normal;
+    }
+
+    #lockscreen-panel .ls-hint {
+        bottom: max(14px, env(safe-area-inset-bottom));
+    }
 }
