@@ -109,6 +109,16 @@ body {
     }
 }
 
+@keyframes alFade {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
 /* ---------- Base controls ---------- */
 
 button {
@@ -191,6 +201,11 @@ a .tile {
 
 .workspace::-webkit-scrollbar {
     display: none;
+}
+
+/* Pembungkus grup: di desktop tidak berpengaruh (isinya langsung jadi item .workspace) */
+.start-grid {
+    display: contents;
 }
 
 .section-group {
@@ -664,6 +679,13 @@ a .tile {
     opacity: 0.9;
 }
 
+/* ---------- App list: disembunyikan di desktop ---------- */
+
+#applist,
+.al-open {
+    display: none;
+}
+
 /* ---------- Lock screen ---------- */
 
 /* Saat lock screen tampil, halaman di belakangnya tidak boleh ikut scroll */
@@ -865,19 +887,41 @@ a .tile {
     .ls-wallpaper {
         animation: none;
     }
+
+    #applist,
+    .workspace,
+    .al-row,
+    .al-jcell {
+        transition: none !important;
+    }
+
+    #al-jump.open {
+        animation: none;
+    }
 }
 
 /* ---------- Mobile ---------- */
-/* Efek (tilt, animasi masuk) + background hitam + tanpa header/judul grup: hanya di mobile */
+/* Efek (tilt, animasi masuk) + background hitam + tanpa header/judul grup + app list: hanya di mobile */
 
 @media (max-width: 640px) {
     :root {
         --tile-gap: 6px;
+        --pad-l: max(16px, env(safe-area-inset-left));
+        --pad-r: max(16px, env(safe-area-inset-right));
+        /* satu ukuran kotak untuk ikon app, huruf abjad, dan jump list */
+        --al-box: 56px;
     }
 
     html,
     body {
         background: #000;
+        /* geser horizontal diteruskan ke JS (buka app list), scroll vertikal & cubit-zoom tetap native */
+        touch-action: pan-y pinch-zoom;
+    }
+
+    html.al-open,
+    html.al-open body {
+        overflow: hidden;
     }
 
     .bg-img,
@@ -908,41 +952,38 @@ a .tile {
         container-type: inline-size;
         flex-direction: column;
         overflow: visible;
-        gap: var(--tile-gap);
+        gap: 0;
         width: 100%;
         max-width: 560px;
         margin: 0 auto;
         padding: calc(14px + env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) calc(40px + env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
     }
 
-    .section-group,
-    .tools-section {
-        width: 100%;
-        align-items: stretch;
-    }
-
-    .tools-row {
-        width: 100%;
-        margin-bottom: var(--tile-gap);
-    }
-
-    .tools-row:last-child {
-        margin-bottom: 0;
-    }
-
-    /* 6 kolom, sel persegi. cqw = lebar konten .workspace (fallback ke vw) */
-    .tile-grid {
+    /* SATU grid 6 kolom untuk semua tile: grup digabung supaya tidak ada ruang kosong di antaranya.
+       Sel persegi; cqw = lebar konten .workspace (fallback ke vw). */
+    .start-grid {
         --cell: calc((100vw - 32px - 5 * var(--tile-gap)) / 6);
-        grid-template-columns: repeat(6, 1fr) !important;
-        grid-auto-rows: var(--cell);
+        display: grid;
         width: 100%;
+        grid-template-columns: repeat(6, 1fr);
+        grid-auto-rows: var(--cell);
         grid-auto-flow: dense;
+        gap: var(--tile-gap);
     }
 
     @supports (width: 1cqw) {
-        .tile-grid {
+        .start-grid {
             --cell: calc((100cqw - 5 * var(--tile-gap)) / 6);
         }
+    }
+
+    /* Pembungkus grup "dilebur": tile-nya langsung jadi item .start-grid */
+    .section-group,
+    .tools-section,
+    .tools-row,
+    .workspace .tile-grid,
+    .workspace .tools-row .tile-grid {
+        display: contents;
     }
 
     .tile {
@@ -1019,5 +1060,244 @@ a .tile {
 
     #lockscreen-panel .ls-hint {
         bottom: max(14px, env(safe-area-inset-bottom));
+    }
+
+    /* ===== Tombol panah ke App list (paling bawah homescreen) ===== */
+    .al-open {
+        grid-column: 1 / -1;
+        justify-self: end;
+        align-self: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 44px;
+        height: 44px;
+        margin-top: 10px;
+        padding: 0;
+        border: 2px solid #fff;
+        border-radius: 50%;
+        background: transparent;
+        color: #fff;
+        font-size: 18px;
+        cursor: pointer;
+        transition: background 0.1s, color 0.1s;
+    }
+
+    .al-open:active {
+        background: #fff;
+        color: #000;
+    }
+
+    /* Homescreen ikut bergeser pelan saat App list masuk (--alp: 0 tertutup, 1 terbuka) */
+    html.al-active .workspace {
+        transform: translate3d(calc(var(--alp, 0) * -30vw), 0, 0);
+        opacity: calc(1 - var(--alp, 0) * 0.6);
+        transition: transform 0.32s cubic-bezier(0.1, 0.9, 0.2, 1), opacity 0.32s;
+    }
+
+    html.al-drag .workspace,
+    html.al-drag #applist {
+        transition: none;
+    }
+
+    /* ===== App list ===== */
+    #applist {
+        position: fixed;
+        inset: 0;
+        z-index: 5000;
+        display: flex;
+        flex-direction: column;
+        background: #000;
+        color: #fff;
+        visibility: hidden;
+        transform: translate3d(calc((1 - var(--alp, 0)) * 100%), 0, 0);
+        transition: transform 0.32s cubic-bezier(0.1, 0.9, 0.2, 1);
+        touch-action: pan-y pinch-zoom;
+        overscroll-behavior: contain;
+    }
+
+    html.al-active #applist {
+        visibility: visible;
+    }
+
+    .al-head {
+        flex-shrink: 0;
+        padding: calc(env(safe-area-inset-top, 0px) + 14px) var(--pad-r) 6px var(--pad-l);
+    }
+
+    .al-title {
+        font-size: 18px;
+        font-weight: 600;
+        letter-spacing: 0.3px;
+    }
+
+    .al-scroll {
+        position: relative;
+        flex: 1;
+        min-height: 0;
+        overflow-y: auto;
+        overflow-x: hidden;
+        overscroll-behavior: contain;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        padding: 8px var(--pad-r) 24px var(--pad-l);
+    }
+
+    .al-scroll::-webkit-scrollbar {
+        display: none;
+    }
+
+    .al-group {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        margin-bottom: 10px;
+    }
+
+    /* Ukuran kotak SAMA untuk huruf, ikon app, dan jump list */
+    .al-letter,
+    .al-ico,
+    .al-jcell {
+        width: var(--al-box);
+        height: var(--al-box);
+        flex-shrink: 0;
+    }
+
+    .al-letter,
+    .al-jcell {
+        display: grid;
+        place-items: center;
+        padding: 0;
+        background: transparent;
+        color: #008ed0;
+        border: 2px solid #008ed0;
+        font-family: inherit;
+        font-size: 28px;
+        font-weight: 300;
+        line-height: 1;
+        cursor: pointer;
+    }
+
+    .al-letter:active,
+    .al-jcell:not(:disabled):active {
+        background: #008ed0;
+        color: #fff;
+    }
+
+    .al-row {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        width: 100%;
+        padding: 0;
+        background: none;
+        border: 0;
+        color: #fff;
+        font-family: inherit;
+        text-align: left;
+        cursor: pointer;
+        transform-origin: left center;
+        transition: transform 0.12s ease-out;
+    }
+
+    .al-row:active {
+        transform: scale(0.97);
+    }
+
+    .al-ico {
+        display: grid;
+        place-items: center;
+        background: var(--c, #008ed0);
+        color: #fff;
+        font-size: calc(var(--al-box) * 0.42);
+        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.14);
+    }
+
+    .al-name {
+        flex: 1;
+        min-width: 0;
+        font-size: clamp(18px, 5.4vw, 22px);
+        font-weight: 300;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    /* Jump list abjad */
+    #al-jump {
+        position: absolute;
+        inset: 0;
+        z-index: 3;
+        display: none;
+        overflow-y: auto;
+        background: rgba(0, 0, 0, 0.94);
+        padding: calc(env(safe-area-inset-top, 0px) + 24px) var(--pad-r) 24px var(--pad-l);
+        touch-action: pan-y;
+    }
+
+    #al-jump.open {
+        display: block;
+        animation: alFade 0.18s ease-out both;
+    }
+
+    .al-jgrid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, var(--al-box));
+        gap: 10px;
+        justify-content: center;
+    }
+
+    .al-jcell:disabled {
+        border-color: rgba(255, 255, 255, 0.22);
+        color: rgba(255, 255, 255, 0.28);
+        cursor: default;
+    }
+
+    /* Bar bawah (tombol kembali ke Start), sama dengan app bar halaman lain */
+    .al-bar {
+        flex-shrink: 0;
+        display: flex;
+        align-items: left;
+        justify-content: left;
+        height: calc(62px + env(safe-area-inset-bottom, 0px));
+        padding: 0 var(--pad-r) env(safe-area-inset-bottom, 0px) var(--pad-l);
+    }
+
+    .al-back {
+        background: none;
+        border: 0;
+        color: #fff;
+        font-family: inherit;
+        height: 100%;
+        padding: 0 24px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 3px;
+        cursor: pointer;
+    }
+
+    .al-back .circle {
+        width: 36px;
+        height: 36px;
+        border: 2px solid #fff;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 15px;
+        transition: background 0.1s, color 0.1s;
+    }
+
+    .al-back .lbl {
+        font-size: 11px;
+        line-height: 1;
+        text-transform: lowercase;
+    }
+
+    .al-back:active .circle {
+        background: #fff;
+        color: #1f1f1f;
     }
 }

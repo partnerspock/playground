@@ -516,42 +516,59 @@
                 gap: 22px;
             }
 
-            /* Overview */
+            /* Overview: foto kecil + judul di atas, tombol Open/Repo full width di BAWAH foto */
             .overview-top-section {
-                gap: 16px;
+                display: grid;
+                grid-template-columns: 84px 1fr;
+                column-gap: 16px;
+                row-gap: 6px;
+                align-items: start;
+            }
+
+            .overview-info {
+                display: contents;
             }
 
             .overview-hero-image {
                 width: 84px;
                 height: 84px;
-            }
-
-            .overview-info {
-                gap: 6px;
+                grid-column: 1;
+                grid-row: 1 / span 3;
             }
 
             .overview-title {
+                grid-column: 2;
+                grid-row: 1;
                 font-size: clamp(20px, 6.2vw, 26px);
                 line-height: 1.2;
             }
 
             .overview-subtitle {
+                grid-column: 2;
+                grid-row: 2;
                 font-size: 15px;
             }
 
             .overview-meta {
+                grid-column: 2;
+                grid-row: 3;
                 font-size: 13px;
             }
 
             .overview-actions {
+                grid-column: 1 / -1;
+                grid-row: 4;
+                display: flex;
                 gap: 10px;
-                flex-wrap: wrap;
+                margin-top: 10px;
             }
 
             .install-btn {
-                min-height: 44px;
-                padding: 0 22px;
-                margin-top: 6px;
+                flex: 1;
+                width: auto;
+                min-height: 48px;
+                padding: 0 16px;
+                margin-top: 0;
             }
 
             .overview-middle-content {
@@ -908,7 +925,7 @@
                     <img src="assets/img/app-happay/h6.png" alt="Stock History Audit" loading="lazy" decoding="async">
                     <div class="gallery-overlay">
                         <span class="gallery-tag">Mobile</span>
-                        <div class="gallery-text">Stock HIstory Audit</div>
+                        <div class="gallery-text">Stock History Audit</div>
                     </div>
                 </div>
             </div>

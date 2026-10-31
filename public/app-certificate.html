@@ -391,7 +391,7 @@
                 border-bottom: 0;
                 color: rgba(255, 255, 255, 0.4);
                 transition: color 0.25s;
-                /* Judul terlalu panjang dipotong "..." di dalam layar */
+                /* Jaga-jaga kalau label terlalu panjang: dipotong "..." di dalam layar */
                 max-width: calc(100vw - var(--pad-l) - var(--pad-r));
                 overflow: hidden;
                 text-overflow: ellipsis;
@@ -697,11 +697,13 @@
         </div>
     </header>
 
-    <!-- Header tab dibuat otomatis oleh script dari daftar ini -->
+    <!-- Header tab dibuat otomatis oleh script dari daftar ini.
+         Teks di dalam = nama LENGKAP (desktop).
+         data-short = nama PENDEK (hanya dipakai di mobile). -->
     <nav class="app-headers">
         <div class="pivot-track" id="pivotTrack">
-            <div class="header-item">Leadership Management International</div>
-            <div class="header-item">Badan Nasional Sertifikasi Profesi</div>
+            <div class="header-item" data-short="LMI">Leadership Management International</div>
+            <div class="header-item" data-short="BNSP">Badan Nasional Sertifikasi Profesi</div>
         </div>
     </nav>
 
@@ -849,8 +851,12 @@
                selesai posisi dinormalkan diam-diam ke 0..n-1.
                Desktop: header biasa (tanpa klon).
                ===================================================== */
+            // Nama lengkap (desktop) dan nama pendek dari data-short (mobile)
             var labels = Array.prototype.map.call(track.children, function (c) {
                 return c.textContent.trim();
+            });
+            var shortLabels = Array.prototype.map.call(track.children, function (c, i) {
+                return c.getAttribute('data-short') || labels[i];
             });
             var n = labels.length;
             var p = 0;
@@ -866,6 +872,8 @@
             function build() {
                 infinite = mq.matches && n > 1;
                 p = mod(p, n);
+                // Mobile pakai nama pendek, desktop pakai nama lengkap
+                var shown = mq.matches ? shortLabels : labels;
                 track.innerHTML = '';
                 items = [];
                 var start = infinite ? -n : 0;
@@ -873,7 +881,7 @@
                 for (var k = start; k < end; k++) {
                     var d = document.createElement('div');
                     d.className = 'header-item';
-                    d.textContent = labels[mod(k, n)];
+                    d.textContent = shown[mod(k, n)];
                     d.title = labels[mod(k, n)];
                     d.setAttribute('data-pos', k);
                     d.addEventListener('click', onHeaderClick);

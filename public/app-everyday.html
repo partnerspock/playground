@@ -440,7 +440,7 @@
             :root {
                 --pad-l: calc(19px + env(safe-area-inset-left, 0px));
                 --pad-r: calc(19px + env(safe-area-inset-right, 0px));
-                /* Cokelat gelap tidak terbaca di latar hitam: pakai versi lebih terang untuk teks, tag, dan tombol */
+                /* Warna gelap tidak terbaca di latar hitam: pakai versi lebih terang untuk teks, tag, dan tombol */
                 --accent-2: #a8723a;
             }
 
@@ -518,47 +518,60 @@
                 gap: 22px;
             }
 
-            /* Overview */
+            /* Overview: foto kecil + judul di atas, tombol Open/Repo full width di BAWAH foto */
             .overview-top-section {
-                gap: 16px;
+                display: grid;
+                grid-template-columns: 84px 1fr;
+                column-gap: 16px;
+                row-gap: 6px;
+                align-items: start;
+            }
+
+            .overview-info {
+                display: contents;
             }
 
             .overview-hero-image {
                 width: 84px;
                 height: 84px;
-            }
-
-            .overview-info {
-                gap: 6px;
+                grid-column: 1;
+                grid-row: 1 / span 3;
             }
 
             .overview-title {
+                grid-column: 2;
+                grid-row: 1;
                 font-size: clamp(20px, 6.2vw, 26px);
                 line-height: 1.2;
             }
 
             .overview-subtitle {
+                grid-column: 2;
+                grid-row: 2;
                 font-size: 15px;
             }
 
             .overview-meta {
+                grid-column: 2;
+                grid-row: 3;
                 font-size: 13px;
             }
 
             .overview-actions {
+                grid-column: 1 / -1;
+                grid-row: 4;
+                display: flex;
                 gap: 10px;
-                flex-wrap: wrap;
+                margin-top: 10px;
             }
 
             .install-btn {
-                min-height: 44px;
-                padding: 0 22px;
-                margin-top: 6px;
+                flex: 1;
+                width: auto;
+                min-height: 48px;
+                padding: 0 16px;
+                margin-top: 0;
                 background-color: var(--accent-2);
-            }
-
-            .install-btn.secondary {
-                background: #2b2b2b;
             }
 
             .overview-middle-content {

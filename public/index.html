@@ -13,14 +13,6 @@
     <link rel="preload" as="image" href="assets/img/8.jpg">
     <link rel="stylesheet" href="assets/css/style.css">
     <script src="https://kit.fontawesome.com/c66aa74d08.js" crossorigin="anonymous" defer></script>
-    <script>
-        // Sembunyikan lock screen sebelum halaman tampil kalau sudah pernah di-unlock (anti-berkedip)
-        try {
-            if (sessionStorage.getItem("ls_unlocked")) {
-                document.documentElement.classList.add("ls-unlocked");
-            }
-        } catch (_) { }
-    </script>
 </head>
 
 <body>
@@ -42,265 +34,293 @@
     </header>
 
     <main class="workspace">
-        <div class="section-group">
-            <h2 class="group-title">Main Apps</h2>
-            <section class="tile-grid" style="grid-template-columns: repeat(10, var(--tile));"
-                aria-label="Section 1 tiles">
-                <button class="tile big" id="tile-weather" data-app="weather"
-                    style="text-decoration:none;background:linear-gradient(180deg,rgba(7,28,45,.85) 0%,rgba(7,28,45,.2) 80%,transparent 100%),url('assets/img/tile/weather.jpg') center/cover;border:none;outline:none;">
-                    <div class="weather-container">
-                        <div class="weather-info">
-                            <div class="weather-tag" id="tile-weather-tag"></div>
-                            <div class="weather-temp-large" id="tile-weather-temp">--°</div>
-                            <div class="weather-city" id="tile-weather-city">Jakarta, Indonesia</div>
-                            <div class="weather-desc" id="tile-weather-subtitle">Today</div>
-                            <div class="weather-desc" id="tile-weather-condition">Loading...</div>
-                        </div>
-                        <div class="weather-icon-lg" id="tile-weather-icon">⛅</div>
-                    </div>
-                </button>
-                <button class="tile wide cyan" id="tile-greeting" data-app="greeting">
-                    <div class="live-copy">
-                        <div class="live-main" id="tile-greeting-text">
-                            Welcome<br>everyone
-                        </div>
-                    </div>
-                </button>
-                <button class="tile two dynamic-tile" id="tile-profile" data-app="profile" style="cursor: pointer;"
-                    onclick="openProfile();">
-                    <div class="dt-bg" id="tile-profile-bg"></div>
-                    <div class="dt-overlay" id="tile-profile-overlay"></div>
-                    <div class="live-copy dt-copy" id="tile-profile-copy">
-                        <div class="dt-icon-wrap" id="tile-profile-icon-wrap"></div>
-                        <div class="dt-tag" id="tile-profile-tag"></div>
-                        <div class="dt-text" id="tile-profile-text">Memuat...</div>
-                    </div>
-                </button>
-                <button class="tile two dynamic-tile" id="tile-maps" data-app="maps" style="cursor:pointer;"
-                    onclick="openMap()">
-                    <div class="dt-bg" id="tile-maps-bg"></div>
-                    <div class="dt-overlay" id="tile-maps-overlay"></div>
-                    <div class="live-copy dt-copy" id="tile-maps-copy">
-                        <div class="dt-icon-wrap" id="tile-maps-icon-wrap"></div>
-                        <div class="dt-tag" id="tile-maps-tag"></div>
-                        <div class="dt-text" id="tile-maps-text">Memuat...</div>
-                    </div>
-                </button>
-                <a href="https://portfoliotirta-l9yr6mtus-partnerspocks-projects.vercel.app" target="_blank"
-                    rel="noopener" class="tile two cyan" title="Portfolio" style="cursor: pointer;">
-                    <span class="tile-icon-two"><i class="fa-solid fa-cubes-stacked"></i></span>
-                    <span class="tile-caption">Portfolio</span>
-                </a>
-
-                <!-- 4 tile kecil digabung jadi 1 blok -->
-                <div class="tile-cluster">
-                    <a href="tel:+6281234567890" class="tile one cyan" style="cursor: pointer;" title="Telepon Saya">
-                        <span class="tile-icon"><i class="fa-solid fa-phone"></i></span>
-                    </a>
-                    <a href="mailto:trax@gmail.com" class="tile one cyan" style="cursor: pointer;" title="Kirim Email">
-                        <span class="tile-icon"><i class="fa-solid fa-envelope"></i></span>
-                    </a>
-                    <a href="https://linkedin.com/in/naufalfahmi" target="_blank" rel="noopener" class="tile one blue"
-                        title="LinkedIn" style="cursor: pointer;">
-                        <span class="tile-icon"><i class="fa-brands fa-linkedin"></i></span>
-                    </a>
-                    <a href="https://wa.me/6281383038888" target="_blank" rel="noopener" class="tile one green"
-                        title="WhatsApp" style="cursor: pointer;">
-                        <span class="tile-icon"><i class="fa-brands fa-whatsapp"></i></span>
-                    </a>
-                </div>
-
-                <button class="tile big indigo" id="tile-calendar-greetings" data-app="calendar"
-                    onclick="openCalendar()" style="cursor: pointer;">
-                    <div class="calendar-container">
-                        <div class="calendar-top">
-                            <div class="calendar-date" id="tile-calendar-greetings-date">00</div>
-                            <div class="calendar-day" id="tile-calendar-greetings-day">HARI</div>
-                        </div>
-                        <div class="tile-bottom-icon">
-                            <i class="fa-solid fa-calendar-days calendar-icon"></i>
-                            <span class="tile-caption-icon" id="tile-calendar-caption">Calendar</span>
-                        </div>
-                    </div>
-                </button>
-                <button class="tile big dynamic-tile" id="tile-experience" data-app="experience" style="cursor:pointer;"
-                    onclick="openExperience();">
-                    <div class="dt-bg" id="tile-experience-bg"></div>
-                    <div class="dt-overlay" id="tile-experience-overlay"></div>
-                    <div class="live-copy dt-copy" id="tile-experience-copy">
-                        <div class="dt-icon-wrap" id="tile-experience-icon-wrap"></div>
-                        <div class="dt-tag" id="tile-experience-tag"></div>
-                        <div class="dt-text" id="tile-experience-text">Loading...</div>
-                    </div>
-                </button>
-                <button class="tile two dark-red" title="Education" onclick="openEducation()" style="cursor: pointer;">
-                    <span class="tile-icon-two"><i class="fa-solid fa-graduation-cap"></i></span>
-                    <div class="tile-caption">Education</div>
-                </button>
-                <button class="tile two purple" title="Certificate" style="cursor: pointer;"
-                    onclick="openCertificate()">
-                    <span class="tile-icon-two"><i class="fa-solid fa-trophy"></i></span>
-                    <span class="tile-caption">Certificate</span>
-                </button>
-            </section>
-        </div>
-
-        <div class="section-group">
-            <h2 class="group-title">Project Showcases</h2>
-            <section class="tile-grid" style="grid-template-columns:repeat(6,var(--tile));"
-                aria-label="Section 3 tiles">
-                <button class="tile two dynamic-tile" id="tile-hptb" data-app="hptb" style="cursor:pointer;"
-                    onclick="openHappay()">
-                    <div class="dt-bg" id="tile-hptb-bg"></div>
-                    <div class="dt-overlay" id="tile-hptb-overlay"></div>
-                    <div class="live-copy dt-copy" id="tile-hptb-copy">
-                        <div class="dt-icon-wrap" id="tile-hptb-icon-wrap"></div>
-                        <div class="dt-tag" id="tile-hptb-tag"></div>
-                        <div class="dt-text" id="tile-hptb-text">Loading...</div>
-                    </div>
-                </button>
-                <button onclick="openShowcase()" class="tile big dynamic-tile" id="tile-showcase" data-app="showcase"
-                    style="cursor:pointer;">
-                    <div class="dt-bg" id="tile-showcase-bg"></div>
-                    <div class="dt-overlay" id="tile-showcase-overlay"></div>
-                    <div class="live-copy dt-copy" id="tile-showcase-copy">
-                        <div class="dt-icon-wrap" id="tile-showcase-icon-wrap"></div>
-                        <div class="dt-tag" id="tile-showcase-tag"></div>
-                        <div class="dt-text" id="tile-showcase-text">Loading...</div>
-                    </div>
-                </button>
-                <button class="tile two dynamic-tile" id="tile-evtb" data-app="evtb" style="cursor:pointer;"
-                    onclick="openEveryday()">
-                    <div class="dt-bg" id="tile-evtb-bg"></div>
-                    <div class="dt-overlay" id="tile-evtb-overlay"></div>
-                    <div class="live-copy dt-copy" id="tile-evtb-copy">
-                        <div class="dt-icon-wrap" id="tile-evtb-icon-wrap"></div>
-                        <div class="dt-tag" id="tile-evtb-tag"></div>
-                        <div class="dt-text" id="tile-evtb-text">Loading...</div>
-                    </div>
-                </button>
-                <button class="tile two dynamic-tile" id="tile-ticketing25" data-app="ticketing25"
-                    onclick="openTicketing25()" style="cursor:pointer;">
-                    <div class="dt-bg" id="tile-ticketing25-bg"></div>
-                    <div class="dt-overlay" id="tile-ticketing25-overlay"></div>
-                    <div class="live-copy dt-copy" id="tile-ticketing25-copy">
-                        <div class="dt-icon-wrap" id="tile-ticketing25-icon-wrap"></div>
-                        <div class="dt-tag" id="tile-ticketing25-tag"></div>
-                        <div class="dt-text" id="tile-ticketing25-text">Loading...</div>
-                    </div>
-                </button>
-                <button class="tile wide cyan" id="tile-music-main" aria-label="Putar musik">
-                    <span class="music-status" id="tile-music-main-status">OFF</span>
-                    <div
-                        style="display:flex;gap:14px;align-items:center;width:100%;justify-content:center;margin-top:auto;margin-bottom:auto;">
-                        <span id="tile-music-main-prev" role="button" aria-label="Lagu sebelumnya" title="Previous Song"
-                            style="width:32px;height:32px;display:flex;align-items:center;justify-content:center;border:1.5px solid rgba(255,255,255,.3);border-radius:50%;font-size:13px;opacity:.85;cursor:pointer;">
-                            <i class="fa-solid fa-step-backward"></i>
-                        </span>
-                        <span class="tile-icon" id="tile-music-main-icon" title="Play / Pause"
-                            style="width:48px;height:48px;display:flex;align-items:center;justify-content:center;border:2px solid rgba(255,255,255,.4);border-radius:50%;font-size:20px;line-height:1;cursor:pointer;">
-                            <i class="fa-solid fa-play"></i>
-                        </span>
-                        <span id="tile-music-main-next" role="button" aria-label="Lagu berikutnya" title="Next Song"
-                            style="width:32px;height:32px;display:flex;align-items:center;justify-content:center;border:1.5px solid rgba(255,255,255,.3);border-radius:50%;font-size:13px;opacity:.85;cursor:pointer;">
-                            <i class="fa-solid fa-forward-step"></i>
-                        </span>
-                        <span class="tile-caption" style="position:absolute;left:12px;bottom:2px;font-size:12px;">Music
-                            Player</span>
-                    </div>
-                </button>
-                <button class="tile two dynamic-tile" id="tile-ar26" data-app="ar26" onclick="openAr26()"
-                    style="cursor:pointer;">
-                    <div class="dt-bg" id="tile-ar26-bg"></div>
-                    <div class="dt-overlay" id="tile-ar26-overlay"></div>
-                    <div class="live-copy dt-copy" id="tile-ar26-copy">
-                        <div class="dt-icon-wrap" id="tile-ar26-icon-wrap"></div>
-                        <div class="dt-tag" id="tile-ar26-tag"></div>
-                        <div class="dt-text" id="tile-ar26-text">Loading...</div>
-                    </div>
-                </button>
-            </section>
-        </div>
-
-        <div class="section-group tools-section">
-            <h2 class="group-title">Tools</h2>
-            <div class="tools-row">
-                <section class="tile-grid" style="grid-template-columns:repeat(4,var(--tile));"
-                    aria-label="Design tools">
-                    <button class="tile two dynamic-tile" id="tile-servertb" data-app="servertb">
-                        <div class="dt-bg" id="tile-servertb-bg"></div>
-                        <div class="dt-overlay" id="tile-servertb-overlay"></div>
-                        <div class="live-copy dt-copy" id="tile-servertb-copy">
-                            <div class="dt-icon-wrap" id="tile-servertb-icon-wrap"></div>
-                            <div class="dt-tag" id="tile-servertb-tag"></div>
-                            <div class="dt-text" id="tile-servertb-text">Loading...</div>
+        <!-- Pembungkus: di desktop display:contents, di mobile jadi SATU grid supaya tile saling mengisi -->
+        <div class="start-grid">
+            <div class="section-group">
+                <h2 class="group-title">Main Apps</h2>
+                <section class="tile-grid" style="grid-template-columns: repeat(10, var(--tile));"
+                    aria-label="Section 1 tiles">
+                    <button class="tile big" id="tile-weather" data-app="weather"
+                        style="text-decoration:none;background:linear-gradient(180deg,rgba(7,28,45,.85) 0%,rgba(7,28,45,.2) 80%,transparent 100%),url('assets/img/tile/weather.jpg') center/cover;border:none;outline:none;">
+                        <div class="weather-container">
+                            <div class="weather-info">
+                                <div class="weather-tag" id="tile-weather-tag"></div>
+                                <div class="weather-temp-large" id="tile-weather-temp">--°</div>
+                                <div class="weather-city" id="tile-weather-city">Jakarta, Indonesia</div>
+                                <div class="weather-desc" id="tile-weather-subtitle">Today</div>
+                                <div class="weather-desc" id="tile-weather-condition">Loading...</div>
+                            </div>
+                            <div class="weather-icon-lg" id="tile-weather-icon">⛅</div>
                         </div>
                     </button>
-                    <button class="tile two dynamic-tile" id="tile-sqltb" data-app="sqltb">
-                        <div class="dt-bg" id="tile-sqltb-bg"></div>
-                        <div class="dt-overlay" id="tile-sqltb-overlay"></div>
-                        <div class="live-copy dt-copy" id="tile-sqltb-copy">
-                            <div class="dt-icon-wrap" id="tile-sqltb-icon-wrap"></div>
-                            <div class="dt-tag" id="tile-sqltb-tag"></div>
-                            <div class="dt-text" id="tile-sqltb-text">Loading...</div>
+                    <button class="tile wide cyan" id="tile-greeting" data-app="greeting">
+                        <div class="live-copy">
+                            <div class="live-main" id="tile-greeting-text">
+                                Welcome<br>everyone
+                            </div>
                         </div>
                     </button>
-                    <button class="tile two dynamic-tile" id="tile-prodtb" data-app="prodtb">
-                        <div class="dt-bg" id="tile-prodtb-bg"></div>
-                        <div class="dt-overlay" id="tile-prodtb-overlay"></div>
-                        <div class="live-copy dt-copy" id="tile-prodtb-copy">
-                            <div class="dt-icon-wrap" id="tile-prodtb-icon-wrap"></div>
-                            <div class="dt-tag" id="tile-prodtb-tag"></div>
-                            <div class="dt-text" id="tile-prodtb-text">Loading...</div>
+                    <button class="tile two dynamic-tile" id="tile-profile" data-app="profile" style="cursor: pointer;"
+                        onclick="openProfile();">
+                        <div class="dt-bg" id="tile-profile-bg"></div>
+                        <div class="dt-overlay" id="tile-profile-overlay"></div>
+                        <div class="live-copy dt-copy" id="tile-profile-copy">
+                            <div class="dt-icon-wrap" id="tile-profile-icon-wrap"></div>
+                            <div class="dt-tag" id="tile-profile-tag"></div>
+                            <div class="dt-text" id="tile-profile-text">Memuat...</div>
                         </div>
                     </button>
+                    <button class="tile two dynamic-tile" id="tile-maps" data-app="maps" style="cursor:pointer;"
+                        onclick="openMap()">
+                        <div class="dt-bg" id="tile-maps-bg"></div>
+                        <div class="dt-overlay" id="tile-maps-overlay"></div>
+                        <div class="live-copy dt-copy" id="tile-maps-copy">
+                            <div class="dt-icon-wrap" id="tile-maps-icon-wrap"></div>
+                            <div class="dt-tag" id="tile-maps-tag"></div>
+                            <div class="dt-text" id="tile-maps-text">Memuat...</div>
+                        </div>
+                    </button>
+                    <a href="https://portfoliotirta-l9yr6mtus-partnerspocks-projects.vercel.app" target="_blank"
+                        rel="noopener" class="tile two cyan" title="Portfolio" style="cursor: pointer;">
+                        <span class="tile-icon-two"><i class="fa-solid fa-cubes-stacked"></i></span>
+                        <span class="tile-caption">Portfolio</span>
+                    </a>
 
                     <!-- 4 tile kecil digabung jadi 1 blok -->
                     <div class="tile-cluster">
-                        <button class="tile one slate" data-app="github">
-                            <span class="tile-icon"><i class="fa-brands fa-github"></i></span>
-                        </button>
-                        <button class="tile one orange-half" data-app="drawio">
-                            <span class="tile-icon"><i class="fa-solid fa-timeline"></i></span>
-                        </button>
-                        <button class="tile one white" data-app="antigravity">
-                            <img src="assets/img/tile/antigravity.jpg" alt="antigravity" class="tile-image-icon">
-                        </button>
-                        <button class="tile one dynamic-tile" id="tile-officetools" data-app="officetools">
-                            <div class="dt-bg" id="tile-officetools-bg"></div>
-                            <div class="dt-overlay" id="tile-officetools-overlay"></div>
-                            <div class="live-copy dt-copy" id="tile-officetools-copy">
-                                <div class="dt-icon-wrap" id="tile-officetools-icon-wrap"></div>
-                                <div class="dt-tag" id="tile-officetools-tag"></div>
-                                <div class="dt-text" id="tile-officetools-text">Loading...</div>
-                            </div>
-                        </button>
+                        <a href="tel:+6281234567890" class="tile one cyan" style="cursor: pointer;"
+                            title="Telepon Saya">
+                            <span class="tile-icon"><i class="fa-solid fa-phone"></i></span>
+                        </a>
+                        <a href="mailto:trax@gmail.com" class="tile one cyan" style="cursor: pointer;"
+                            title="Kirim Email">
+                            <span class="tile-icon"><i class="fa-solid fa-envelope"></i></span>
+                        </a>
+                        <a href="https://linkedin.com/in/naufalfahmi" target="_blank" rel="noopener"
+                            class="tile one blue" title="LinkedIn" style="cursor: pointer;">
+                            <span class="tile-icon"><i class="fa-brands fa-linkedin"></i></span>
+                        </a>
+                        <a href="https://wa.me/6281383038888" target="_blank" rel="noopener" class="tile one green"
+                            title="WhatsApp" style="cursor: pointer;">
+                            <span class="tile-icon"><i class="fa-brands fa-whatsapp"></i></span>
+                        </a>
                     </div>
 
-                    <button class="tile wide slate" data-app="values">
-                        <img src="assets/img/tile/figma.png" alt="Figma" class="tile-image-icon" style="width:48px;">
-                        <span class="tile-caption">Figma</span>
+                    <button class="tile big indigo" id="tile-calendar-greetings" data-app="calendar"
+                        onclick="openCalendar()" style="cursor: pointer;">
+                        <div class="calendar-container">
+                            <div class="calendar-top">
+                                <div class="calendar-date" id="tile-calendar-greetings-date">00</div>
+                                <div class="calendar-day" id="tile-calendar-greetings-day">HARI</div>
+                            </div>
+                            <div class="tile-bottom-icon">
+                                <i class="fa-solid fa-calendar-days calendar-icon"></i>
+                                <span class="tile-caption-icon" id="tile-calendar-caption">Calendar</span>
+                            </div>
+                        </div>
+                    </button>
+                    <button class="tile big dynamic-tile" id="tile-experience" data-app="experience"
+                        style="cursor:pointer;" onclick="openExperience();">
+                        <div class="dt-bg" id="tile-experience-bg"></div>
+                        <div class="dt-overlay" id="tile-experience-overlay"></div>
+                        <div class="live-copy dt-copy" id="tile-experience-copy">
+                            <div class="dt-icon-wrap" id="tile-experience-icon-wrap"></div>
+                            <div class="dt-tag" id="tile-experience-tag"></div>
+                            <div class="dt-text" id="tile-experience-text">Loading...</div>
+                        </div>
+                    </button>
+                    <button class="tile two dark-red" title="Education" onclick="openEducation()"
+                        style="cursor: pointer;">
+                        <span class="tile-icon-two"><i class="fa-solid fa-graduation-cap"></i></span>
+                        <div class="tile-caption">Education</div>
+                    </button>
+                    <button class="tile two purple" title="Certificate" style="cursor: pointer;"
+                        onclick="openCertificate()">
+                        <span class="tile-icon-two"><i class="fa-solid fa-trophy"></i></span>
+                        <span class="tile-caption">Certificate</span>
                     </button>
                 </section>
             </div>
 
-            <h2 class="group-title">Utilities</h2>
-            <div class="tools-row">
-                <section class="tile-grid" style="grid-template-columns:repeat(4,var(--tile));"
-                    aria-label="Other tools">
-                    <button class="tile two cyan" style="cursor:pointer;" onclick="openAbout()">
-                        <span class="tile-icon-two"><i class="fa-solid fa-info"></i></span>
-                        <span class="tile-caption">About</span>
+            <div class="section-group">
+                <h2 class="group-title">Project Showcases</h2>
+                <section class="tile-grid" style="grid-template-columns:repeat(6,var(--tile));"
+                    aria-label="Section 3 tiles">
+                    <button class="tile two dynamic-tile" id="tile-hptb" data-app="hptb" style="cursor:pointer;"
+                        onclick="openHappay()">
+                        <div class="dt-bg" id="tile-hptb-bg"></div>
+                        <div class="dt-overlay" id="tile-hptb-overlay"></div>
+                        <div class="live-copy dt-copy" id="tile-hptb-copy">
+                            <div class="dt-icon-wrap" id="tile-hptb-icon-wrap"></div>
+                            <div class="dt-tag" id="tile-hptb-tag"></div>
+                            <div class="dt-text" id="tile-hptb-text">Loading...</div>
+                        </div>
                     </button>
-                    <button class="tile two cyan" id="tile-lockscreen" onclick="showLockscreen()" title="Lock Screen"
+                    <button onclick="openShowcase()" class="tile big dynamic-tile" id="tile-showcase"
+                        data-app="showcase" style="cursor:pointer;">
+                        <div class="dt-bg" id="tile-showcase-bg"></div>
+                        <div class="dt-overlay" id="tile-showcase-overlay"></div>
+                        <div class="live-copy dt-copy" id="tile-showcase-copy">
+                            <div class="dt-icon-wrap" id="tile-showcase-icon-wrap"></div>
+                            <div class="dt-tag" id="tile-showcase-tag"></div>
+                            <div class="dt-text" id="tile-showcase-text">Loading...</div>
+                        </div>
+                    </button>
+                    <button class="tile two dynamic-tile" id="tile-evtb" data-app="evtb" style="cursor:pointer;"
+                        onclick="openEveryday()">
+                        <div class="dt-bg" id="tile-evtb-bg"></div>
+                        <div class="dt-overlay" id="tile-evtb-overlay"></div>
+                        <div class="live-copy dt-copy" id="tile-evtb-copy">
+                            <div class="dt-icon-wrap" id="tile-evtb-icon-wrap"></div>
+                            <div class="dt-tag" id="tile-evtb-tag"></div>
+                            <div class="dt-text" id="tile-evtb-text">Loading...</div>
+                        </div>
+                    </button>
+                    <button class="tile two dynamic-tile" id="tile-ticketing25" data-app="ticketing25"
+                        onclick="openTicketing25()" style="cursor:pointer;">
+                        <div class="dt-bg" id="tile-ticketing25-bg"></div>
+                        <div class="dt-overlay" id="tile-ticketing25-overlay"></div>
+                        <div class="live-copy dt-copy" id="tile-ticketing25-copy">
+                            <div class="dt-icon-wrap" id="tile-ticketing25-icon-wrap"></div>
+                            <div class="dt-tag" id="tile-ticketing25-tag"></div>
+                            <div class="dt-text" id="tile-ticketing25-text">Loading...</div>
+                        </div>
+                    </button>
+                    <button class="tile wide cyan" id="tile-music-main" aria-label="Putar musik">
+                        <span class="music-status" id="tile-music-main-status">OFF</span>
+                        <div
+                            style="display:flex;gap:14px;align-items:center;width:100%;justify-content:center;margin-top:auto;margin-bottom:auto;">
+                            <span id="tile-music-main-prev" role="button" aria-label="Lagu sebelumnya"
+                                title="Previous Song"
+                                style="width:32px;height:32px;display:flex;align-items:center;justify-content:center;border:1.5px solid rgba(255,255,255,.3);border-radius:50%;font-size:13px;opacity:.85;cursor:pointer;">
+                                <i class="fa-solid fa-step-backward"></i>
+                            </span>
+                            <span class="tile-icon" id="tile-music-main-icon" title="Play / Pause"
+                                style="width:48px;height:48px;display:flex;align-items:center;justify-content:center;border:2px solid rgba(255,255,255,.4);border-radius:50%;font-size:20px;line-height:1;cursor:pointer;">
+                                <i class="fa-solid fa-play"></i>
+                            </span>
+                            <span id="tile-music-main-next" role="button" aria-label="Lagu berikutnya" title="Next Song"
+                                style="width:32px;height:32px;display:flex;align-items:center;justify-content:center;border:1.5px solid rgba(255,255,255,.3);border-radius:50%;font-size:13px;opacity:.85;cursor:pointer;">
+                                <i class="fa-solid fa-forward-step"></i>
+                            </span>
+                            <span class="tile-caption"
+                                style="position:absolute;left:12px;bottom:2px;font-size:12px;">Music
+                                Player</span>
+                        </div>
+                    </button>
+                    <button class="tile two dynamic-tile" id="tile-ar26" data-app="ar26" onclick="openAr26()"
                         style="cursor:pointer;">
-                        <span class="tile-icon-two"><i class="fa-solid fa-lock"></i></span>
-                        <span class="tile-caption">Lock Screen</span>
+                        <div class="dt-bg" id="tile-ar26-bg"></div>
+                        <div class="dt-overlay" id="tile-ar26-overlay"></div>
+                        <div class="live-copy dt-copy" id="tile-ar26-copy">
+                            <div class="dt-icon-wrap" id="tile-ar26-icon-wrap"></div>
+                            <div class="dt-tag" id="tile-ar26-tag"></div>
+                            <div class="dt-text" id="tile-ar26-text">Loading...</div>
+                        </div>
                     </button>
                 </section>
             </div>
+
+            <div class="section-group tools-section">
+                <h2 class="group-title">Tools</h2>
+                <div class="tools-row">
+                    <section class="tile-grid" style="grid-template-columns:repeat(4,var(--tile));"
+                        aria-label="Design tools">
+                        <button class="tile two dynamic-tile" id="tile-servertb" data-app="servertb">
+                            <div class="dt-bg" id="tile-servertb-bg"></div>
+                            <div class="dt-overlay" id="tile-servertb-overlay"></div>
+                            <div class="live-copy dt-copy" id="tile-servertb-copy">
+                                <div class="dt-icon-wrap" id="tile-servertb-icon-wrap"></div>
+                                <div class="dt-tag" id="tile-servertb-tag"></div>
+                                <div class="dt-text" id="tile-servertb-text">Loading...</div>
+                            </div>
+                        </button>
+                        <button class="tile two dynamic-tile" id="tile-sqltb" data-app="sqltb">
+                            <div class="dt-bg" id="tile-sqltb-bg"></div>
+                            <div class="dt-overlay" id="tile-sqltb-overlay"></div>
+                            <div class="live-copy dt-copy" id="tile-sqltb-copy">
+                                <div class="dt-icon-wrap" id="tile-sqltb-icon-wrap"></div>
+                                <div class="dt-tag" id="tile-sqltb-tag"></div>
+                                <div class="dt-text" id="tile-sqltb-text">Loading...</div>
+                            </div>
+                        </button>
+                        <button class="tile two dynamic-tile" id="tile-prodtb" data-app="prodtb">
+                            <div class="dt-bg" id="tile-prodtb-bg"></div>
+                            <div class="dt-overlay" id="tile-prodtb-overlay"></div>
+                            <div class="live-copy dt-copy" id="tile-prodtb-copy">
+                                <div class="dt-icon-wrap" id="tile-prodtb-icon-wrap"></div>
+                                <div class="dt-tag" id="tile-prodtb-tag"></div>
+                                <div class="dt-text" id="tile-prodtb-text">Loading...</div>
+                            </div>
+                        </button>
+
+                        <!-- 4 tile kecil digabung jadi 1 blok -->
+                        <div class="tile-cluster">
+                            <button class="tile one slate" data-app="github">
+                                <span class="tile-icon"><i class="fa-brands fa-github"></i></span>
+                            </button>
+                            <button class="tile one orange-half" data-app="drawio">
+                                <span class="tile-icon"><i class="fa-solid fa-timeline"></i></span>
+                            </button>
+                            <button class="tile one white" data-app="antigravity">
+                                <img src="assets/img/tile/antigravity.jpg" alt="antigravity" class="tile-image-icon">
+                            </button>
+                            <button class="tile one dynamic-tile" id="tile-officetools" data-app="officetools">
+                                <div class="dt-bg" id="tile-officetools-bg"></div>
+                                <div class="dt-overlay" id="tile-officetools-overlay"></div>
+                                <div class="live-copy dt-copy" id="tile-officetools-copy">
+                                    <div class="dt-icon-wrap" id="tile-officetools-icon-wrap"></div>
+                                    <div class="dt-tag" id="tile-officetools-tag"></div>
+                                    <div class="dt-text" id="tile-officetools-text">Loading...</div>
+                                </div>
+                            </button>
+                        </div>
+
+                        <button class="tile wide slate" data-app="values">
+                            <img src="assets/img/tile/figma.png" alt="Figma" class="tile-image-icon"
+                                style="width:48px;">
+                            <span class="tile-caption">Figma</span>
+                        </button>
+                    </section>
+                </div>
+
+                <h2 class="group-title">Utilities</h2>
+                <div class="tools-row">
+                    <section class="tile-grid" style="grid-template-columns:repeat(4,var(--tile));"
+                        aria-label="Other tools">
+                        <button class="tile two cyan" style="cursor:pointer;" onclick="openAbout()">
+                            <span class="tile-icon-two"><i class="fa-solid fa-info"></i></span>
+                            <span class="tile-caption">About</span>
+                        </button>
+                        <button class="tile two cyan" id="tile-lockscreen" onclick="showLockscreen()"
+                            title="Lock Screen" style="cursor:pointer;">
+                            <span class="tile-icon-two"><i class="fa-solid fa-lock"></i></span>
+                            <span class="tile-caption">Lock Screen</span>
+                        </button>
+                    </section>
+                </div>
+            </div>
+
+            <!-- Tombol ke App list (hanya tampil di mobile, paling bawah) -->
+            <button class="al-open" id="al-open" type="button" aria-label="Buka daftar aplikasi">
+                <i class="fa-solid fa-arrow-right"></i>
+            </button>
         </div>
     </main>
+
+    <!-- App list ala Windows Phone (hanya mobile). Isinya diisi oleh assets/js/applist.js -->
+    <div id="applist" aria-hidden="true">
+        <header class="al-head">
+            <span class="al-title">Apps</span>
+        </header>
+        <div class="al-scroll" id="al-scroll"></div>
+        <footer class="al-bar">
+            <button class="al-back" id="al-back" type="button" aria-label="Kembali ke Start">
+                <span class="circle"><i class="fa-solid fa-arrow-left"></i></span>
+            </button>
+        </footer>
+        <div id="al-jump" aria-label="Lompat ke huruf"></div>
+    </div>
 
     <audio id="background-music" preload="auto">
         <source src="assets/audio/above.mp3" type="audio/mpeg">
@@ -322,9 +342,13 @@
 
     <script>
         "use strict";
-
         const byId = (id) => document.getElementById(id);
-
+        // Sembunyikan lock screen sebelum halaman tampil kalau sudah pernah di-unlock (anti-berkedip)
+        try {
+            if (sessionStorage.getItem("ls_unlocked")) {
+                document.documentElement.classList.add("ls-unlocked");
+            }
+        } catch (_) { }
         /* =========================================================
            Greeting tile
         ========================================================= */
@@ -1329,6 +1353,320 @@
                     ws.addEventListener(n, () => { clearTimeout(timer); setTimeout(release, 90); }));
             }
 
+        })();
+        /* applist.js: App list ala Windows Phone (mobile <= 640px).
+   - Tombol panah di bawah homescreen, atau geser jari ke KIRI -> buka list.
+   - Geser jari ke KANAN, tombol "start", atau tombol back HP -> kembali ke homescreen.
+   - Tap huruf -> jump list abjad.
+   Dimuat dengan <script defer> setelah markup #applist ada. */
+        (function () {
+            "use strict";
+
+            var root = document.documentElement;
+            var list = document.getElementById("applist");
+            var scroller = document.getElementById("al-scroll");
+            var jump = document.getElementById("al-jump");
+            var openBtn = document.getElementById("al-open");
+            var backBtn = document.getElementById("al-back");
+            if (!list || !scroller || !jump) return;
+
+            var mobile = window.matchMedia("(max-width: 640px)");
+            var reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+            /* ---------------------------------------------------------
+               Daftar app. Tambah / ubah di sini; urutan abjad otomatis.
+               run: fungsi navigasi yang sudah ada di index.html,
+                    atau klik tile link (telepon, email, dst.) lewat selector.
+            --------------------------------------------------------- */
+            function call(name) {
+                return function () { if (typeof window[name] === "function") window[name](); };
+            }
+            function link(selector) {
+                return function () {
+                    var a = document.querySelector(selector);
+                    if (a) a.click();
+                };
+            }
+
+            var APPS = [
+                { name: "About", icon: "fa-solid fa-info", color: "#008ed0", run: call("openAbout") },
+                { name: "Augmented Reality", icon: "fa-brands fa-unity", color: "#FF007F", run: call("openAr26") },
+                { name: "Calendar", icon: "fa-solid fa-calendar-days", color: "#5b53f5", run: call("openCalendar") },
+                { name: "Certificate", icon: "fa-solid fa-trophy", color: "#7e3878", run: call("openCertificate") },
+                { name: "Education", icon: "fa-solid fa-graduation-cap", color: "#ad2f4b", run: call("openEducation") },
+                { name: "Everyday", icon: "fa-brands fa-accusoft", color: "#291C0F", run: call("openEveryday") },
+                { name: "Experience", icon: "fa-solid fa-briefcase", color: "#008ed0", run: call("openExperience") },
+                { name: "Happay", icon: "fa-solid fa-bars-staggered", color: "#443bc7", run: call("openHappay") },
+                { name: "LinkedIn", icon: "fa-brands fa-linkedin", color: "#0078d7", run: link('a[href*="linkedin.com"]') },
+                {
+                    name: "Lock Screen", icon: "fa-solid fa-lock", color: "#008ed0",
+                    run: function () {
+                        closeList(true); // tutup tanpa animasi dulu, baru kunci
+                        if (typeof window.showLockscreen === "function") window.showLockscreen();
+                    }
+                },
+                { name: "Mail", icon: "fa-solid fa-envelope", color: "#008ed0", run: link('a[href^="mailto:"]') },
+                { name: "Maps", icon: "fa-solid fa-map", color: "#008ed0", run: call("openMap") },
+                { name: "Phone", icon: "fa-solid fa-phone", color: "#008ed0", run: link('a[href^="tel:"]') },
+                { name: "Portfolio", icon: "fa-solid fa-cubes-stacked", color: "#008ed0", run: link('a[title="Portfolio"]') },
+                { name: "Profile", icon: "fa-solid fa-circle-user", color: "#00a4ef", run: call("openProfile") },
+                { name: "Project Showcases", icon: "fa-solid fa-shop", color: "#00bcf2", run: call("openShowcase") },
+                { name: "Ticketing", icon: "fa-solid fa-ticket", color: "#5ec26a", run: call("openTicketing25") },
+                { name: "WhatsApp", icon: "fa-brands fa-whatsapp", color: "#107c10", run: link('a[href*="wa.me"]') }
+            ];
+
+            /* ---------------------------------------------------------
+               Bangun list
+            --------------------------------------------------------- */
+            function el(tag, cls, text) {
+                var n = document.createElement(tag);
+                if (cls) n.className = cls;
+                if (text != null) n.textContent = text;
+                return n;
+            }
+
+            function letterOf(name) {
+                var c = name.trim().charAt(0).toUpperCase();
+                return /[A-Z]/.test(c) ? c : "#";
+            }
+
+            function makeRow(app) {
+                var b = el("button", "al-row");
+                b.type = "button";
+                var ico = el("span", "al-ico");
+                ico.style.setProperty("--c", app.color);
+                ico.appendChild(el("i", app.icon));
+                b.appendChild(ico);
+                b.appendChild(el("span", "al-name", app.name));
+                b.addEventListener("click", app.run);
+                return b;
+            }
+
+            var groups = {};
+            var order = [];
+
+            APPS.sort(function (a, b) {
+                return a.name.localeCompare(b.name, "en", { sensitivity: "base" });
+            });
+
+            APPS.forEach(function (app) {
+                var L = letterOf(app.name);
+                if (!groups[L]) {
+                    var g = el("section", "al-group");
+                    var h = el("button", "al-letter", L);
+                    h.type = "button";
+                    h.setAttribute("aria-label", "Lompat ke huruf lain");
+                    g.appendChild(h);
+                    groups[L] = g;
+                    order.push(L);
+                    scroller.appendChild(g);
+                }
+                groups[L].appendChild(makeRow(app));
+            });
+
+            var jgrid = el("div", "al-jgrid");
+            "#ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("").forEach(function (L) {
+                var b = el("button", "al-jcell", L);
+                b.type = "button";
+                if (!groups[L]) {
+                    b.disabled = true;
+                } else {
+                    b.addEventListener("click", function () {
+                        closeJump();
+                        scroller.scrollTop = Math.max(0, groups[L].offsetTop - 8);
+                    });
+                }
+                jgrid.appendChild(b);
+            });
+            jump.appendChild(jgrid);
+
+            function refreshIcons() {
+                try {
+                    if (window.FontAwesome && window.FontAwesome.dom && typeof window.FontAwesome.dom.i2svg === "function") {
+                        window.FontAwesome.dom.i2svg({ node: list });
+                    }
+                } catch (_) { }
+            }
+            refreshIcons();
+            window.addEventListener("load", refreshIcons);
+
+            /* ---------------------------------------------------------
+               Jump list
+            --------------------------------------------------------- */
+            function openJump() { jump.classList.add("open"); }
+            function closeJump() { jump.classList.remove("open"); }
+
+            scroller.addEventListener("click", function (e) {
+                if (e.target.closest(".al-letter")) openJump();
+            });
+            jump.addEventListener("click", function (e) {
+                if (!e.target.closest(".al-jcell")) closeJump();
+            });
+
+            /* ---------------------------------------------------------
+               Buka / tutup (p = progres 0..1, dipakai CSS lewat --alp)
+            --------------------------------------------------------- */
+            var open = false;
+            var p = 0;
+            var anim = null;
+            var dragging = false;
+            var pushed = false;
+            var skipPop = 0;
+
+            function setP(v) {
+                p = v;
+                root.style.setProperty("--alp", v.toFixed(3));
+            }
+
+            function settle(toOpen, instant) {
+                clearTimeout(anim);
+                open = toOpen;
+                root.classList.toggle("al-open", toOpen);
+                list.setAttribute("aria-hidden", String(!toOpen));
+                if (toOpen) root.classList.add("al-active");
+                else closeJump();
+
+                if (instant || reduce.matches) {
+                    root.classList.add("al-drag"); // matikan transisi sesaat
+                    setP(toOpen ? 1 : 0);
+                    void list.offsetWidth;
+                    root.classList.remove("al-drag");
+                    if (!toOpen) root.classList.remove("al-active");
+                } else {
+                    root.classList.remove("al-drag");
+                    setP(toOpen ? 1 : 0);
+                    if (!toOpen) {
+                        anim = setTimeout(function () {
+                            if (!open && !dragging) root.classList.remove("al-active");
+                        }, 360);
+                    }
+                }
+            }
+
+            function openList() {
+                if (open) return;
+                settle(true);
+                if (!pushed) {
+                    try { history.pushState({ al: 1 }, ""); pushed = true; } catch (_) { }
+                }
+            }
+
+            function closeList(instant) {
+                if (!open) return;
+                settle(false, instant);
+                if (pushed) {
+                    pushed = false;
+                    if (history.state && history.state.al) {
+                        skipPop++;
+                        history.back();
+                    }
+                }
+            }
+
+            // Tombol back HP: tutup list (bukan keluar halaman)
+            window.addEventListener("popstate", function () {
+                if (skipPop > 0) { skipPop--; return; }
+                if (open) { pushed = false; settle(false); }
+            });
+
+            if (openBtn) openBtn.addEventListener("click", openList);
+            if (backBtn) backBtn.addEventListener("click", function () { closeList(); });
+
+            document.addEventListener("keydown", function (e) {
+                if (e.key !== "Escape") return;
+                if (jump.classList.contains("open")) closeJump();
+                else closeList();
+            });
+
+            function onMediaChange() {
+                if (!mobile.matches && (open || root.classList.contains("al-active"))) {
+                    pushed = false;
+                    settle(false, true);
+                }
+            }
+            if (mobile.addEventListener) mobile.addEventListener("change", onMediaChange);
+
+            /* ---------------------------------------------------------
+               Gesture geser: jari ke KIRI = buka, jari ke KANAN = tutup
+            --------------------------------------------------------- */
+            var tracking = false;
+            var axis = null;
+            var sx = 0, sy = 0, st = 0, W = 360;
+            var suppressUntil = 0;
+
+            function lockScreenShown() {
+                var o = document.getElementById("lockscreen-overlay");
+                return !!o && !o.classList.contains("ls-hidden") && !root.classList.contains("ls-unlocked");
+            }
+
+            document.addEventListener("pointerdown", function (e) {
+                if (!mobile.matches || lockScreenShown() || jump.classList.contains("open")) return;
+                if (!e.isPrimary) return;
+                if (e.pointerType === "mouse" && e.button !== 0) return;
+                tracking = true;
+                axis = null;
+                sx = e.clientX;
+                sy = e.clientY;
+                st = performance.now();
+                W = window.innerWidth || 360;
+            });
+
+            document.addEventListener("pointermove", function (e) {
+                if (!tracking) return;
+                var dx = e.clientX - sx;
+                var dy = e.clientY - sy;
+
+                if (axis === null) {
+                    if (Math.abs(dx) < 10 && Math.abs(dy) < 10) return;
+                    var horizontal = Math.abs(dx) > Math.abs(dy) * 1.3;
+                    var rightWay = open ? dx > 0 : dx < 0;
+                    if (!horizontal || !rightWay) { tracking = false; return; } // scroll vertikal biasa
+                    axis = "x";
+                    dragging = true;
+                    clearTimeout(anim);
+                    root.classList.add("al-active", "al-drag");
+                }
+
+                var v = open ? 1 - dx / W : -dx / W;
+                setP(Math.min(1, Math.max(0, v)));
+            }, { passive: true });
+
+            function endDrag(e) {
+                if (!tracking) return;
+                tracking = false;
+                if (axis !== "x") return;
+
+                dragging = false;
+                suppressUntil = Date.now() + 350; // cegah klik tile yang tidak disengaja
+                root.classList.remove("al-drag");
+
+                var dx = e.clientX - sx;
+                var dt = Math.max(performance.now() - st, 1);
+                var fast = Math.abs(dx) / dt > 0.5 && Math.abs(dx) > 40;
+                var cancelled = e.type === "pointercancel";
+
+                var toOpen;
+                if (cancelled) toOpen = open;
+                else if (open) toOpen = !(p < 0.65 || (fast && dx > 0));
+                else toOpen = p > 0.35 || (fast && dx < 0);
+
+                if (toOpen) { if (open) settle(true); else openList(); }
+                else { if (open) closeList(); else settle(false); }
+            }
+
+            document.addEventListener("pointerup", endDrag);
+            document.addEventListener("pointercancel", endDrag);
+
+            document.addEventListener("click", function (e) {
+                if (Date.now() < suppressUntil) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }
+            }, true);
+
+            window.addEventListener("pageshow", function (e) {
+                if (e.persisted) suppressUntil = 0;
+            });
         })();
     </script>
 </body>
